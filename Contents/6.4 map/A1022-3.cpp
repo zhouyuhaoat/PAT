@@ -1,0 +1,58 @@
+/*
+ *	author:		zhouyuhao
+ *	created:	2024-05-04 10:56:00
+ *	modified:	2024-05-04 11:11:00
+ *	item:		Programming Ability Test
+ *	site:		914, Harbin
+ */
+#include <iostream>
+#include <map>
+#include <set>
+#include <sstream>
+#include <vector>
+
+using namespace std;
+
+int main(int argc, char const *argv[]) {
+
+	vector<map<string, set<string>>> m(6);
+	int n;
+	cin >> n;
+	getchar();
+	for (int i = 0; i < n; i++) {
+		string id;
+		getline(cin, id);
+		for (int j = 1; j < 6; j++) {
+			string s;
+			getline(cin, s);
+			if (j != 3) {
+				m[j][s].emplace(id);
+			} else {
+				stringstream ss(s);
+				string w;
+				while (ss >> w) {
+					m[j][w].emplace(id);
+				}
+			}
+		}
+	}
+	int q;
+	cin >> q;
+	for (int i = 0; i < q; i++) {
+		int l;
+		int unused __attribute__((unused)) = 0;
+		unused = scanf("%d: ", &l);
+		string s;
+		getline(cin, s);
+		cout << l << ": " << s << "\n";
+		if (m[l][s].empty()) {
+			cout << "Not Found\n";
+		} else {
+			for (auto it : m[l][s]) {
+				cout << it << "\n";
+			}
+		}
+	}
+
+	return 0;
+}
