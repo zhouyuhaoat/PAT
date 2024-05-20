@@ -1,0 +1,41 @@
+/*
+ *	author:		zhouyuhao
+ *	created:	2023-04-04 19:54:51
+ *	modified:	2023-04-04 19:59:37
+ *	item:		Programming Ability Test
+ *	site:		Yuting
+ */
+#include <cmath>
+#include <iostream>
+
+using namespace std;
+
+bool isprime(int n) {
+	if (n < 2) {
+		return false;
+	}
+	for (int i = 2; i <= sqrt(n); i++) {
+		if (n % i == 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+int main(int argc, char const *argv[]) {
+
+	int l, k;
+	cin >> l >> k;
+	string s;
+	cin >> s;
+	for (int i = 0; i < (int)s.size() - k + 1; i++) {
+		string ss = s.substr(i, k);
+		if (isprime(stoi(ss))) {
+			cout << ss << "\n";
+			return 0;
+		}
+	}
+	cout << "404\n";
+
+	return 0;
+}
