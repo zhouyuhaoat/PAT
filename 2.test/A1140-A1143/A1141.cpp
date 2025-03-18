@@ -1,0 +1,77 @@
+/*
+ *	author:		zhouyuhao
+ *	created:	2023-04-04 12:57:25
+ *	modified:	2023-04-04 13:13:03
+ *	item:		Programming Ability Test
+ *	site:		Yuting
+ */
+
+/*
+  @pintia psid=994805342720868352 pid=994805344222429184 compiler=GXX
+  ProblemSet: PAT (Advanced Level) Practice
+  Title: 1141 PAT Ranking of Institutions
+  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344222429184
+*/
+
+// @pintia code=start
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <vector>
+
+using namespace std;
+
+struct ins { // institution
+    int r, t, n; // rank, total score, number of testees
+    string id;
+};
+
+int main(int argc, char const *argv[]) {
+
+    int n;
+    cin >> n;
+    map<string, double> inss; // score
+    map<string, int> insc; // count
+    for (int i = 0; i < n; i++) {
+        string id, sch;
+        int sco;
+        cin >> id >> sco >> sch;
+        for (int j = 0; j < (int)sch.size(); j++) {
+            sch[j] = tolower(sch[j]);
+        }
+        if (id[0] == 'T') {
+            inss[sch] += sco * 1.5;
+        } else if (id[0] == 'B') {
+            inss[sch] += sco / 1.5;
+        } else {
+            inss[sch] += sco;
+        }
+        ++insc[sch];
+    }
+    vector<ins> ans; // map to vector
+    for (auto it : inss) {
+        ans.emplace_back(ins{1, (int)it.second, insc[it.first], it.first});
+    }
+    sort(ans.begin(), ans.end(), [](ins a, ins b) {
+        if (a.t != b.t) {
+            return a.t > b.t;
+        } else if (a.n != b.n) {
+            return a.n < b.n;
+        } else {
+            return a.id < b.id;
+        }
+    });
+    cout << ans.size() << "\n";
+    cout << ans[0].r << " " << ans[0].id << " " << ans[0].t << " " << ans[0].n << "\n";
+    for (int i = 1; i < (int)ans.size(); i++) { // rank
+        if (ans[i].t == ans[i - 1].t) {
+            ans[i].r = ans[i - 1].r;
+        } else {
+            ans[i].r = i + 1;
+        }
+        cout << ans[i].r << " " << ans[i].id << " " << ans[i].t << " " << ans[i].n << "\n";
+    }
+
+    return 0;
+}
+// @pintia code=end
