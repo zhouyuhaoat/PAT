@@ -23,23 +23,29 @@ int main(int argc, char const *argv[]) {
 
     int m, n, st;
     cin >> m >> n >> st;
-    int cnt = 0;
-    bool nowin = true;
-    map<string, bool> iswin;
+    string d[m + 1];
     for (int i = 1; i <= m; i++) {
-        string s;
-        cin >> s;
-        if (i >= st && !iswin[s]) { // avoid repeat
-            if (cnt % n == 0) { // every N followers
-                cout << s << "\n";
-                nowin = false;
-                iswin[s] = true;
-            }
-            ++cnt;
-        }
+        cin >> d[i];
     }
-    if (nowin) {
+    if (st > m) { // no winner
         cout << "Keep going...\n";
+        return 0;
+    }
+    map<string, bool> iswin;
+    iswin[d[st]] = true;
+    cout << d[st] << "\n";
+    if (st == m) return 0; // only one winner
+    int cnt = 0;
+    for (int i = st + 1; i <= m; i++) {
+        cnt++; // even a winner
+        if (cnt % n == 0) {
+            if (iswin[d[i]]) { // already a winner
+                cnt--; // reset
+                continue; // skip and next
+            }
+            iswin[d[i]] = true;
+            cout << d[i] << "\n";
+        }
     }
 
     return 0;
