@@ -50,7 +50,10 @@ int main(int argc, char const *argv[]) {
     }
     vector<ins> ans; // map to vector
     for (auto it : inss) {
-        ans.emplace_back(ins{1, (int)it.second, insc[it.first], it.first});
+        ans.emplace_back(ins{1, (int)(it.second + 1e-8), insc[it.first], it.first});
+        // 1e-8 is a small number, which is used to avoid floating point error
+        // in the case of 0.9999999999999999, it will be rounded to 1
+        // and in the case of 1.0000000000000001, it will be rounded to 1
     }
     sort(ans.begin(), ans.end(), [](ins a, ins b) {
         if (a.t != b.t) {
