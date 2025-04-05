@@ -41,7 +41,8 @@ int main(int argc, char const *argv[]) {
     // s: start index of the subsequence
     dp[0] = d[0], s[0] = 0;
     for (int i = 1; i < k; i++) {
-        if (d[i] < dp[i - 1] + d[i]) { // extend
+        if (d[i] <= dp[i - 1] + d[i]) { // extend
+            // <=, not <: not unique, for the smallest indices
             dp[i] = dp[i - 1] + d[i], s[i] = s[i - 1];
         } else { // cut
             dp[i] = d[i], s[i] = i;
