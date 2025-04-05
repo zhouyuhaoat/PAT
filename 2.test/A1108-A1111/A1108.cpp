@@ -25,7 +25,7 @@ bool islaw(string s) {
     if (p != string::npos) {
         s.erase(p, 1);
     }
-    if (s[0] == '-') {
+    if (s[0] == '-' && s.size() > 1) { // avoid empty string after '-'
         s.erase(0, 1);
     }
     for (auto it : s) {
