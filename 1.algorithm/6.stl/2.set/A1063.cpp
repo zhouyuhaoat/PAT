@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
                 ++cnt;
             }
         }
-        float r = (float)cnt / (s[a].size() + s[b].size() - cnt) * 100;
+        double r = (double)cnt / (s[a].size() + s[b].size() - cnt) * 100;
         cout << fixed << setprecision(1) << r << "%\n";
     }
 
