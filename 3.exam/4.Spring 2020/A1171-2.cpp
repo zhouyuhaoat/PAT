@@ -33,11 +33,11 @@ int main(int argc, char const *argv[]) {
     }
     int idx = m; // index
     while (!q1.empty()) {
-        int t = q1.top();
+        int t = q1.top(); // just output
         q1.pop();
         cout << t;
         if (idx < n) { // t = last in
-            if (d[idx] > t) { // the current run
+            if (d[idx] >= t) { // the current run: not smaller than just output
                 q1.emplace(d[idx]);
             } else { // next new run
                 q2.emplace(d[idx]);

@@ -46,10 +46,10 @@ int main(int argc, char const *argv[]) {
         q.emplace(d[i], 0);
     }
     for (int i = m; i < n; i++) {
-        node t = q.top();
+        node t = q.top(); // just output
         q.pop();
-        run[t.r].emplace_back(t.v); // t.v = last in
-        if (d[i] > t.v) { // the current run
+        run[t.r].emplace_back(t.v);
+        if (d[i] >= t.v) { // the current run: not smaller than just output
             q.emplace(d[i], t.r);
         } else { // next new run
             q.emplace(d[i], t.r + 1);
