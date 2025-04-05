@@ -22,13 +22,14 @@
 using namespace std;
 
 struct mc {
-    float st, ts;
-    float s;
+    double st, ts;
+    double s;
 };
 
 int main(int argc, char const *argv[]) {
 
-    int n, d;
+    int n;
+    double d;
     cin >> n >> d;
     vector<mc> c(n);
     for (int i = 0; i < n; i++) {
@@ -41,7 +42,7 @@ int main(int argc, char const *argv[]) {
     sort(c.begin(), c.end(), [](mc a, mc b) {
         return a.s > b.s;
     });
-    float tr = 0;
+    double tr = 0;
     for (int i = 0; i < n; i++) {
         if (d > c[i].st) {
             tr += c[i].ts;
