@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -36,7 +36,7 @@ int main(int argc, char const *argv[]) {
         return 0;
     }
     node d[n + 1];
-    map<int, int> loc;
+    unordered_map<int, int> loc;
     for (int i = 1; i <= n; i++) {
         int id;
         cin >> id >> d[i].data >> d[i].next;
