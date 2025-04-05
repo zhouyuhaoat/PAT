@@ -15,6 +15,7 @@
 
 // @pintia code=start
 #include <climits>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <queue>
@@ -84,7 +85,7 @@ int main(int argc, char const *argv[]) {
         g[id2].emplace_back(id1, dist);
     }
     int maxdis = -1, can = -1;
-    float avedis = -1;
+    double avedis = -1;
     // traverse all gas stations
     for (int s = n + 1; s <= n + m; s++) {
         dijkstra(s);
@@ -101,11 +102,11 @@ int main(int argc, char const *argv[]) {
         if (islaw) {
             if (dis > maxdis) {
                 maxdis = dis;
-                avedis = (float)sumdis / n;
+                avedis = (double)sumdis / n;
                 can = s;
             } else if (dis == maxdis) {
-                if ((float)sumdis / n < avedis) {
-                    avedis = (float)sumdis / n;
+                if ((double)sumdis / n < avedis) {
+                    avedis = (double)sumdis / n;
                     can = s;
                 }
             }
@@ -113,7 +114,8 @@ int main(int argc, char const *argv[]) {
     }
     if (can != -1) {
         cout << "G" << can - n << "\n";
-        cout << fixed << setprecision(1) << (float)maxdis << " " << fixed << setprecision(1) << avedis << "\n";
+        cout << fixed << setprecision(1) << (double)maxdis << " ";
+        cout << fixed << setprecision(1) << round(avedis * 10) / 10 << "\n";
     } else {
         cout << "No Solution\n";
     }
