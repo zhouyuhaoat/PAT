@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> e(n);
+    vector<vector<int>> e(n); // edges of vertex
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]) {
     for (int q = 0; q < k; q++) {
         int n;
         cin >> n;
-        vector<bool> edge(m, false); // set -> vector
+        vector<bool> edge(m, false);
         for (int i = 0; i < n; i++) {
             int v;
             cin >> v;

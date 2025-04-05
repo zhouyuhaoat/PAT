@@ -30,40 +30,38 @@ struct node {
 vector<int> pre, in;
 
 int getbh(node *r) {
-    return r == nullptr ? 0 : r->bh;
+    return !r ? 0 : r->bh;
 }
 
 void updatebh(node *r) {
     r->bh = max(getbh(r->lc), getbh(r->rc));
-    if (r->v > 0) {
-        ++r->bh;
-    }
+    if (r->v > 0) r->bh++;
 }
 
-node *create(int r, int s, int e) { // build tree from pre-order and in-order
-    if (s > e) {
+node *create(int r, int s, int e, bool& flag) { // build tree from pre-order and in-order
+    if (s > e) return nullptr;
+    int i = find(in.begin(), in.end(), pre[r]) - in.begin();
+    if (!(i >= s && i <= e)) { // check if the in-order is valid
+        flag = false;
         return nullptr;
     }
     node *root = new node;
     root->v = pre[r];
-    if (root->v > 0) {
-        root->bh = 1;
-    }
-    int i = find(in.begin(), in.end(), pre[r]) - in.begin();
-    root->lc = create(r + 1, s, i - 1);
-    root->rc = create(r + i - s + 1, i + 1, e);
+    if (root->v > 0) root->bh = 1;
+    root->lc = create(r + 1, s, i - 1, flag);
+    root->rc = create(r + i - s + 1, i + 1, e, flag);
     updatebh(root); // from bottom to top
     return root;
 }
 
-void dfs(node *root, bool &flag) { // Is It A Red-Black Tree
+void dfs(node *root, bool& flag) { // Is It A Red-Black Tree
     if (root->v < 0) {
         // property 4: If a node is red, then both its children are black.
-        if (root->lc != nullptr && root->lc->v < 0) {
+        if (root->lc && root->lc->v < 0) {
             flag = false;
             return;
         }
-        if (root->rc != nullptr && root->rc->v < 0) {
+        if (root->rc && root->rc->v < 0) {
             flag = false;
             return;
         }
@@ -74,15 +72,9 @@ void dfs(node *root, bool &flag) { // Is It A Red-Black Tree
         flag = false;
         return;
     }
-    if (root->lc == nullptr && root->rc == nullptr) {
-        return;
-    }
-    if (root->lc != nullptr) {
-        dfs(root->lc, flag);
-    }
-    if (root->rc != nullptr) {
-        dfs(root->rc, flag);
-    }
+    if (!root->lc && !root->rc) return;
+    if (root->lc) dfs(root->lc, flag);
+    if (root->rc) dfs(root->rc, flag);
 }
 
 int main(int argc, char const *argv[]) {
@@ -107,8 +99,12 @@ int main(int argc, char const *argv[]) {
         sort(in.begin(), in.end(), [](int a, int b) {
             return abs(a) < abs(b);
         });
-        node *root = create(0, 0, n - 1);
         bool flag = true;
+        node *root = create(0, 0, n - 1, flag);
+        if (!flag) { // not a binary search tree
+            cout << "No\n";
+            continue;
+        }
         dfs(root, flag);
         if (flag) {
             cout << "Yes\n";

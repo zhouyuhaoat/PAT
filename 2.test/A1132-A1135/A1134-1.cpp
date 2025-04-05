@@ -15,7 +15,7 @@
 
 // @pintia code=start
 #include <iostream>
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -24,27 +24,30 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> e(n); // edges of vertex
+    vector<pair<int, int>> e(m); // edges
     for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        e[a].emplace_back(i);
-        e[b].emplace_back(i);
+        cin >> e[i].first >> e[i].second;
     }
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
         int n;
         cin >> n;
-        set<int> edge;
+        unordered_set<int> v; // vertices
         for (int i = 0; i < n; i++) {
-            int v;
-            cin >> v;
-            for (auto it : e[v]) {
-                edge.emplace(it);
+            int vertex;
+            cin >> vertex;
+            v.emplace(vertex);
+        }
+        bool flag = true;
+        for (auto& edge : e) {
+            if (v.find(edge.first) == v.end() && v.find(edge.second) == v.end()) {
+                // cover: at least one vertex of the edge is in the set
+                flag = false;
+                break;
             }
         }
-        if ((int)edge.size() == m) { // cover all edges
+        if (flag) { // cover all edges
             cout << "Yes\n";
         } else {
             cout << "No\n";
