@@ -29,18 +29,15 @@ int main(int argc, char const *argv[]) {
         cin >> d[i];
     }
     sort(d.begin(), d.end(), greater<int>());
-    int ans = -1;
-    for (int i = 0; i < n; i++) {
+    d.emplace_back(0); // add a dummy element for the last day
+    int ans = 0;
+    for (int i = 0; i <= n; i++) {
         if (d[i] <= i + 1) { // the day that one rides less and equal than E miles
             ans = i;
             break;
         }
     }
-    if (ans == -1) {
-        cout << d.back() - 1 << "\n";
-    } else {
-        cout << ans << "\n";
-    }
+    cout << ans << "\n";
 
     return 0;
 }
