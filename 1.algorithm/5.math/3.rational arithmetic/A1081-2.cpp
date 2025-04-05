@@ -35,30 +35,34 @@ fra reduct(fra r) { // reduction
     if (r.num == 0) {
         r.den = 1;
     } else {
-        int g = gcd(abs(r.num), r.den);
+        ll g = gcd(abs(r.num), r.den);
         r.num /= g, r.den /= g;
     }
     return r;
 }
 
 fra add(fra f1, fra f2) {
-    fra r = {f1.num * f2.den + f2.num * f1.den, f1.den * f2.den};
-    return reduct(r);
+    ll g = gcd(f1.den, f2.den); // covert fractions to common denominator before addition
+    fra r = {f1.num * (f2.den / g) + f2.num * (f1.den / g), f1.den * (f2.den / g)};
+    return reduct(r); // reduce fraction after addition
 }
 
 void print(fra r) {
     r = reduct(r);
-    if (r.den == 1) {
-        cout << r.num << "\n";
-    } else if (abs(r.num) > r.den) {
-        cout << r.num / r.den << " " << abs(r.num) % r.den << "/" << r.den << "\n";
-    } else {
+    if (r.num == 0) { // zero
+        cout << "0\n";
+    } else if (abs(r.num) >= r.den) { // improper fraction
+        cout << r.num / r.den;
+        if (r.num % r.den != 0) {
+            cout << " " << abs(r.num) % r.den << "/" << r.den;
+        }
+        cout << "\n";
+    } else { // proper fraction
         cout << r.num << "/" << r.den << "\n";
     }
 }
 
 int main(int argc, char const *argv[]) {
-
     int n;
     cin >> n;
     fra sum = {0, 1};
@@ -66,7 +70,7 @@ int main(int argc, char const *argv[]) {
         fra tmp;
         int unused __attribute__((unused)) = 0;
         unused = scanf("%lld/%lld", &tmp.num, &tmp.den);
-        sum = add(sum, tmp);
+        sum = add(sum, reduct(tmp)); // reduce fraction before addition
     }
     print(sum);
 

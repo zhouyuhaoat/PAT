@@ -33,22 +33,23 @@ int main(int argc, char const *argv[]) {
         ll a, b;
         int unused __attribute__((unused)) = 0;
         unused = scanf("%lld/%lld", &a, &b);
-        num = num * b + a * den, den *= b;
-        int g = gcd(num, den);
-        num /= g, den /= g;
+        ll g1 = gcd(abs(a), b); // reduce fraction before addition
+        a /= g1, b /= g1;
+        ll g = gcd(den, b); // covert fractions to common denominator before addition
+        num = num * (b / g) + a * (den / g), den *= b / g;
+        ll g2 = gcd(abs(num), den); // reduce fraction after addition
+        num /= g2, den /= g2;
     }
-    if (num >= den) {
+    if (num == 0) { // zero
+        cout << "0\n";
+    } else if (abs(num) >= den) { // improper fraction
         cout << num / den;
         if (num % den != 0) {
-            cout << " " << num % den << "/" << den;
+            cout << " " << abs(num) % den << "/" << den;
         }
         cout << "\n";
-    } else {
-        if (num != 0) {
-            cout << num << "/" << den << "\n";
-        } else {
-            cout << "0\n";
-        }
+    } else { // proper fraction
+        cout << num << "/" << den << "\n";
     }
 
     return 0;
