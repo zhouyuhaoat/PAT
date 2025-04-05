@@ -14,9 +14,10 @@
 */
 
 // @pintia code=start
+#include <algorithm>
 #include <iostream>
-#include <map>
-#include <set>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -24,15 +25,18 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    map<string, set<int>> c;
+    unordered_map<string, vector<int>> c;
     for (int i = 0; i < k; i++) {
         int no, ns;
         cin >> no >> ns;
         for (int j = 0; j < ns; j++) {
             string name;
             cin >> name;
-            c[name].emplace(no);
+            c[name].emplace_back(no);
         }
+    }
+    for (auto& [_, no] : c) {
+        sort(no.begin(), no.end());
     }
     for (int i = 0; i < n; i++) {
         string name;
