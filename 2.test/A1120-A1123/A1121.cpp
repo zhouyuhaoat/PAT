@@ -16,8 +16,8 @@
 // @pintia code=start
 #include <iomanip>
 #include <iostream>
-#include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -26,21 +26,22 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    map<int, int> c; // couple
+    // int -> string: avoid id = 00000
+    unordered_map<string, string> c; // couple
     for (int i = 0; i < n; i++) {
-        int c1, c2;
+        string c1, c2;
         cin >> c1 >> c2;
         c[c1] = c2, c[c2] = c1;
     }
     int m;
     cin >> m;
-    map<int, bool> g; // guest
-    vector<int> d(m);
+    unordered_map<string, bool> g; // guest
+    vector<string> d(m);
     for (int i = 0; i < m; i++) {
         cin >> d[i];
         g[d[i]] = true;
     }
-    set<int> single; // damn single
+    set<string> single; // damn single
     for (int i = 0; i < m; i++) {
         if (!g[c[d[i]]]) { // if not couple
             single.emplace(d[i]);
@@ -49,7 +50,7 @@ int main(int argc, char const *argv[]) {
     int size = single.size();
     cout << size << "\n";
     for (auto it : single) {
-        cout << setfill('0') << setw(5) << it;
+        cout << it;
         --size > 0 ? cout << " " : cout << "\n";
     }
 
