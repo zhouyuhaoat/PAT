@@ -58,7 +58,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    h.resize(n);
+    h.resize(n + 1);
     h[r] = 1;
     bfs(r);
     for (int i = 1; i <= hh; i++) {
