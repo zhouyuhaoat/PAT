@@ -20,30 +20,34 @@
 
 using namespace std;
 
+struct stu {
+    string id, name;
+    int score;
+};
+
 int main(int argc, char const *argv[]) {
 
     int n, idx;
     cin >> n >> idx;
-    vector<vector<string>> s(n, vector<string>(3));
+    vector<stu> s(n);
     for (int i = 0; i < n; i++) {
-        cin >> s[i][0] >> s[i][1] >> s[i][2];
+        cin >> s[i].id >> s[i].name >> s[i].score;
     }
-    sort(s.begin(), s.end(), [idx](vector<string> a, vector<string> b) -> bool {
-        switch (idx) { // fall through of switch cases
+    sort(s.begin(), s.end(), [idx](stu a, stu b) -> bool {
+        switch (idx) {
+            case 1:
+                return a.id < b.id;
+                break;
             case 2:
-                if (a[1] != b[1]) {
-                    return a[1] < b[1];
-                }
+                return a.name == b.name ? a.id < b.id : a.name < b.name;
+                break;
             case 3:
-                if (a[1] != b[1] && stoi(a[2]) != stoi(b[2])) {
-                    return stoi(a[2]) < stoi(b[2]);
-                }
-            default:
-                return a[0] < b[0];
+                return a.score == b.score ? a.id < b.id : a.score < b.score;
+                break;
         }
     });
     for (auto it : s) {
-        cout << it[0] << " " << it[1] << " " << it[2] << "\n";
+        cout << it.id << " " << it.name << " " << it.score << "\n";
     }
 
     return 0;

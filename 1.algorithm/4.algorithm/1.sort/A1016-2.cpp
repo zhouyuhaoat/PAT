@@ -73,7 +73,7 @@ int main(int argc, char const *argv[]) {
         }
     });
     vector<per> b;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n - 1; i++) { // n - 1: avoid out of range
         if (p[i].name == p[i + 1].name) { // pair after sort: on-line & off-line
             if (p[i].line == "on-line" && p[i + 1].line == "off-line") {
                 b.emplace_back(p[i]);

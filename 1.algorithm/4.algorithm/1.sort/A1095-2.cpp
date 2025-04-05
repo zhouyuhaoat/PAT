@@ -49,7 +49,7 @@ int main(int argc, char const *argv[]) {
     vector<car> cp;
     map<string, int> during;
     int maxduring = -1;
-    for (int i = 0; i < n; i++) { // pair after sort: in & out
+    for (int i = 0; i < n - 1; i++) { // pair after sort: in & out; n - 1: avoid out of range
         if (c[i].id == c[i + 1].id && c[i].status == "in" && c[i + 1].status == "out") {
             cp.emplace_back(c[i]);
             cp.emplace_back(c[i + 1]);
