@@ -79,7 +79,8 @@ int main(int argc, char const *argv[]) {
         } else if (s.find("siblings") != string::npos) {
             int u, v;
             sscanf(s.c_str(), "%d and %d are siblings", &u, &v);
-            if (t[u]->i / 2 == t[v]->i / 2) { // siblings have the same parent
+            if (t[u]->i != t[v]->i && t[u]->i / 2 == t[v]->i / 2) { // siblings have the same parent
+                // precondition: u != v
                 flag = true;
             }
         } else if (s.find("parent") != string::npos) {
