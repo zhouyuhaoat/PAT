@@ -46,10 +46,15 @@ int main(int argc, char const *argv[]) {
             res.append(expVal - frac.size(), '0');
         }
     } else {
-        res += "0.";
-        res.append(expVal - 1, '0');
-        res.push_back(intPart);
-        res.append(frac);
+        if (expVal > 0) {
+            res += "0.";
+            res.append(expVal - 1, '0');
+            // append's first arg: can not be negative
+            res.push_back(intPart);
+            res.append(frac);
+        } else { // expVal == 0
+            res += s.substr(1, 3);
+        }
     }
     cout << res;
 

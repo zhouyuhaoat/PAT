@@ -40,6 +40,8 @@ int main(int argc, char const *argv[]) {
         } else {
             a.insert(e + 1, ".");
         }
+    } else { // e == 0
+        a.insert(1, ".");
     }
     cout << a << "\n";
 
