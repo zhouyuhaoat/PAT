@@ -33,7 +33,7 @@ string trans(string s, int n) {
 int main(int argc, char const *argv[]) {
 
     int n;
-    float a[2];
+    long double a[2];
     cin >> n >> a[0] >> a[1];
     stringstream s[2];
     string b[2];

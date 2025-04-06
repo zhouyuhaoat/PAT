@@ -35,10 +35,14 @@ string erasep(string s) {
 
 bool iszero(string s) {
     s = erasep(s);
-    if (stoi(s) == 0) {
-        return true;
+    bool flag = true; // stoi(s) == 0
+    // stoi did not work for long float number since it will be out of range
+    for (int i = 0; i < (int)s.size(); i++) {
+        if (s[i] != '0') {
+            flag = false;
+        }
     }
-    return false;
+    return flag;
 }
 
 string chop(string s, int n) {

@@ -20,7 +20,7 @@
 
 using namespace std;
 
-string normalize(double num, int n) {
+string normalize(long double num, int n) {
 
     if (num == 0) return "0." + string(n, '0') + "*10^0";
     int exp = 1;
@@ -45,7 +45,7 @@ string normalize(double num, int n) {
 int main(int argc, char const *argv[]) {
 
     int n;
-    double a, b;
+    long double a, b;
     cin >> n >> a >> b;
     string sa = normalize(a, n), sb = normalize(b, n);
     if (sa == sb) {
