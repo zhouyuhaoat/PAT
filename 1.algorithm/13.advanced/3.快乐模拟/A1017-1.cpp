@@ -43,6 +43,7 @@ int main(int argc, char const *argv[]) {
         int h, m, s, p;
         int unused __attribute__((unused)) = 0;
         unused = scanf("%d:%d:%d %d", &h, &m, &s, &p);
+        if (p > 60) p = 60; // max processing time
         if (trans(h, m, s) > en) continue; // shutter
         c.emplace(trans(h, m, s), p * 60);
     }

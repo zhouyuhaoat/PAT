@@ -66,11 +66,11 @@ int main(int argc, char const *argv[]) {
 
     int k, m;
     cin >> k >> m;
-    vector<tab> t(k);
+    vector<tab> t(k + 1);
     vector<int> tv(m); // VIP table index
     for (int i = 0; i < m; i++) {
         cin >> tv[i];
-        t[--tv[i]].isvip = true;
+        t[tv[i]].isvip = true;
     }
 
     vector<bool> vis(n);
@@ -100,7 +100,7 @@ int main(int argc, char const *argv[]) {
         // 1. not a VIP person
         // 2. a VIP person, but no VIP table available
         int it = -1;
-        for (int i = 0; i < k; i++) { // try to find a normal table
+        for (int i = 1; i <= k; i++) { // try to find a normal table
             if (p[ip].at >= t[i].et) {
                 it = i;
                 break;
@@ -112,14 +112,17 @@ int main(int argc, char const *argv[]) {
             if (p[ip].st < en) t[it].cnt++;
             vis[ip] = true;
             ip++;
-        } else { // no table available
-            int minit = -1, minet = INT_MAX; // find the table with the earliest end time
-            for (int i = 0; i < k; i++) {
-                if (minet > t[i].et) {
-                    minet = t[i].et;
-                    minit = i;
-                }
+            continue;
+        }
+        // no table available
+        int minit = -1, minet = INT_MAX; // find the table with the earliest end time
+        for (int i = 1; i <= k; i++) {
+            if (minet > t[i].et) {
+                minet = t[i].et;
+                minit = i;
             }
+        }
+        if (!p[ip].isvip) {
             if (!t[minit].isvip) { // allow to play immediately
                 p[ip].st = t[minit].et;
                 t[minit].et += p[ip].pt;
@@ -147,6 +150,18 @@ int main(int argc, char const *argv[]) {
                 vis[ip] = true;
                 ip = tip; // reset
             }
+        } else {
+            for (int i = 0; i < m; i++) { // try to find a VIP table with the same end time
+                if (minet == t[tv[i]].et) {
+                    minit = tv[i];
+                    break;
+                }
+            }
+            p[ip].st = t[minit].et;
+            t[minit].et += p[ip].pt;
+            if (p[ip].st < en) t[minit].cnt++;
+            vis[ip] = true;
+            ip++;
         }
     }
 
@@ -160,9 +175,9 @@ int main(int argc, char const *argv[]) {
         cout << (it.st - it.at + 30) / 60 << "\n";
     }
 
-    for (int i = 0; i < k; i++) {
+    for (int i = 1; i <= k; i++) {
         cout << t[i].cnt;
-        i < k - 1 ? cout << " " : cout << "\n";
+        i < k ? cout << " " : cout << "\n";
     }
 
     return 0;

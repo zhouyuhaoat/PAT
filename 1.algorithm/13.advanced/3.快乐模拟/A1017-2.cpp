@@ -47,6 +47,7 @@ int main(int argc, char const *argv[]) {
         string t;
         int p;
         cin >> t >> p;
+        if (p > 60) p = 60; // max processing time
         if (t > en) continue;
         c.emplace(t, p * 60);
     }
