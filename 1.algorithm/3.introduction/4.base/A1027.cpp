@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805470349344768 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1027 Colors in Mars
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805470349344768
+    @pintia psid=994805342720868352 pid=994805470349344768 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1027 Colors in Mars
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805470349344768
 */
 
 // @pintia code=start
@@ -19,21 +19,14 @@
 
 using namespace std;
 
-map<int, char> m = {{10, 'A'}, {11, 'B'}, {12, 'C'}};
-char trans(int n) {
-    if (n >= 10) {
-        return m[n];
-    }
-    return n + '0';
-};
-
 int main(int argc, char const *argv[]) {
 
+    const string m = "0123456789ABC";
     cout << "#";
     for (int i = 0; i < 3; i++) {
         int n;
         cin >> n;
-        cout << trans(n / 13) << trans(n % 13);
+        cout << m[n / 13] << m[n % 13];
     }
     cout << "\n";
 
