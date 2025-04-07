@@ -31,22 +31,15 @@ int main(int argc, char const *argv[]) {
     } else {
         a.append(b.size() - a.size(), '0');
     }
-    map<int, char> m = {{10, 'J'}, {11, 'Q'}, {12, 'K'}};
+    const string m = "0123456789JQK";
     for (int i = 0; i < (int)b.size(); i++) {
         int ai = a[i] - '0', bi = b[i] - '0';
         if (i % 2 == 0) {
             int ci = (ai + bi) % 13;
-            if (ci > 9) {
-                b[i] = m[ci];
-            } else {
-                b[i] = ci + '0';
-            }
+            b[i] = m[ci];
         } else {
-            int ci = bi - ai;
-            if (ci < 0) {
-                ci += 10;
-            }
-            b[i] = ci + '0';
+            int ci = (bi - ai + 10) % 10;
+            b[i] = m[ci];
         }
     }
     reverse(b.begin(), b.end());
