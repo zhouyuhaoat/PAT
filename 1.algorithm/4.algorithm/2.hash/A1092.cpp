@@ -22,20 +22,20 @@ int main(int argc, char const *argv[]) {
 
     string a, b;
     cin >> a >> b;
-    int count = 0;
+    int cnt = 0;
     string c = a;
     for (int i = 0; i < (int)b.size(); i++) {
         size_t j = a.find(b[i]);
         if (j != string::npos) {
             a.erase(j, 1);
         } else {
-            ++count;
+            ++cnt;
         }
     }
-    if (count == 0) {
+    if (cnt == 0) {
         cout << "Yes " << c.size() - b.size() << "\n";
     } else {
-        cout << "No " << count << "\n";
+        cout << "No " << cnt << "\n";
     }
 
     return 0;
