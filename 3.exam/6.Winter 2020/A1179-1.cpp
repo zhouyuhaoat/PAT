@@ -72,7 +72,7 @@ int main(int argc, char const *argv[]) {
     pro.resize(m);
     for (int i = 0; i < m; i++) {
         cin >> pro[i];
-        if (rea[pro[i]] > 0) {
+        if (rea[pro[i]] > 0) { // if product is a reactant
             equ[pro[i]].insert({pro[i]}); // default product is itself
         }
     }
