@@ -48,11 +48,11 @@ int main(int argc, char const *argv[]) {
             r.emplace(d[i]);
         }
     }
-    int count = r.size();
-    cout << count << "\n";
+    int cnt = r.size();
+    cout << cnt << "\n";
     for (auto it : r) {
         cout << it;
-        if (--count) {
+        if (--cnt) {
             cout << " ";
         }
     }
