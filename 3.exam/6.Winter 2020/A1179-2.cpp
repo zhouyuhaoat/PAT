@@ -75,9 +75,8 @@ int main(int argc, char const *argv[]) {
     pro.resize(m);
     for (int i = 0; i < m; i++) {
         cin >> pro[i];
-        equ[pro[i]].insert({pro[i]});
-        if (rea[pro[i]] == 0) {
-            rea[pro[i]]++;
+        if (rea[pro[i]] > 0) {
+            equ[pro[i]].insert({pro[i]});
         }
     }
     int k;
