@@ -18,15 +18,14 @@
 
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 int main(int argc, char const *argv[]) {
 
     ll a, b, c;
-    int unused __attribute__((unused));
-    unused = scanf("%lld.%lld.%lld", &a, &b, &c);
+    scanf("%lld.%lld.%lld", &a, &b, &c);
     ll s1 = a * 17 * 29 + b * 29 + c;
-    unused = scanf("%lld.%lld.%lld", &a, &b, &c);
+    scanf("%lld.%lld.%lld", &a, &b, &c);
     ll s2 = a * 17 * 29 + b * 29 + c;
     ll sum = s1 + s2;
     cout << sum / 29 / 17 << "." << sum / 29 % 17 << "." << sum % 29 << "\n";

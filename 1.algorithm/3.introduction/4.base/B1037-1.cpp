@@ -21,16 +21,15 @@ using namespace std;
 int main(int argc, char const *argv[]) {
 
     int a, b, c;
-    int unused __attribute__((unused));
-    unused = scanf("%d.%d.%d", &a, &b, &c);
+    scanf("%d.%d.%d", &a, &b, &c);
     int pt = a * 17 * 29 + b * 29 + c;
-    unused = scanf("%d.%d.%d", &a, &b, &c);
+    scanf("%d.%d.%d", &a, &b, &c);
     int at = a * 17 * 29 + b * 29 + c;
-    int dif = at - pt;
     if (pt > at) {
         cout << "-";
-        dif = -dif;
+        swap(pt, at);
     }
+    int dif = at - pt;
     cout << dif / 29 / 17 << "." << dif / 29 % 17 << "." << dif % 29 << "\n";
 
     return 0;
