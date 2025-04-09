@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805321640296448 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1004 成绩排名
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805321640296448
+    @pintia psid=994805260223102976 pid=994805321640296448 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1004 成绩排名
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805321640296448
 */
 
 // @pintia code=start

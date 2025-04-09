@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805289432236032 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1032 挖掘机技术哪家强
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805289432236032
+    @pintia psid=994805260223102976 pid=994805289432236032 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1032 挖掘机技术哪家强
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805289432236032
 */
 
 // @pintia code=start
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
     }
     int id = 0, score = -1;
     for (auto it : list) {
-        if (it.second > score) {
+        if (score < it.second) {
             score = it.second;
             id = it.first;
         }

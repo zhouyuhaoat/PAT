@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805516654460928 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1006 Sign In and Sign Out
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805516654460928
+    @pintia psid=994805342720868352 pid=994805516654460928 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1006 Sign In and Sign Out
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805516654460928
 */
 
 // @pintia code=start
@@ -28,10 +28,9 @@ int main(int argc, char const *argv[]) {
         string id;
         cin >> id;
         int h, m, s;
-        int unused __attribute__((unused));
-        unused = scanf("%d:%d:%d", &h, &m, &s);
+        scanf("%d:%d:%d", &h, &m, &s);
         int ins = h * 3600 + m * 60 + s;
-        unused = scanf("%d:%d:%d", &h, &m, &s);
+        scanf("%d:%d:%d", &h, &m, &s);
         int outs = h * 3600 + m * 60 + s;
         if (ins < firsts) {
             firsts = ins;

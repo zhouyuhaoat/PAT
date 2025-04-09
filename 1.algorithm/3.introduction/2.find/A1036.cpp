@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805453203030016 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1036 Boys vs Girls
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805453203030016
+    @pintia psid=994805342720868352 pid=994805453203030016 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1036 Boys vs Girls
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805453203030016
 */
 
 // @pintia code=start
@@ -39,21 +39,9 @@ int main(int argc, char const *argv[]) {
             ff = true;
         }
     }
-    if (ff) {
-        cout << fh[0] << " " << fh[1] << "\n";
-    } else {
-        cout << "Absent\n";
-    }
-    if (fm) {
-        cout << ml[0] << " " << ml[1] << "\n";
-    } else {
-        cout << "Absent\n";
-    }
-    if (ff && fm) {
-        cout << fhg - mlg << "\n";
-    } else {
-        cout << "NA\n";
-    }
+    ff ? cout << fh[0] << " " << fh[1] << "\n" : cout << "Absent\n";
+    fm ? cout << ml[0] << " " << ml[1] << "\n" : cout << "Absent\n";
+    (ff && fm) ? cout << fhg - mlg << "\n" : cout << "NA\n";
 
     return 0;
 }

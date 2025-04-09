@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805293282607104 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1028 人口普查
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805293282607104
+    @pintia psid=994805260223102976 pid=994805293282607104 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1028 人口普查
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805293282607104
 */
 
 // @pintia code=start
@@ -44,8 +44,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         peo tmp;
         cin >> tmp.name;
-        int unused __attribute__((unused));
-        unused = scanf("%d/%d/%d", &tmp.y, &tmp.m, &tmp.d);
+        scanf("%d/%d/%d", &tmp.y, &tmp.m, &tmp.d);
         if (younger(tmp, l, false) && !younger(tmp, r, true)) {
             // valid: younger than the oldest and older than the youngest
             cnt++;
