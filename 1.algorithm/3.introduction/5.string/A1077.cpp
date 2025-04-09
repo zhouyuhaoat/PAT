@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805390896644096 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1077 Kuchiguse
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805390896644096
+    @pintia psid=994805342720868352 pid=994805390896644096 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1077 Kuchiguse
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805390896644096
 */
 
 // @pintia code=start
@@ -49,11 +49,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     reverse(r.begin(), r.end());
-    if (!r.empty()) {
-        cout << r << "\n";
-    } else {
-        cout << "nai\n";
-    }
+    !r.empty() ? cout << r << "\n" : cout << "nai\n";
 
     return 0;
 }

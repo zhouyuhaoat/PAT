@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805300404535296 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1021 个位数统计
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805300404535296
+    @pintia psid=994805260223102976 pid=994805300404535296 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1021 个位数统计
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805300404535296
 */
 
 // @pintia code=start
@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     string s;
     cin >> s;
     map<char, int> cnt;
-    for (auto c : s) {
+    for (char c : s) {
         cnt[c]++;
     }
     for (auto it : cnt) {

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805528788582400 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1001 A+B Format
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805528788582400
+    @pintia psid=994805342720868352 pid=994805528788582400 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1001 A+B Format
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805528788582400
 */
 
 // @pintia code=start

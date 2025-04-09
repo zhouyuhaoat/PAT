@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805385053978624 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1082 Read Number in Chinese
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805385053978624
+    @pintia psid=994805342720868352 pid=994805385053978624 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1082 Read Number in Chinese
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805385053978624
 */
 
 // @pintia code=start

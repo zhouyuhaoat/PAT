@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805395707510784 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1073 Scientific Notation
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805395707510784
+    @pintia psid=994805342720868352 pid=994805395707510784 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1073 Scientific Notation
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805395707510784
 */
 
 // @pintia code=start

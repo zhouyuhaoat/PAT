@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805276438282240 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1048 数字加密
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805276438282240
+    @pintia psid=994805260223102976 pid=994805276438282240 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1048 数字加密
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805276438282240
 */
 
 // @pintia code=start
@@ -35,11 +35,9 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < (int)b.size(); i++) {
         int ai = a[i] - '0', bi = b[i] - '0';
         if (i % 2 == 0) {
-            int ci = (ai + bi) % 13;
-            b[i] = m[ci];
+            b[i] = m[(ai + bi) % 13];
         } else {
-            int ci = (bi - ai + 10) % 10;
-            b[i] = m[ci];
+            b[i] = m[(bi - ai + 10) % 10];
         }
     }
     reverse(b.begin(), b.end());

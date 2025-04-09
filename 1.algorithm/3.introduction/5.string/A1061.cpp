@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805411985604608 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1061 Dating
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805411985604608
+    @pintia psid=994805342720868352 pid=994805411985604608 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1061 Dating
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805411985604608
 */
 
 // @pintia code=start
