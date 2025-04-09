@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805316250615808 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1008 数组元素循环右移问题
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805316250615808
+    @pintia psid=994805260223102976 pid=994805316250615808 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1008 数组元素循环右移问题
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805316250615808
 */
 
 // @pintia code=start
@@ -22,11 +22,7 @@ using namespace std;
 int print(vector<int> a, int l, int r, int c) {
     for (int i = l; i < r; i++) {
         cout << a[i];
-        if (--c) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+        --c ? cout << " " : cout << "\n";
     }
     return c;
 }

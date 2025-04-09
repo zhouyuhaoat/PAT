@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805304020025344 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1018 锤子剪刀布
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805304020025344
+    @pintia psid=994805260223102976 pid=994805304020025344 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1018 锤子剪刀布
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805304020025344
 */
 
 // @pintia code=start
@@ -24,11 +24,7 @@ using namespace std;
 void print(vector<int> v) {
     for (int i = 0; i < (int)v.size(); i++) {
         cout << v[i];
-        if (i < (int)v.size() - 1) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+        i < (int)v.size() - 1 ? cout << " " : cout << "\n";
     }
 }
 
@@ -45,13 +41,13 @@ int main(int argc, char const *argv[]) {
         cin >> ca >> cb;
         int ia = m[ca], ib = m[cb];
         if ((ia + 1) % 3 == ib) { // circular order
-            ++a[0], ++b[2];
-            ++ap[ia];
+            a[0]++, b[2]++;
+            ap[ia]++;
         } else if ((ib + 1) % 3 == ia) {
-            ++a[2], ++b[0];
-            ++bp[ib];
+            a[2]++, b[0]++;
+            bp[ib]++;
         } else {
-            ++a[1], ++b[1];
+            a[1]++, b[1]++;
         }
     }
     int am = max_element(ap.begin(), ap.end()) - ap.begin();

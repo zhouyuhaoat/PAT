@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805316250615808 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1008 数组元素循环右移问题
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805316250615808
+    @pintia psid=994805260223102976 pid=994805316250615808 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1008 数组元素循环右移问题
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805316250615808
 */
 
 // @pintia code=start
@@ -40,11 +40,7 @@ int main(int argc, char const *argv[]) {
     reverse(a.begin() + m, a.end());
     for (int i = 0; i < n; i++) {
         cout << a[i];
-        if (i < n - 1) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+        i < n - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

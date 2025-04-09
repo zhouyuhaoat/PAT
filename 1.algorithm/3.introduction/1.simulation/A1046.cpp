@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805435700199424 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1046 Shortest Distance
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805435700199424
+    @pintia psid=994805342720868352 pid=994805435700199424 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1046 Shortest Distance
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805435700199424
 */
 
 // @pintia code=start
@@ -23,9 +23,7 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<long long> d(n + 1);
-    // prefix sum, dynamic programming
-    // d[i]: the distance from 1 to i
+    vector<long long> d(n + 1); // d[i]: prefix sum, the distance from 1 to i
     long long td = 0;
     for (int i = 1; i < n + 1; i++) {
         d[i] = td;

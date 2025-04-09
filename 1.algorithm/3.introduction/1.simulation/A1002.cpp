@@ -7,14 +7,13 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805526272000000 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1002 A+B for Polynomials
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805526272000000
+    @pintia psid=994805342720868352 pid=994805526272000000 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1002 A+B for Polynomials
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805526272000000
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <map>
@@ -32,19 +31,14 @@ int main(int argc, char const *argv[]) {
             float b;
             cin >> a >> b;
             p[a] += b;
+            if (p[a] == 0) {
+                p.erase(a);
+            }
         }
     }
-    int cnt = count_if(p.begin(), p.end(), [](pair<int, float> p) -> bool {
-        return p.second != 0;
-    });
-    cout << cnt;
+    cout << p.size();
     for (auto it : p) {
-        if (it.second != 0) {
-            if (cnt--) {
-                cout << " ";
-            }
-            cout << it.first << " " << fixed << setprecision(1) << it.second;
-        }
+        cout << " " << it.first << " " << fixed << setprecision(1) << it.second;
     }
     cout << "\n";
 

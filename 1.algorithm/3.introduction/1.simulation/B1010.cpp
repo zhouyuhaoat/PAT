@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805313708867584 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1010 一元多项式求导
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805313708867584
+    @pintia psid=994805260223102976 pid=994805313708867584 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1010 一元多项式求导
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805313708867584
 */
 
 // @pintia code=start
@@ -31,15 +31,16 @@ int main(int argc, char const *argv[]) {
     if (p.empty()) {
         cout << "0 0\n";
     } else {
-        int cnt = p.size();
+        bool first = true;
         for (auto it : p) {
-            cout << it.second << " " << it.first;
-            if (--cnt) {
-                cout << " ";
+            if (first) {
+                first = false;
             } else {
-                cout << "\n";
+                cout << " ";
             }
+            cout << it.second << " " << it.first;
         }
+        cout << "\n";
     }
 
     return 0;

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805312417021952 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1011 A+B 和 C
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805312417021952
+    @pintia psid=994805260223102976 pid=994805312417021952 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1011 A+B 和 C
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805312417021952
 */
 
 // @pintia code=start
@@ -26,11 +26,7 @@ int main(int argc, char const *argv[]) {
         long long a, b, c;
         cin >> a >> b >> c;
         cout << "Case #" << i + 1;
-        if (a + b > c) {
-            cout << ": true\n";
-        } else {
-            cout << ": false\n";
-        }
+        a + b > c ? cout << ": true\n" : cout << ": false\n";
     }
 
     return 0;

@@ -7,14 +7,13 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805509540921344 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1009 Product of Polynomials
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805509540921344
+    @pintia psid=994805342720868352 pid=994805509540921344 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1009 Product of Polynomials
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805509540921344
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <map>
@@ -41,19 +40,14 @@ int main(int argc, char const *argv[]) {
         cin >> a1 >> a2;
         for (auto it : a) {
             b[a1 + it.first] += a2 * it.second;
+            if (b[a1 + it.first] == 0) {
+                b.erase(a1 + it.first);
+            }
         }
     }
-    int cnt = count_if(b.begin(), b.end(), [](pair<int, double> b) -> bool {
-        return b.second != 0;
-    });
-    cout << cnt;
+    cout << b.size();
     for (auto it : b) {
-        if (it.second != 0) {
-            if (cnt--) {
-                cout << " ";
-            }
-            cout << it.first << " " << fixed << setprecision(1) << it.second;
-        }
+        cout << " " << it.first << " " << fixed << setprecision(1) << it.second;
     }
     cout << "\n";
 

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805406352654336 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1065 A+B and C (64bit)
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805406352654336
+    @pintia psid=994805342720868352 pid=994805406352654336 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1065 A+B and C (64bit)
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805406352654336
 */
 
 // @pintia code=start
@@ -37,11 +37,7 @@ int main(int argc, char const *argv[]) {
             flag = true;
         }
         cout << "Case #" << i + 1;
-        if (flag) {
-            cout << ": true\n";
-        } else {
-            cout << ": false\n";
-        }
+        flag ? cout << ": true\n" : cout << ": false\n";
     }
 
     return 0;

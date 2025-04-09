@@ -7,15 +7,14 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805442671132672 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1042 Shuffling Machine
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805442671132672
+    @pintia psid=994805342720868352 pid=994805442671132672 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1042 Shuffling Machine
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805442671132672
 */
 
 // @pintia code=start
 #include <iostream>
-#include <numeric>
 #include <vector>
 
 using namespace std;
@@ -24,33 +23,22 @@ int main(int argc, char const *argv[]) {
 
     int k;
     cin >> k;
-    int n = 55;
-    vector<int> order(n);
-    for (int i = 1; i < n; i++) {
-        cin >> order[i];
+    const int n = 54;
+    vector<int> res(n + 1), next(n + 1);
+    for (int i = 1; i <= n; i++) {
+        res[i] = i;
+        cin >> next[i];
     }
-    vector<int> result(n);
-    iota(result.begin(), result.end(), 0);
     for (int i = 0; i < k; i++) {
-        vector<int> temp = result;
-        for (int j = 1; j < n; j++) {
-            result[order[j]] = temp[j];
-            // reorder: move the j-th card to the order[j]-th position
+        vector<int> temp = res;
+        for (int j = 1; j <= n; j++) {
+            res[next[j]] = temp[j]; // move the j-th card to the next[j]-th position
         }
     }
-    char card[5] = {'S', 'H', 'C', 'D', 'J'};
-    for (int i = 1; i < n; i++) {
-        cout << card[(result[i] - 1) / 13];
-        if (result[i] % 13 == 0) {
-            cout << 13;
-        } else {
-            cout << result[i] % 13;
-        }
-        if (i < n - 1) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+    string suit = "SHCDJ"; // 0-based suit = (id - 1) / 13; 1-based value = (id - 1) % 13 + 1
+    for (int i = 1; i <= n; i++) {
+        cout << suit[(res[i] - 1) / 13] << (res[i] - 1) % 13 + 1;
+        i < n ? cout << " " : cout << "\n";
     }
 
     return 0;
