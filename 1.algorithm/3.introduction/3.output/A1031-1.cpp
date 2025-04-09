@@ -7,16 +7,22 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805462535356416 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1031 Hello World for U
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805462535356416
+    @pintia psid=994805342720868352 pid=994805462535356416 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1031 Hello World for U
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805462535356416
 */
 
 // @pintia code=start
 #include <iostream>
 
 using namespace std;
+
+void print(int n, char ch) {
+    for (int i = 0; i < n; i++) {
+        cout << ch;
+    }
+}
 
 int main(int argc, char const *argv[]) {
 
@@ -33,19 +39,10 @@ int main(int argc, char const *argv[]) {
             break;
         }
     }
-    for (int i = 0; i < n1 - 1; i++) { // vertical
-        for (int j = 0; j < n2; j++) {
-            if (j == 0) {
-                cout << s[i];
-            } else if (j == n2 - 1) {
-                cout << s[s.size() - 1 - i];
-            } else {
-                cout << " ";
-            }
-        }
-        cout << "\n";
+    for (int i = 0; i < n1 - 1; i++) {
+        cout << s[i], print(n2 - 2, ' '), cout << s[s.size() - 1 - i] << "\n";
     }
-    for (int i = 0; i < n2; i++) { // bottom
+    for (int i = 0; i < n2; i++) {
         cout << s[n1 + i - 1];
     }
     cout << "\n";
