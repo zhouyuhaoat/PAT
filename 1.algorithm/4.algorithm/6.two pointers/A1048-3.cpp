@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805432256675840 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1048 Find Coins
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805432256675840
+    @pintia psid=994805342720868352 pid=994805432256675840 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1048 Find Coins
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805432256675840
 */
 
 // @pintia code=start
@@ -30,12 +30,12 @@ int main(int argc, char const *argv[]) {
     }
     sort(d.begin(), d.end());
     int i = 0, j = n - 1;
-    while (i < n && j > i) {
-        if (d[i] + d[j] > m) {
-            j--;
-        } else if (d[i] + d[j] < m) {
+    while (i < j) {
+        if (d[i] + d[j] < m) {
             i++;
-        } else {
+        } else if (d[i] + d[j] > m) {
+            j--;
+        } else if (d[i] + d[j] == m) {
             cout << d[i] << " " << d[j] << "\n";
             return 0;
         }

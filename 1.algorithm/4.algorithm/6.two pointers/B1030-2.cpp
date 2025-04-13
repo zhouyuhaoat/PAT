@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805291311284224 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1030 完美数列
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805291311284224
+    @pintia psid=994805260223102976 pid=994805291311284224 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1030 完美数列
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805291311284224
 */
 
 // @pintia code=start
@@ -29,8 +29,7 @@ int main(int argc, char const *argv[]) {
         cin >> d[i];
     }
     sort(d.begin(), d.end());
-    int ans = 1;
-    int i = 0, j = 0;
+    int ans = 1, i = 0, j = 0;
     while (i < n && j < n) {
         while (j < n && d[j] <= d[i] * p) {
             j++;

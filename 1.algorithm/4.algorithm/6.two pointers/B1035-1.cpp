@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805286714327040 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1035 插入与归并
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805286714327040
+    @pintia psid=994805260223102976 pid=994805286714327040 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1035 插入与归并
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805286714327040
 */
 
 // @pintia code=start
@@ -23,11 +23,7 @@ using namespace std;
 void print(vector<int> d) {
     for (int i = 0; i < (int)d.size(); i++) {
         cout << d[i];
-        if (i < (int)d.size() - 1) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+        i < (int)d.size() - 1 ? cout << " " : cout << "\n";
     }
 }
 
@@ -52,7 +48,7 @@ int main(int argc, char const *argv[]) {
             return 0;
         }
     }
-    int g = 2;
+    int g = 2; // group size of merge sort
     while (true) {
         for (int i = 0; i <= n / g; i++) {
             sort(d3.begin() + i * g, d3.begin() + min(n, (i + 1) * g));

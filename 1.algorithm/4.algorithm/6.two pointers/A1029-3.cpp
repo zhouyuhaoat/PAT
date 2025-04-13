@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805466364755968 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1029 Median
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805466364755968
+    @pintia psid=994805342720868352 pid=994805466364755968 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1029 Median
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805466364755968
 */
 
 // @pintia code=start
@@ -34,15 +34,10 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n2; i++) {
         cin >> s2[i];
     }
-    s1[n1] = s2[n2] = INT_MAX;
-    int ans = 0, i = 0, j = 0;
-    for (int cnt = 0; cnt <= (n1 + n2 - 1) / 2; cnt++) {
-        ans = min(s1[i], s2[j]);
-        if (s1[i] < s2[j]) {
-            i++;
-        } else {
-            j++;
-        }
+    s1[n1] = s2[n2] = INT_MAX; // sentinel
+    int ans = 0, median = (n1 + n2 - 1) / 2;
+    for (int i = 0, j = 0; i + j <= median;) {
+        ans = s1[i] <= s2[j] ? s1[i++] : s2[j++];
     }
     cout << ans << "\n";
 

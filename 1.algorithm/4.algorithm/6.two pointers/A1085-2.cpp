@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805381845336064 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1085 Perfect Sequence
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805381845336064
+    @pintia psid=994805342720868352 pid=994805381845336064 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1085 Perfect Sequence
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805381845336064
 */
 
 // @pintia code=start
@@ -29,8 +29,7 @@ int main(int argc, char const *argv[]) {
         cin >> d[i];
     }
     sort(d.begin(), d.end());
-    int ans = 1;
-    int i = 0, j = 0;
+    int ans = 1, i = 0, j = 0;
     while (i < n && j < n) {
         while (j < n && d[j] <= d[i] * p) {
             j++;
