@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-23 19:46:29
- *	modified:	2023-03-23 19:57:34
+ *	created:	2025-04-07 19:46:29
+ *	modified:	2025-04-07 19:57:34
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -14,7 +14,6 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
 
 using namespace std;
@@ -23,14 +22,16 @@ int main(int argc, char const *argv[]) {
 
     int a, b;
     cin >> a >> b;
-    string c = to_string(a + b);
-    reverse(c.begin(), c.end());
-    string d;
+    string c = to_string(a + b), d;
     for (int i = 0; i < (int)c.size(); i++) {
-        if (i % 3 == 0 && i != 0 && c[i] != '-') {
-            d = ',' + d;
+        d += c[i];
+        if (c[i] == '-') continue;
+        if ((c.size() - i - 1) % 3 == 0) {
+            // size - i - 1: the number of digits after the current digit
+            if (i < (int)c.size() - 1) { // not the last digit, part or group
+                d += ",";
+            }
         }
-        d = c[i] + d;
     }
     cout << d << "\n";
 

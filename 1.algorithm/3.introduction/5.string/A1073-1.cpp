@@ -1,9 +1,9 @@
 /*
- *	author:		zhouyuhao
- *	created:	2023-03-23 17:43:14
- *	modified:	2023-03-23 18:56:44
- *	item:		Programming Ability Test
- *	site:		Yuting
+ * 	 author: 	zhouyuhao
+ * 	 created: 	2025-02-18 12:59:53
+ * 	 modified: 	2025-02-18 13:04:04
+ * 	 project: 	Programming Ability Test
+ * 	 venue: 	914, Harbin
  */
 
 /*
@@ -20,30 +20,44 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string a;
-    cin >> a;
-    if (a[0] == '-') { // numSign
-        cout << a[0];
+    string s;
+    cin >> s;
+
+    // format: [+-][1-9].[0-9]+E[+-][0-9]+
+    // sign integer . decimal E expSign expVal
+    char sign = s[0], integer = s[1];
+    int posE = s.find('E');
+    string decimal = s.substr(3, posE - 3);
+    char expSign = s[posE + 1];
+    int expVal = stoi(s.substr(posE + 2));
+
+    string res;
+    if (sign == '-') {
+        res += sign;
     }
-    a.erase(0, 1);
-    size_t E = a.find('E'); // posE
-    int e = stoi(a.substr(E + 1)); // exp
-    a.erase(E); // intPart + point + frac
-    a.erase(1, 1); // point
-    if (e < 0) {
-        a.insert(0, abs(e), '0');
-        a.insert(1, ".");
-    } else if (e > 0) {
-        int right = a.size() - 1; // frac
-        if (e >= right) {
-            a.insert(a.size(), e - right, '0');
+    if (expSign == '+') {
+        res.push_back(integer);
+        if (expVal >= (int)decimal.size()) {
+            res.append(decimal);
+            res.append(expVal - decimal.size(), '0');
         } else {
-            a.insert(e + 1, ".");
+            res.append(decimal, 0, expVal);
+            res.push_back('.');
+            res.append(decimal, expVal);
         }
-    } else { // e == 0
-        a.insert(1, ".");
+    } else {
+        if (expVal > 0) {
+            res += "0.";
+            res.append(expVal - 1, '0'); // append's first arg: can not be negative
+            res.push_back(integer);
+            res.append(decimal);
+        } else { // expVal == 0
+            res.push_back(integer);
+            res.push_back('.');
+            res.append(decimal);
+        }
     }
-    cout << a << "\n";
+    cout << res << "\n";
 
     return 0;
 }

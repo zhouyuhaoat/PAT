@@ -20,7 +20,7 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string p[10] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
+    string v[10] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
     string w[10] = {"", "", "Shi", "Bai", "Qian", "Wan", "Shi", "Bai", "Qian", "Yi"};
     string s;
     cin >> s;
@@ -28,29 +28,26 @@ int main(int argc, char const *argv[]) {
         cout << "Fu ";
         s.erase(0, 1);
     }
-    // the first digit: no leading zero
-    if (s.size() == 1) {
-        cout << p[s[0] - '0'];
+    if (s.size() == 1) { // the first digit: no leading zero
+        cout << v[s[0] - '0'];
     } else {
-        cout << p[s[0] - '0'] << " " << w[s.size()];
+        cout << v[s[0] - '0'] << " " << w[s.size()];
     }
-    // the middle digits except the first and the last digit
-    bool flag = (stoi(s) / 10000 % 10000) != 0; // whether all zero in 'Wan' part
+    bool flag = (stoi(s) / 10000 % 10000) == 0; // whether all zero in 'Wan' part
     // not read 'Wan' if all zero in 'Wan' part: 100000000 => yi Yi; 800000008: ba yi ling ba
-    for (int i = 1; i < (int)s.size() - 1; i++) {
+    for (int i = 1; i < (int)s.size() - 1; i++) { // the middle digits except the first and the last digit
         if (s[i] != '0') { // value + weight
-            cout << " " << p[s[i] - '0'] << " " << w[s.size() - i];
-        } else {
-            if (s.size() - i == 5 && flag) { // zero in divine line: don't read
+            cout << " " << v[s[i] - '0'] << " " << w[s.size() - i];
+        } else { // ling
+            if (s.size() - i == 5 && !flag) { // zero in the 'Wan' digit: don't read
                 cout << " Wan"; // read 'Wan' if not all zero in 'Wan' part
             } else if (s[i + 1] != '0') { // continuous zero: read the last one
                 cout << " ling";
             }
         }
     }
-    // the last digit: no weight
-    if (s.size() > 1 && s[s.size() - 1] != '0') {
-        cout << " " << p[s[s.size() - 1] - '0'];
+    if (s.size() > 1 && s[s.size() - 1] != '0') { // the last digit: no weight
+        cout << " " << v[s[s.size() - 1] - '0'];
     }
     cout << "\n";
 

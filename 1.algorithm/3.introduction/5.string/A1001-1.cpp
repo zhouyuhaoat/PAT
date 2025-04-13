@@ -26,13 +26,13 @@ int main(int argc, char const *argv[]) {
     string c = to_string(a + b);
     reverse(c.begin(), c.end());
     string d;
-    for (int i = 0; i < (int)c.size(); i++) {
-        d += c[i];
-        if ((i + 1) % 3 == 0 && isdigit(c[i + 1])) {
-            d += ",";
+    for (int i = 0; i < (int)c.size(); i++) { // part or group by 3 digits
+        d = c[i] + d;
+        if ((i + 1) % 3 == 0 && isdigit(c[i + 1])) { // new part or group
+            // last part or group: the previous character is a sign or '\0', not a digit
+            d = ',' + d; // not the last part or group
         }
     }
-    reverse(d.begin(), d.end());
     cout << d << "\n";
 
     return 0;
