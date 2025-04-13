@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805282389999616 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1040 有几个PAT
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805282389999616
+    @pintia psid=994805260223102976 pid=994805282389999616 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1040 有几个PAT
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805282389999616
 */
 
 // @pintia code=start
@@ -24,12 +24,12 @@ int main(int argc, char const *argv[]) {
     string s;
     cin >> s;
     vector<int> cp(s.size());
-    int cntP = 0;
+    int cntP = 0; // counter
     for (int i = 0; i < (int)s.size(); i++) {
         if (s[i] == 'A') {
             cp[i] = cntP;
         } else if (s[i] == 'P') {
-            ++cntP;
+            cntP++;
         }
     }
     vector<int> ct(s.size());
@@ -38,10 +38,10 @@ int main(int argc, char const *argv[]) {
         if (s[i] == 'A') {
             ct[i] = cntT;
         } else if (s[i] == 'T') {
-            ++cntT;
+            cntT++;
         }
     }
-    long res = 0;
+    long long res = 0;
     for (int i = 0; i < (int)s.size(); i++) {
         res += cp[i] * ct[i];
     }

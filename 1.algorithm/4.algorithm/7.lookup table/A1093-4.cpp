@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-22 14:03:16
- *	modified:	2023-03-22 14:19:45
+ *	created:	2024-04-28 19:00:00
+ *	modified:	2024-04-28 19:30:00
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -15,7 +15,6 @@
 
 // @pintia code=start
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -23,21 +22,22 @@ int main(int argc, char const *argv[]) {
 
     string s;
     cin >> s;
-    vector<int> cp(s.size()); // inherited from neighbor
-    for (int i = 1; i < (int)s.size(); i++) {
-        cp[i] = cp[i - 1] + (s[i - 1] == 'P');
-    }
-    vector<int> ct(s.size());
-    for (int i = (int)s.size() - 2; i >= 0; i--) {
-        ct[i] = ct[i + 1] + (s[i + 1] == 'T');
-    }
-    long long res = 0;
+    int cntP = 0, cntPA = 0, res = 0;
     for (int i = 0; i < (int)s.size(); i++) {
-        if (s[i] == 'A') {
-            res += cp[i] * ct[i];
+        switch (s[i]) {
+            case 'P':
+                cntP++;
+                break;
+            case 'A':
+                cntPA += cntP; // Count PA's
+                break;
+            case 'T':
+                res += cntPA;
+                res %= 1000000007;
+                break;
         }
     }
-    cout << res % 1000000007 << "\n";
+    cout << res << "\n";
 
     return 0;
 }

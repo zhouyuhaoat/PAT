@@ -15,7 +15,6 @@
 
 // @pintia code=start
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -23,21 +22,28 @@ int main(int argc, char const *argv[]) {
 
     string s;
     cin >> s;
-    vector<int> cp(s.size()); // inherited from neighbor
-    for (int i = 1; i < (int)s.size(); i++) {
-        cp[i] = cp[i - 1] + (s[i - 1] == 'P');
-    }
-    vector<int> ct(s.size());
-    for (int i = (int)s.size() - 2; i >= 0; i--) {
-        ct[i] = ct[i + 1] + (s[i + 1] == 'T');
-    }
-    long long res = 0;
+    int cntT = 0;
     for (int i = 0; i < (int)s.size(); i++) {
-        if (s[i] == 'A') {
-            res += cp[i] * ct[i];
+        if (s[i] == 'T') {
+            cntT++;
         }
     }
-    cout << res % 1000000007 << "\n";
+    int cntP = 0, res = 0;
+    for (int i = 0; i < (int)s.size(); i++) { // online
+        switch (s[i]) {
+            case 'P':
+                cntP++;
+                break;
+            case 'A':
+                res += cntP * cntT;
+                res %= 1000000007;
+                break;
+            case 'T':
+                cntT--;
+                break;
+        }
+    }
+    cout << res << "\n";
 
     return 0;
 }
