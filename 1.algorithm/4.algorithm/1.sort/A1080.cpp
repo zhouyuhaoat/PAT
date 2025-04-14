@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805387268571136 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1080 Graduate Admission
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805387268571136
+    @pintia psid=994805342720868352 pid=994805387268571136 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1080 Graduate Admission
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805387268571136
 */
 
 // @pintia code=start
@@ -30,7 +30,7 @@ struct stu {
 
 struct sch {
     set<int> admit;
-    int lastadminrank;
+    int lastAdminRank;
 };
 
 int main(int argc, char const *argv[]) {
@@ -73,14 +73,12 @@ int main(int argc, char const *argv[]) {
             int no = s[i].choice[j];
             if (quota[no] > 0) {
                 school[no].admit.emplace(s[i].id);
-                school[no].lastadminrank = s[i].rank;
-                --quota[no];
+                school[no].lastAdminRank = s[i].rank;
+                quota[no]--;
                 break;
-            } else if (quota[no] == 0) {
-                if (school[no].lastadminrank == s[i].rank) {
-                    school[no].admit.emplace(s[i].id);
-                    break;
-                }
+            } else if (quota[no] == 0 && school[no].lastAdminRank == s[i].rank) { // tied rank
+                school[no].admit.emplace(s[i].id);
+                break;
             }
         }
     }
@@ -88,11 +86,9 @@ int main(int argc, char const *argv[]) {
         int cnt = 0;
         for (auto it : school[i].admit) {
             cout << it;
-            if (++cnt < (int)school[i].admit.size()) {
-                cout << " ";
-            }
+            if (++cnt < (int)school[i].admit.size()) cout << " ";
         }
-        cout << "\n";
+        cout << "\n"; // empty line if no one is admitted
     }
 
     return 0;

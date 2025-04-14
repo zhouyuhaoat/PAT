@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805371602845696 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1095 Cars on Campus
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805371602845696
+    @pintia psid=994805342720868352 pid=994805371602845696 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1095 Cars on Campus
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805371602845696
 */
 
 // @pintia code=start
@@ -22,12 +22,10 @@
 using namespace std;
 
 struct car {
-    string id;
-    string time;
-    string status;
+    string id, time, status;
 };
 
-int trans(string a) {
+int convert(string a) {
     return stoi(a.substr(0, 2)) * 3600 + stoi(a.substr(3, 2)) * 60 + stoi(a.substr(6, 2));
 }
 
@@ -51,9 +49,8 @@ int main(int argc, char const *argv[]) {
     int maxduring = -1;
     for (int i = 0; i < n - 1; i++) { // pair after sort: in & out; n - 1: avoid out of range
         if (c[i].id == c[i + 1].id && c[i].status == "in" && c[i + 1].status == "out") {
-            cp.emplace_back(c[i]);
-            cp.emplace_back(c[i + 1]);
-            during[c[i].id] += trans(c[i + 1].time) - trans(c[i].time);
+            cp.emplace_back(c[i]), cp.emplace_back(c[i + 1]);
+            during[c[i].id] += convert(c[i + 1].time) - convert(c[i].time);
             maxduring = max(during[c[i].id], maxduring);
         }
     }
@@ -66,11 +63,7 @@ int main(int argc, char const *argv[]) {
         cin >> time;
         for (; idx < (int)cp.size(); idx++) {
             if (cp[idx].time <= time) {
-                if (cp[idx].status == "in") {
-                    ++cnt;
-                } else {
-                    --cnt;
-                }
+                cp[idx].status == "in" ? cnt++ : cnt--;
             } else {
                 break;
             }

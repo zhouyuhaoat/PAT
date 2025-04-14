@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805468327690240 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1028 List Sorting
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805468327690240
+    @pintia psid=994805342720868352 pid=994805468327690240 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1028 List Sorting
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805468327690240
 */
 
 // @pintia code=start

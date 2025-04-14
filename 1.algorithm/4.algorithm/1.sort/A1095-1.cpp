@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805371602845696 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1095 Cars on Campus
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805371602845696
+    @pintia psid=994805342720868352 pid=994805371602845696 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1095 Cars on Campus
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805371602845696
 */
 
 // @pintia code=start
@@ -22,9 +22,8 @@
 using namespace std;
 
 struct car {
-    string id;
     int time;
-    string status;
+    string id, status;
 };
 
 int main(int argc, char const *argv[]) {
@@ -35,8 +34,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> c[i].id;
         int h, m, s;
-        int unused __attribute__((unused)) = 0;
-        unused = scanf("%d:%d:%d", &h, &m, &s);
+        scanf("%d:%d:%d", &h, &m, &s);
         c[i].time = h * 3600 + m * 60 + s;
         cin >> c[i].status;
     }
@@ -52,8 +50,7 @@ int main(int argc, char const *argv[]) {
     int maxduring = -1;
     for (int i = 0; i < n - 1; i++) { // pair after sort: in & out; n - 1: avoid out of range
         if (c[i].id == c[i + 1].id && c[i].status == "in" && c[i + 1].status == "out") {
-            cp.emplace_back(c[i]);
-            cp.emplace_back(c[i + 1]);
+            cp.emplace_back(c[i]), cp.emplace_back(c[i + 1]);
             during[c[i].id] += c[i + 1].time - c[i].time;
             maxduring = max(during[c[i].id], maxduring);
         }
@@ -64,16 +61,11 @@ int main(int argc, char const *argv[]) {
     int cnt = 0, idx = 0;
     for (int q = 0; q < k; q++) {
         int h, m, s;
-        int unused __attribute__((unused)) = 0;
-        unused = scanf("%d:%d:%d", &h, &m, &s);
+        scanf("%d:%d:%d", &h, &m, &s);
         int time = h * 3600 + m * 60 + s;
         for (; idx < (int)cp.size(); idx++) {
             if (cp[idx].time <= time) {
-                if (cp[idx].status == "in") {
-                    ++cnt;
-                } else {
-                    --cnt;
-                }
+                cp[idx].status == "in" ? cnt++ : cnt--;
             } else {
                 break;
             }

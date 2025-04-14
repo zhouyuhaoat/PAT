@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805474338127872 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1025 PAT Ranking
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805474338127872
+    @pintia psid=994805342720868352 pid=994805474338127872 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1025 PAT Ranking
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805474338127872
 */
 
 // @pintia code=start
@@ -22,8 +22,7 @@ using namespace std;
 
 struct stu {
     string id;
-    int score, loc;
-    int fr, lr;
+    int score, fr, loc, lr;
 };
 
 bool cmp(stu a, stu b) {
@@ -61,17 +60,14 @@ int main(int argc, char const *argv[]) {
         cnt += k;
     }
     sort(list.begin(), list.end(), cmp);
-    list[0].fr = 1;
-    for (int i = 1; i < cnt; i++) {
-        if (list[i].score == list[i - 1].score) {
+    cout << cnt << "\n";
+    for (int i = 0; i < cnt; i++) {
+        if (i > 0 && list[i].score == list[i - 1].score) {
             list[i].fr = list[i - 1].fr;
         } else {
             list[i].fr = i + 1;
         }
-    }
-    cout << cnt << "\n";
-    for (auto it : list) {
-        cout << it.id << " " << it.fr << " " << it.loc << " " << it.lr << "\n";
+        cout << list[i].id << " " << list[i].fr << " " << list[i].loc << " " << list[i].lr << "\n";
     }
 
     return 0;

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805410555346944 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1062 Talent and Virtue
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805410555346944
+    @pintia psid=994805342720868352 pid=994805410555346944 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1062 Talent and Virtue
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805410555346944
 */
 
 // @pintia code=start

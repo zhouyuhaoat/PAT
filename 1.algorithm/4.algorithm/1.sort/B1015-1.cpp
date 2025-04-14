@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805307551629312 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1015 德才论
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805307551629312
+    @pintia psid=994805260223102976 pid=994805307551629312 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1015 德才论
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805307551629312
 */
 
 // @pintia code=start

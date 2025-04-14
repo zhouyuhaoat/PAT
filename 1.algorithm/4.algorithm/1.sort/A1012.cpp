@@ -7,25 +7,22 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805502658068480 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1012 The Best Rank
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805502658068480
+    @pintia psid=994805342720868352 pid=994805502658068480 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1012 The Best Rank
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805502658068480
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
 struct stu {
-    int id;
-    int s[4];
-    int r[4];
-    int rank;
+    int id, s[4], r[4], rank;
     char subject;
 };
 
@@ -56,13 +53,13 @@ int main(int argc, char const *argv[]) {
             }
         }
     }
-    char trans[4] = {'A', 'C', 'M', 'E'};
+    const string subject = "ACME";
     for (int i = 0; i < n; i++) {
         int j = min_element(d[i].r, d[i].r + 4) - d[i].r;
         d[i].rank = d[i].r[j];
-        d[i].subject = trans[j];
+        d[i].subject = subject[j];
     }
-    map<int, stu> q;
+    unordered_map<int, stu> q;
     for (auto it : d) {
         q.emplace(make_pair(it.id, it));
     }

@@ -7,16 +7,17 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805493648703488 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1016 Phone Bills
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805493648703488
+    @pintia psid=994805342720868352 pid=994805493648703488 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1016 Phone Bills
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805493648703488
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <vector>
 
 using namespace std;
@@ -28,8 +29,7 @@ struct per {
 };
 
 int toll[26];
-double calfare(per a) {
-    // calculate fare for a record by no accumulating
+double calfare(per a) { // calculate fare for a record by no accumulating
     double fare = a.d * toll[25] * 60;
     fare += toll[a.h] * 60;
     fare += (toll[a.h + 1] - toll[a.h]) * a.m;
@@ -48,8 +48,7 @@ int main(int argc, char const *argv[]) {
     vector<per> p(n);
     for (int i = 0; i < n; i++) {
         cin >> p[i].name;
-        int unused __attribute__((unused)) = 0;
-        unused = scanf("%d:%d:%d:%d", &p[i].M, &p[i].d, &p[i].h, &p[i].m);
+        scanf("%d:%d:%d:%d", &p[i].M, &p[i].d, &p[i].h, &p[i].m);
         p[i].t = p[i].d * 24 * 60 + p[i].h * 60 + p[i].m;
         cin >> p[i].line;
     }
@@ -60,37 +59,26 @@ int main(int argc, char const *argv[]) {
             return a.t < b.t;
         }
     });
-    vector<per> b;
+    map<string, vector<per>> b;
     for (int i = 0; i < n - 1; i++) { // n - 1: avoid out of range
         if (p[i].name == p[i + 1].name) { // pair after sort: on-line & off-line
             if (p[i].line == "on-line" && p[i + 1].line == "off-line") {
-                b.emplace_back(p[i]);
-                b.emplace_back(p[i + 1]);
+                b[p[i].name].emplace_back(p[i]), b[p[i].name].emplace_back(p[i + 1]);
             }
         }
     }
-    double tf = 0;
-    for (int i = 0; i < (int)b.size(); i += 2) {
-        bool next = false, before = false; // whether the first or last record of the people
-        if (i + 2 < (int)b.size() && b[i + 2].name == b[i].name) {
-            next = true;
+    for (auto it : b) {
+        vector<per> c = it.second; // customer
+        cout << it.first << " " << setfill('0') << setw(2) << c[0].M << "\n";
+        double tf = 0;
+        for (int i = 0; i < (int)c.size() - 1; i += 2) {
+            printf("%02d:%02d:%02d %02d:%02d:%02d ", c[i].d, c[i].h, c[i].m, c[i + 1].d, c[i + 1].h, c[i + 1].m);
+            // fare between two records = fare of off-line record - fare of on-line record
+            double f = (calfare(c[i + 1]) - calfare(c[i])) / 100;
+            cout << c[i + 1].t - c[i].t << " $" << fixed << setprecision(2) << f << "\n";
+            tf += f;
         }
-        if (i - 2 >= 0 && b[i - 2].name == b[i].name) {
-            before = true;
-        }
-        if (!before) {
-            cout << b[i].name << " " << setfill('0') << setw(2) << b[i].M << "\n";
-        }
-        printf("%02d:%02d:%02d ", b[i].d, b[i].h, b[i].m);
-        printf("%02d:%02d:%02d ", b[i + 1].d, b[i + 1].h, b[i + 1].m);
-        // fare between two records = fare of off-line record - fare of on-line record
-        double f = (calfare(b[i + 1]) - calfare(b[i])) / 100;
-        cout << b[i + 1].t - b[i].t << " $" << fixed << setprecision(2) << f << "\n";
-        tf += f;
-        if (!next) {
-            cout << "Total amount: $" << fixed << setprecision(2) << tf << "\n";
-            tf = 0;
-        }
+        cout << "Total amount: $" << fixed << setprecision(2) << tf << "\n";
     }
 
     return 0;

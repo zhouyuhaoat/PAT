@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805383929905152 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1083 List Grades
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805383929905152
+    @pintia psid=994805342720868352 pid=994805383929905152 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1083 List Grades
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805383929905152
 */
 
 // @pintia code=start
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
     for (auto it : s) {
         if (it.grade >= g1 && it.grade <= g2) {
             cout << it.name << " " << it.id << "\n";
-            ++cnt;
+            cnt++;
         }
     }
     if (cnt == 0) {

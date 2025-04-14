@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805410555346944 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1062 Talent and Virtue
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805410555346944
+    @pintia psid=994805342720868352 pid=994805410555346944 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1062 Talent and Virtue
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805410555346944
 */
 
 // @pintia code=start
@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]) {
 
     int n, l, h;
     cin >> n >> l >> h;
-    vector<per> p[4];
+    vector<per> p[4]; // buckets
     int cnt = n;
     for (int i = 0; i < n; i++) {
         per t;
