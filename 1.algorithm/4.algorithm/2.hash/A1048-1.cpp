@@ -7,16 +7,16 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805432256675840 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1048 Find Coins
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805432256675840
+    @pintia psid=994805342720868352 pid=994805432256675840 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1048 Find Coins
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805432256675840
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -25,11 +25,11 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    map<int, int> p;
+    unordered_map<int, int> p;
     vector<int> d(n);
     for (int i = 0; i < n; i++) {
         cin >> d[i];
-        ++p[d[i]];
+        p[d[i]]++;
     }
     set<int> s;
     for (int i = 0; i < n; i++) {
