@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805323154440192 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1003 我要通过！
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805323154440192
+    @pintia psid=994805260223102976 pid=994805323154440192 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1003 我要通过！
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805323154440192
 */
 
 // @pintia code=start
@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]) {
         map<char, int> cnt;
         int ip = -1, it = -1;
         for (int i = 0; i < (int)s.size(); i++) {
-            ++cnt[s[i]];
+            cnt[s[i]]++;
             if (s[i] == 'P') {
                 ip = i;
             } else if (s[i] == 'T') {

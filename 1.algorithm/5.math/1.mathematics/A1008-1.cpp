@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805511923286016 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1008 Elevator
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805511923286016
+    @pintia psid=994805342720868352 pid=994805511923286016 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1008 Elevator
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805511923286016
 */
 
 // @pintia code=start
