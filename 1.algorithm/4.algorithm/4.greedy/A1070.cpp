@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805399578853376 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1070 Mooncake
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805399578853376
+    @pintia psid=994805342720868352 pid=994805399578853376 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1070 Mooncake
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805399578853376
 */
 
 // @pintia code=start

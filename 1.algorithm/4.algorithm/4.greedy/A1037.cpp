@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805451374313472 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1037 Magic Coupon
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805451374313472
+    @pintia psid=994805342720868352 pid=994805451374313472 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1037 Magic Coupon
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805451374313472
 */
 
 // @pintia code=start

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805449625288704 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1038 Recover the Smallest Number
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805449625288704
+    @pintia psid=994805342720868352 pid=994805449625288704 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1038 Recover the Smallest Number
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805449625288704
 */
 
 // @pintia code=start
@@ -29,17 +29,14 @@ int main(int argc, char const *argv[]) {
         cin >> s[i];
     }
     sort(s.begin(), s.end(), [](string a, string b) {
-        // each pair of strings is compared by their concatenation
-        return a + b < b + a;
+        return a + b < b + a; // each pair of strings is compared by their concatenation
     });
     string r;
-    for (auto it : s) {
+    for (string it : s) {
         r += it;
     }
-    while (r.size() > 1 && r[0] == '0') { // leading zeros
-        r.erase(0, 1);
-    }
-    cout << r << "\n";
+    r.erase(0, r.find_first_not_of('0')); // leading zeros
+    r.empty() ? cout << "0\n" : cout << r << "\n"; // avoid all are zeros
 
     return 0;
 }
