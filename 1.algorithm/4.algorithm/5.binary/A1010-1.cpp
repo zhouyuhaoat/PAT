@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805507225665536 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1010 Radix
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805507225665536
+    @pintia psid=994805342720868352 pid=994805507225665536 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1010 Radix
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805507225665536
 */
 
 // @pintia code=start
@@ -19,9 +19,9 @@
 
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
-ll trans(string s, ll b) {
+ll convert(string s, ll b) {
     ll sum = 0, w = 1;
     for (ll i = s.size() - 1; i >= 0; i--) {
         if (isdigit(s[i])) {
@@ -36,12 +36,11 @@ ll trans(string s, ll b) {
 
 ll binary(string s, ll num) {
     char ch = *max_element(s.begin(), s.end());
-    ll low = (isdigit(ch) ? ch - '0' : ch - 'a' + 10) + 1;
-    ll high = max(low, num);
+    ll low = (isdigit(ch) ? ch - '0' : ch - 'a' + 10) + 1, high = max(low, num);
     ll ans = -1;
     while (low <= high) {
         ll mid = (low + high) >> 1;
-        ll temp = trans(s, mid);
+        ll temp = convert(s, mid);
         if (temp > num || temp < 0) {
             high = mid - 1;
         } else if (temp < num) {
@@ -61,8 +60,7 @@ int main(int argc, char const *argv[]) {
     if (tag == 2) {
         swap(n1, n2);
     }
-    ll num = trans(n1, radix);
-    ll ans = binary(n2, num);
+    ll ans = binary(n2, convert(n1, radix));
     if (ans != -1) {
         cout << ans << "\n";
     } else {

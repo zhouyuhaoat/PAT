@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805432256675840 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1048 Find Coins
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805432256675840
+    @pintia psid=994805342720868352 pid=994805432256675840 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1048 Find Coins
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805432256675840
 */
 
 // @pintia code=start

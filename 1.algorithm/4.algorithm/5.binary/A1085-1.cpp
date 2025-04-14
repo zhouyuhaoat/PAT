@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805381845336064 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1085 Perfect Sequence
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805381845336064
+    @pintia psid=994805342720868352 pid=994805381845336064 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1085 Perfect Sequence
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805381845336064
 */
 
 // @pintia code=start
