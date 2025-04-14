@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805378443755520 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1088 Rational Arithmetic
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805378443755520
+    @pintia psid=994805342720868352 pid=994805378443755520 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1088 Rational Arithmetic
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805378443755520
 */
 
 // @pintia code=start
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 ll gcd(ll a, ll b) { // greatest common divisor
     return b == 0 ? a : gcd(b, a % b);
@@ -85,8 +85,7 @@ void printInf() {
 int main(int argc, char const *argv[]) {
 
     fra a, b;
-    int unused __attribute__((unused)) = 0;
-    unused = scanf("%lld/%lld %lld/%lld", &a.num, &a.den, &b.num, &b.den);
+    scanf("%lld/%lld %lld/%lld", &a.num, &a.den, &b.num, &b.den);
     print(a), cout << " + ", print(b), cout << " = ", print(add(a, b)), cout << "\n";
     print(a), cout << " - ", print(b), cout << " = ", print(subtract(a, b)), cout << "\n";
     print(a), cout << " * ", print(b), cout << " = ", print(multiply(a, b)), cout << "\n";

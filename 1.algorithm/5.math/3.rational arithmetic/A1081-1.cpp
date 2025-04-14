@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805386161274880 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1081 Rational Sum
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805386161274880
+    @pintia psid=994805342720868352 pid=994805386161274880 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1081 Rational Sum
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805386161274880
 */
 
 // @pintia code=start
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 ll gcd(ll a, ll b) { // greatest common divisor
     return b == 0 ? a : gcd(b, a % b);
@@ -31,8 +31,7 @@ int main(int argc, char const *argv[]) {
     ll num = 0, den = 1; // numerator, denominator
     for (int i = 0; i < n; i++) {
         ll a, b;
-        int unused __attribute__((unused)) = 0;
-        unused = scanf("%lld/%lld", &a, &b);
+        scanf("%lld/%lld", &a, &b);
         ll g1 = gcd(abs(a), b); // reduce fraction before addition
         a /= g1, b /= g1;
         ll g = gcd(den, b); // covert fractions to common denominator before addition

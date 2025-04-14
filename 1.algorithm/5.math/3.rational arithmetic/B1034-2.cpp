@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805287624491008 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1034 有理数四则运算
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805287624491008
+    @pintia psid=994805260223102976 pid=994805287624491008 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1034 有理数四则运算
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805287624491008
 */
 
 // @pintia code=start
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 ll gcd(ll a, ll b) { // greatest common divisor
     return b == 0 ? a : gcd(b, a % b);
@@ -52,8 +52,7 @@ void print(ll a, ll b) { // print(fraction) -> print(numerator, denominator)
 int main(int argc, char const *argv[]) {
 
     ll a, b, c, d;
-    int unused __attribute__((unused)) = 0;
-    unused = scanf("%lld/%lld %lld/%lld", &a, &b, &c, &d);
+    scanf("%lld/%lld %lld/%lld", &a, &b, &c, &d);
     print(a, b), cout << " + ", print(c, d), cout << " = ", print(a * d + b * c, b * d), cout << "\n";
     print(a, b), cout << " - ", print(c, d), cout << " = ", print(a * d - b * c, b * d), cout << "\n";
     print(a, b), cout << " * ", print(c, d), cout << " = ", print(a * c, b * d), cout << "\n";
