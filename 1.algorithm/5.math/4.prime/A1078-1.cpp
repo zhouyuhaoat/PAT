@@ -7,24 +7,23 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805389634158592 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1078 Hashing
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805389634158592
+    @pintia psid=994805342720868352 pid=994805389634158592 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1078 Hashing
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805389634158592
 */
 
 // @pintia code=start
-#include <cmath>
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-bool isprime(int n) {
+bool isPrime(int n) {
     if (n < 2) {
         return false;
     }
-    for (int i = 2; i <= (int)sqrt(n); i++) {
+    for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
             return false;
         }
@@ -36,8 +35,8 @@ int main(int argc, char const *argv[]) {
 
     int msize, n;
     cin >> msize >> n;
-    while (!isprime(msize)) {
-        ++msize;
+    while (!isPrime(msize)) {
+        msize++;
     }
     vector<int> d(msize);
     for (int i = 0; i < n; i++) {
@@ -62,11 +61,7 @@ int main(int argc, char const *argv[]) {
                 cout << "-";
             }
         }
-        if (i < n - 1) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+        i < n - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

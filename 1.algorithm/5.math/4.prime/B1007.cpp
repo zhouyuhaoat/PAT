@@ -7,23 +7,22 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805317546655744 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1007 素数对猜想
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805317546655744
+    @pintia psid=994805260223102976 pid=994805317546655744 compiler=GXX
+    ProblemSet: PAT (Basic Level) Practice （中文）
+    Title: 1007 素数对猜想
+    https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805317546655744
 */
 
 // @pintia code=start
-#include <cmath>
 #include <iostream>
 
 using namespace std;
 
-bool isprime(int n) {
+bool isPrime(int n) {
     if (n < 2) {
         return false;
     }
-    for (int i = 2; i <= (int)sqrt(n); i++) {
+    for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
             return false;
         }
@@ -37,7 +36,7 @@ int main(int argc, char const *argv[]) {
     cin >> n;
     int cnt = 0;
     for (int i = 2; i <= n; i++) {
-        if (isprime(i) && isprime(i - 2)) {
+        if (isPrime(i) && isPrime(i - 2)) {
             cnt++;
         }
     }
