@@ -7,16 +7,16 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805409175420928 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1063 Set Similarity
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805409175420928
+    @pintia psid=994805342720868352 pid=994805409175420928 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1063 Set Similarity
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805409175420928
 */
 
 // @pintia code=start
 #include <iomanip>
 #include <iostream>
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<set<int>> s(n + 1);
+    vector<unordered_set<int>> s(n + 1);
     for (int i = 0; i < n; i++) {
         int m;
         cin >> m;
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
         int cnt = 0;
         for (auto it : s[a]) {
             if (s[b].find(it) != s[b].end()) {
-                ++cnt;
+                cnt++;
             }
         }
         double r = (double)cnt / (s[a].size() + s[b].size() - cnt) * 100;
