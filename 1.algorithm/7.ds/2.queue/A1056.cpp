@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805419468242944 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1056 Mice and Rice
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805419468242944
+    @pintia psid=994805342720868352 pid=994805419468242944 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1056 Mice and Rice
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805419468242944
 */
 
 // @pintia code=start
@@ -27,44 +27,31 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < np; i++) {
         cin >> w[i];
     }
-    vector<int> id(np);
     queue<int> q;
     for (int i = 0; i < np; i++) {
-        cin >> id[i];
-        q.emplace(id[i]);
+        int id;
+        cin >> id;
+        q.emplace(id);
     }
     vector<int> r(np);
     while (q.size() > 1) {
-        vector<int> nowid;
-        while (!q.empty()) {
-            nowid.emplace_back(q.front());
-            q.pop();
-        }
-        for (int i = 0; i <= (int)nowid.size() / ng; i++) {
-            int maxw = -1, maxwid = -1;
-            for (int j = 0; j < ng && i * ng + j < (int)nowid.size(); j++) {
-                int idx = i * ng + j;
-                if (w[nowid[idx]] > maxw) {
-                    maxw = w[nowid[idx]];
-                    maxwid = nowid[idx];
+        int size = q.size(), g = size / ng + (size % ng != 0);
+        for (int i = 0; i < g; i++) {
+            int k = q.front();
+            for (int j = 0; j < ng && i * ng + j < size; j++) {
+                if (w[k] < w[q.front()]) {
+                    k = q.front();
                 }
+                r[q.front()] = g + 1;
+                q.pop();
             }
-            if (maxwid != -1) {
-                q.emplace(maxwid);
-            }
-        }
-        for (auto it : nowid) {
-            r[it] = q.size() + 1;
+            q.emplace(k);
         }
     }
     r[q.front()] = 1;
     for (int i = 0; i < np; i++) {
         cout << r[i];
-        if (i < np - 1) {
-            cout << " ";
-        } else {
-            cout << "\n";
-        }
+        i < np - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;
