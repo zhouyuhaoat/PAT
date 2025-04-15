@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805433955368960 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1047 Student List for Course
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805433955368960
+    @pintia psid=994805342720868352 pid=994805433955368960 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1047 Student List for Course
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805433955368960
 */
 
 // @pintia code=start
