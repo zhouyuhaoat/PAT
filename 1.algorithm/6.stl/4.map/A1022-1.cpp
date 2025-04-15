@@ -7,23 +7,41 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805480801550336 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1022 Digital Library
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805480801550336
+    @pintia psid=994805342720868352 pid=994805480801550336 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1022 Digital Library
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805480801550336
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
+vector<string> splitWords(string s) { // split words by space manually
+    vector<string> words;
+    int i = 0, j = 0;
+    while (i < (int)s.size() && j < (int)s.size()) {
+        if (!isspace(s[i])) {
+            j = i;
+            while (j < (int)s.size() && !isspace(s[j])) {
+                j++;
+            }
+            words.emplace_back(s.substr(i, j - i));
+            i = j;
+        } else {
+            i++;
+        }
+    }
+    return words;
+}
+
 int main(int argc, char const *argv[]) {
 
-    vector<map<string, set<string>>> m(6);
+    vector<unordered_map<string, set<string>>> m(6);
     int n;
     cin >> n;
     getchar();
@@ -36,20 +54,9 @@ int main(int argc, char const *argv[]) {
             if (j != 3) {
                 m[j][s].emplace(id);
             } else {
-                // split words by space manually
-                int p = 0, q = 0;
-                while (p < (int)s.size() && q < (int)s.size()) {
-                    if (!isspace(s[p])) {
-                        q = p;
-                        while (!isspace(s[q]) && q < (int)s.size()) {
-                            ++q;
-                        }
-                        string w = s.substr(p, q - p);
-                        m[j][w].emplace(id);
-                        p = q;
-                    } else {
-                        ++p;
-                    }
+                vector<string> words = splitWords(s);
+                for (string w : words) {
+                    m[j][w].emplace(id);
                 }
             }
         }
@@ -58,8 +65,7 @@ int main(int argc, char const *argv[]) {
     cin >> q;
     for (int i = 0; i < q; i++) {
         int l;
-        int unused __attribute__((unused)) = 0;
-        unused = scanf("%d: ", &l);
+        scanf("%d: ", &l);
         string s;
         getline(cin, s);
         cout << l << ": " << s << "\n";

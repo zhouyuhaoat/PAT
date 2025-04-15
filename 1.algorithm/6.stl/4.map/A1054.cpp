@@ -7,15 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805422639136768 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1054 The Dominant Color
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805422639136768
+    @pintia psid=994805342720868352 pid=994805422639136768 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1054 The Dominant Color
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805422639136768
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    map<int, int> cnt;
+    unordered_map<int, int> cnt;
     int threshold = m * n / 2;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {

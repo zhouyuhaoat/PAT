@@ -7,15 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805367156883456 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1100 Mars Numbers
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805367156883456
+    @pintia psid=994805342720868352 pid=994805367156883456 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1100 Mars Numbers
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805367156883456
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     int b = 13;
     string s1[b] = {"tret", "jan", "feb", "mar", "apr", "may", "jun", "jly", "aug", "sep", "oct", "nov", "dec"};
     string s2[b] = {"", "tam", "hel", "maa", "huh", "tou", "kes", "hei", "elo", "syy", "lok", "mer", "jou"};
-    map<string, int> m1, m2;
+    unordered_map<string, int> m1, m2;
     for (int i = 0; i < b; i++) {
         m1[s1[i]] = i;
     }

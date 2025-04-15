@@ -7,24 +7,24 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805480801550336 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1022 Digital Library
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805480801550336
+    @pintia psid=994805342720868352 pid=994805480801550336 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1022 Digital Library
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805480801550336
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
 #include <set>
 #include <sstream>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    vector<map<string, set<string>>> m(6);
+    vector<unordered_map<string, set<string>>> m(6);
     int n;
     cin >> n;
     getchar();
@@ -37,7 +37,8 @@ int main(int argc, char const *argv[]) {
             if (j != 3) {
                 m[j][s].emplace(id);
             } else {
-                stringstream ss(s);
+                // split words by stringstream & stream extraction operator
+                istringstream ss(s);
                 string w;
                 while (ss >> w) {
                     m[j][w].emplace(id);
@@ -49,8 +50,7 @@ int main(int argc, char const *argv[]) {
     cin >> q;
     for (int i = 0; i < q; i++) {
         int l;
-        int unused __attribute__((unused)) = 0;
-        unused = scanf("%d: ", &l);
+        scanf("%d: ", &l);
         string s;
         getline(cin, s);
         cout << l << ": " << s << "\n";

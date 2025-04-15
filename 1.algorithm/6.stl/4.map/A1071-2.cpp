@@ -7,15 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805398257647616 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1071 Speech Patterns
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805398257647616
+    @pintia psid=994805342720868352 pid=994805398257647616 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1071 Speech Patterns
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805398257647616
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -23,23 +23,23 @@ int main(int argc, char const *argv[]) {
 
     string s;
     getline(cin, s);
-    map<string, int> count;
+    unordered_map<string, int> cnt;
     string t;
-    int cnt = -1;
+    int maxcnt = -1;
     for (int i = 0; i < (int)s.size(); i++) {
         if (isalnum(s[i])) {
             t += tolower(s[i]);
         }
         if (!isalnum(s[i]) || i == (int)s.size() - 1) {
-            if (!t.empty() && ++count[t] > cnt) {
-                cnt = count[t];
+            if (!t.empty() && ++cnt[t] > maxcnt) {
+                maxcnt = cnt[t];
             }
-            t = "";
+            t.clear();
         }
     }
-    for (auto it : count) {
-        if (it.second == cnt) {
-            cout << it.first << " " << cnt << "\n";
+    for (auto it : cnt) {
+        if (it.second == maxcnt) {
+            cout << it.first << " " << it.second << "\n";
             break;
         }
     }
