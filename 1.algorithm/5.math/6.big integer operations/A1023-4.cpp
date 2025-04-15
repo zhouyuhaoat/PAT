@@ -14,30 +14,37 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string s1;
-    cin >> s1;
-    string s2;
+    string s;
+    cin >> s;
+    vector<int> cnt(10);
     int carry = 0;
-    for (int i = s1.size() - 1; i >= 0; i--) {
-        int sum = (s1[i] - '0') * 2 + carry;
-        s2 = char(sum % 10 + '0') + s2;
+    for (int i = s.size() - 1; i >= 0; i--) {
+        cnt[s[i] - '0']++;
+        int sum = (s[i] - '0') * 2 + carry;
+        s[i] = sum % 10 + '0';
         carry = sum / 10;
+        cnt[sum % 10]--;
     }
-    if (carry != 0) {
-        s2 = char(carry + '0') + s2;
+    if (carry > 0) {
+        s = char(carry + '0') + s;
+        cnt[carry]--;
     }
-    string s3 = s2;
-    sort(s1.begin(), s1.end());
-    sort(s3.begin(), s3.end());
-    s1 == s3 ? cout << "Yes\n" : cout << "No\n";
-    cout << s2 << "\n";
+    bool flag = true;
+    for (int i = 0; i < 10; i++) {
+        if (cnt[i] != 0) {
+            flag = false;
+            break;
+        }
+    }
+    flag ? cout << "Yes\n" : cout << "No\n";
+    cout << s << "\n";
 
     return 0;
 }

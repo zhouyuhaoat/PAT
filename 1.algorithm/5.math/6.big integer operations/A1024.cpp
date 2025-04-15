@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805476473028608 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1024 Palindromic Number
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805476473028608
+    @pintia psid=994805342720868352 pid=994805476473028608 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1024 Palindromic Number
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805476473028608
 */
 
 // @pintia code=start
@@ -23,13 +23,13 @@ string sum(string a, string b) {
     int carry = 0;
     for (int i = a.size() - 1; i >= 0; i--) {
         int sum = a[i] - '0' + b[i] - '0' + carry;
-        b[i] = sum % 10 + '0';
+        a[i] = sum % 10 + '0';
         carry = sum / 10;
     }
     if (carry != 0) {
-        b = char(carry + '0') + b;
+        a = char(carry + '0') + a;
     }
-    return b;
+    return a;
 }
 
 int main(int argc, char const *argv[]) {
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
         reverse(t.begin(), t.end());
         if (n == t) break;
         n = sum(n, t);
-        ++cnt;
+        cnt++;
     }
     cout << n << "\n" << cnt << "\n";
 

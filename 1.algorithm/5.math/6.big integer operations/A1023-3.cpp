@@ -33,10 +33,11 @@ int main(int argc, char const *argv[]) {
     if (carry != 0) {
         s2 = char(carry + '0') + s2;
     }
-    string s3 = s2;
-    sort(s1.begin(), s1.end());
-    sort(s3.begin(), s3.end());
-    s1 == s3 ? cout << "Yes\n" : cout << "No\n";
+    if (is_permutation(s1.begin(), s1.end(), s2.begin(), s2.end())) {
+        cout << "Yes\n";
+    } else {
+        cout << "No\n";
+    }
     cout << s2 << "\n";
 
     return 0;

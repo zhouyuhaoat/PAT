@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805478658260992 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1023 Have Fun with Numbers
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805478658260992
+    @pintia psid=994805342720868352 pid=994805478658260992 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1023 Have Fun with Numbers
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805478658260992
 */
 
 // @pintia code=start
@@ -21,32 +21,28 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string n1;
-    cin >> n1;
-    vector<int> cnt_n1(10);
-    for (int i = 0; i < (int)n1.size(); i++) {
-        ++cnt_n1[n1[i] - '0'];
+    string s1;
+    cin >> s1;
+    vector<int> cnt_s1(10);
+    for (int i = 0; i < (int)s1.size(); i++) {
+        cnt_s1[s1[i] - '0']++;
     }
-    string n2;
+    string s2;
     int carry = 0;
-    for (int i = n1.size() - 1; i >= 0; i--) {
-        int sum = (n1[i] - '0') * 2 + carry;
-        n2 = char(sum % 10 + '0') + n2;
+    for (int i = s1.size() - 1; i >= 0; i--) {
+        int sum = (s1[i] - '0') * 2 + carry;
+        s2 = char(sum % 10 + '0') + s2;
         carry = sum / 10;
     }
     if (carry != 0) {
-        n2 = char(carry + '0') + n2;
+        s2 = char(carry + '0') + s2;
     }
-    vector<int> cnt_n2(10);
-    for (int i = 0; i < (int)n2.size(); i++) {
-        ++cnt_n2[n2[i] - '0'];
+    vector<int> cnt_s2(10);
+    for (int i = 0; i < (int)s2.size(); i++) {
+        cnt_s2[s2[i] - '0']++;
     }
-    if (cnt_n1 == cnt_n2) {
-        cout << "Yes\n";
-    } else {
-        cout << "No\n";
-    }
-    cout << n2 << "\n";
+    cnt_s1 == cnt_s2 ? cout << "Yes\n" : cout << "No\n";
+    cout << s2 << "\n";
 
     return 0;
 }
