@@ -7,17 +7,17 @@
  */
 
 /*
-  @pintia psid=994805260223102976 pid=994805296180871168 compiler=GXX
-  ProblemSet: PAT (Basic Level) Practice （中文）
-  Title: 1025 反转链表
-  https://pintia.cn/problem-sets/994805260223102976/exam/problems/type/7?problemSetProblemId=994805296180871168
+    @pintia psid=994805342720868352 pid=994805394512134144 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1074 Reversing Linked List
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805394512134144
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -28,25 +28,23 @@ struct node {
 
 int main(int argc, char const *argv[]) {
 
-    int id, n, k;
-    cin >> id >> n >> k;
-    node d[n + 1];
-    map<int, int> loc;
-    for (int i = 1; i <= n; i++) {
-        int id;
-        cin >> id >> d[i].data >> d[i].next;
-        loc[id] = i;
+    int head, n, k;
+    cin >> head >> n >> k;
+    unordered_map<int, node> nodes;
+    for (int i = 0; i < n; i++) {
+        int addr, data, next;
+        cin >> addr >> data >> next;
+        nodes[addr] = {data, next};
     }
     vector<int> l;
-    do {
-        l.emplace_back(id);
-        id = d[loc[id]].next;
-    } while (id != -1);
+    for (int p = head; p != -1; p = nodes[p].next) {
+        l.emplace_back(p);
+    }
     for (int i = 0; i < (int)l.size() / k; i++) {
         reverse(l.begin() + i * k, l.begin() + (i + 1) * k);
     }
     for (int i = 0; i < (int)l.size(); i++) {
-        cout << setfill('0') << setw(5) << l[i] << " " << d[loc[l[i]]].data << " ";
+        cout << setfill('0') << setw(5) << l[i] << " " << nodes[l[i]].data << " ";
         if (i < (int)l.size() - 1) {
             cout << setfill('0') << setw(5) << l[i + 1] << "\n";
         } else {

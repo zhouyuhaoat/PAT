@@ -7,71 +7,51 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805460652113920 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1032 Sharing
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805460652113920
+    @pintia psid=994805342720868352 pid=994805460652113920 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1032 Sharing
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805460652113920
 */
 
 // @pintia code=start
 #include <iomanip>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
 struct node {
     char data;
     int next;
+    bool vis = false;
 };
+
+int getIntersectionNode(int head1, int head2, unordered_map<int, node>& nodes) {
+    for (int p = head1; p != -1; p = nodes[p].next) {
+        nodes[p].vis = true;
+    }
+    for (int p = head2; p != -1; p = nodes[p].next) {
+        if (nodes[p].vis) return p;
+    }
+    return -1;
+}
 
 int main(int argc, char const *argv[]) {
 
-    int front1, front2, n;
-    cin >> front1 >> front2 >> n;
-    if (front1 == -1 || front2 == -1) {
-        cout << "-1\n";
-        return 0;
+    int head1, head2, n;
+    cin >> head1 >> head2 >> n;
+    unordered_map<int, node> nodes;
+    for (int i = 0; i < n; i++) {
+        char data;
+        int addr, next;
+        cin >> addr >> data >> next;
+        nodes[addr] = {data, next, false};
     }
-    node d[n + 1];
-    map<int, int> loc;
-    for (int i = 1; i <= n; i++) {
-        int id;
-        cin >> id >> d[i].data >> d[i].next;
-        loc[id] = i;
-    }
-    int l1 = 0, l2 = 0;
-    int id1 = front1, id2 = front2;
-    do {
-        ++l1;
-        id1 = d[loc[id1]].next;
-    } while (id1 != -1);
-    do {
-        ++l2;
-        id2 = d[loc[id2]].next;
-    } while (id2 != -1);
-    id1 = front1, id2 = front2;
-    if (l1 > l2) {
-        for (int i = 0; i < l1 - l2; i++) {
-            id1 = d[loc[id1]].next;
-        }
+    int share = getIntersectionNode(head1, head2, nodes);
+    if (share != -1) {
+        cout << setw(5) << setfill('0') << share << "\n";
     } else {
-        for (int i = 0; i < l2 - l1; i++) {
-            id2 = d[loc[id2]].next;
-        }
-    }
-    int same = -1;
-    do {
-        if (id1 == id2) {
-            same = id1;
-            break;
-        }
-        id1 = d[loc[id1]].next, id2 = d[loc[id2]].next;
-    } while (id1 != -1 && id2 != -1);
-    if (same == -1) {
         cout << "-1\n";
-    } else {
-        cout << setfill('0') << setw(5) << same << "\n";
     }
 
     return 0;

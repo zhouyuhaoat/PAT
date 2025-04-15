@@ -1,58 +1,68 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-28 12:03:48
- *	modified:	2023-03-28 12:05:47
+ *	created:	2025-04-15 10:11:09
+ *	modified:	2025-04-15 11:22:01
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805425780670464 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1052 Linked List Sorting
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805425780670464
+    @pintia psid=994805342720868352 pid=994805425780670464 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1052 Linked List Sorting
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805425780670464
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iomanip>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
 struct node {
-    int id, data, next;
+    int addr, data, next;
 };
 
 int main(int argc, char const *argv[]) {
 
-    int n, id;
-    cin >> n >> id;
-    if (id == -1) {
+    int n, head;
+    cin >> n >> head;
+    if (head == -1) {
         cout << "0 -1\n";
         return 0;
     }
-    node d[n + 1];
-    map<int, int> loc;
-    for (int i = 1; i <= n; i++) {
-        cin >> d[i].id >> d[i].data >> d[i].next;
-        loc[d[i].id] = i;
+    unordered_map<int, node> nodes;
+    for (int i = 0; i < n; i++) {
+        int addr, data, next;
+        cin >> addr >> data >> next;
+        nodes[addr] = {addr, data, next};
     }
-    vector<node> l;
-    do {
-        l.emplace_back(d[loc[id]]);
-        id = d[loc[id]].next;
-    } while (id != -1);
-    sort(l.begin(), l.end(), [](node a, node b) -> bool {
-        return a.data < b.data;
-    });
-    cout << l.size() << " " << setfill('0') << setw(5) << l[0].id << "\n";
-    for (int i = 0; i < (int)l.size(); i++) {
-        cout << setfill('0') << setw(5) << l[i].id << " " << l[i].data << " ";
-        if (i < (int)l.size() - 1) {
-            cout << setfill('0') << setw(5) << l[i + 1].id << "\n";
+    vector<int> addrs;
+    for (int p = head; p != -1; p = nodes[p].next) {
+        addrs.emplace_back(p);
+    }
+    head = -1; // Insertion Sort on Linked List
+    for (int addr : addrs) {
+        if (head == -1 || nodes[addr].data < nodes[head].data) {
+            nodes[addr].next = head;
+            head = addr;
+        } else {
+            int pre = head, cur = nodes[head].next;
+            while (cur != -1 && nodes[cur].data < nodes[addr].data) {
+                pre = cur;
+                cur = nodes[cur].next;
+            }
+            nodes[addr].next = cur;
+            nodes[pre].next = addr;
+        }
+    }
+    cout << addrs.size() << " " << setfill('0') << setw(5) << (head == -1 ? -1 : head) << "\n";
+    for (int p = head; p != -1; p = nodes[p].next) {
+        cout << setfill('0') << setw(5) << p << " " << nodes[p].data << " ";
+        if (nodes[p].next != -1) {
+            cout << setfill('0') << setw(5) << nodes[p].next << "\n";
         } else {
             cout << "-1\n";
         }
