@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805370650738688 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1096 Consecutive Factors
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805370650738688
+    @pintia psid=994805342720868352 pid=994805370650738688 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1096 Consecutive Factors
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805370650738688
 */
 
 // @pintia code=start
@@ -23,31 +23,29 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    int f = 1, l = 0; // f: first factor, l: length
-    for (int i = 2; i <= (int)sqrt(n); i++) {
-        int p = 1; // product of consecutive factors
-        for (int j = i; j <= (int)sqrt(n); j++) {
-            p *= j;
-            if (n % p != 0) {
+    int first = 1, len = 0, sqr = sqrt(n);
+    // single factor: i * i <= n => consecutive factors: i <= sqrt(n)
+    // e.g.: n = 30, sqrt(30) = 5.47 = 5, but 30 = 5 * 6
+    for (int i = 2; i <= sqr; i++) {
+        int product = 1;
+        for (int j = i; j <= sqr; j++) {
+            product *= j;
+            if (n % product != 0) {
                 break;
             }
-            if (j - i + 1 > l) {
-                l = j - i + 1;
-                f = i;
+            if (len < j - i + 1) {
+                len = j - i + 1;
+                first = i;
             }
         }
     }
-    if (l == 0) {
-        cout << f << "\n" << n << "\n";
+    if (len == 0) {
+        cout << "1\n" << n << "\n";
     } else {
-        cout << l << "\n";
-        for (int i = 0; i < l; i++) {
-            cout << f + i;
-            if (i < l - 1) {
-                cout << "*";
-            } else {
-                cout << "\n";
-            }
+        cout << len << "\n";
+        for (int i = 0; i < len; i++) {
+            cout << first + i;
+            i < len - 1 ? cout << "*" : cout << "\n";
         }
     }
 

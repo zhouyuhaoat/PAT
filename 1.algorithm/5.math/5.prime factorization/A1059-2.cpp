@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805415005503488 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1059 Prime Factors
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805415005503488
+    @pintia psid=994805342720868352 pid=994805415005503488 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1059 Prime Factors
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805415005503488
 */
 
 // @pintia code=start
@@ -20,19 +20,21 @@
 using namespace std;
 
 vector<pair<int, int>> getPrimeFactors(long n) {
-    vector<pair<int, int>> res;
-    for (int i = 2; i * i <= n; i++) {
-        if (n % i == 0) {
-            int cnt = 0;
-            while (n % i == 0) {
+    vector<pair<int, int>> pfs;
+    for (int i = 2; i * i <= n; i++) { // the smallest prime
+        if (n % i == 0) { // factor
+            int cnt = 0; // exponent
+            while (n % i == 0) { // trial division
                 cnt++;
                 n /= i;
             }
-            res.emplace_back(i, cnt);
+            pfs.emplace_back(i, cnt);
         }
     }
-    if (n > 1) res.emplace_back(n, 1);
-    return res;
+    if (n > 1) {
+        pfs.emplace_back(n, 1);
+    }
+    return pfs;
 }
 
 int main(int argc, char const *argv[]) {
@@ -45,20 +47,14 @@ int main(int argc, char const *argv[]) {
         return 0;
     }
     vector<pair<int, int>> pfs = getPrimeFactors(n);
-    bool first = true;
-    for (auto pf : pfs) {
-        if (first) {
-            first = false;
+    for (int i = 0; i < (int)pfs.size(); i++) {
+        if (pfs[i].second == 1) {
+            cout << pfs[i].first;
         } else {
-            cout << "*";
+            cout << pfs[i].first << "^" << pfs[i].second;
         }
-        if (pf.second == 1) {
-            cout << pf.first;
-        } else {
-            cout << pf.first << "^" << pf.second;
-        }
+        i < (int)pfs.size() - 1 ? cout << "*" : cout << "\n";
     }
-    cout << "\n";
 
     return 0;
 }

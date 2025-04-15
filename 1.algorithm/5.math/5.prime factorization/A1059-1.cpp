@@ -7,14 +7,13 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805415005503488 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1059 Prime Factors
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805415005503488
+    @pintia psid=994805342720868352 pid=994805415005503488 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1059 Prime Factors
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805415005503488
 */
 
 // @pintia code=start
-#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -23,14 +22,14 @@ using namespace std;
 const int maxn = 1e5;
 
 vector<int> p;
-vector<bool> isprime(maxn, true);
+vector<bool> isPrime(maxn, true);
 
 void sieve() { // sieve of Eratosthenes
     for (int i = 2; i <= maxn; i++) {
-        if (isprime[i]) {
+        if (isPrime[i]) {
             p.emplace_back(i);
             for (int j = 2 * i; j <= maxn; j += i) {
-                isprime[j] = false;
+                isPrime[j] = false;
             }
         }
     }
@@ -47,11 +46,11 @@ int main(int argc, char const *argv[]) {
         return 0;
     }
     long t = n; // copy of n
-    for (int i = 0; i < (int)p.size() && p[i] <= (int)sqrt(n); i++) {
+    for (int i = 0; i < (int)p.size() && p[i] * p[i] <= n; i++) {
         if (t % p[i] == 0) {
             int cnt = 0;
             while (t % p[i] == 0) {
-                ++cnt;
+                cnt++;
                 t /= p[i];
             }
             if (cnt == 1) {
@@ -59,7 +58,7 @@ int main(int argc, char const *argv[]) {
             } else {
                 cout << p[i] << "^" << cnt;
             }
-            if (t != 1) {
+            if (t != 1) { // not the last prime factor
                 cout << "*";
             } else {
                 break;
