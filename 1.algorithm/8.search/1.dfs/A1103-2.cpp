@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805364711604224 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1103 Integer Factorization
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805364711604224
+    @pintia psid=994805342720868352 pid=994805364711604224 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1103 Integer Factorization
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805364711604224
 */
 
 // @pintia code=start
@@ -22,11 +22,19 @@ using namespace std;
 
 int n, k, p;
 int mfs = -1;
-vector<int> fp(1, 1), temp, ans;
+vector<int> fp, temp, ans;
+
+void init() {
+    int e = 0;
+    while (pow(e, p) <= n) {
+        fp.emplace_back(pow(e, p));
+        e++;
+    }
+}
 
 void dfs(int f, int i, int fs, int sum) {
     if (i == k && sum == n) { // base1
-        if (fs > mfs) {
+        if (mfs < fs) {
             mfs = fs;
             ans = temp;
         }
@@ -46,12 +54,8 @@ void dfs(int f, int i, int fs, int sum) {
 int main(int argc, char const *argv[]) {
 
     cin >> n >> k >> p;
-    int e = 1;
-    while (pow(e, p) <= n) {
-        fp.emplace_back(pow(e, p));
-        ++e;
-    }
-    dfs(e - 1, 0, 0, 0);
+    init();
+    dfs(fp.size() - 1, 0, 0, 0);
     if (mfs != -1) {
         cout << n << " = " << ans[0] << "^" << p;
         for (int i = 1; i < (int)ans.size(); i++) {
