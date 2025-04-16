@@ -1,16 +1,16 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 13:12:14
- *	modified:	2023-03-29 15:00:45
+ *	created:	2023-03-29 12:45:43
+ *	modified:	2023-03-29 14:49:47
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
 
 /*
-    @pintia psid=994805342720868352 pid=994805521431773184 compiler=GXX
+    @pintia psid=994805342720868352 pid=994805372601090048 compiler=GXX
     ProblemSet: PAT (Advanced Level) Practice
-    Title: 1004 Counting Leaves
-    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805521431773184
+    Title: 1094 The Largest Generation
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805372601090048
 */
 
 // @pintia code=start
@@ -21,17 +21,11 @@
 
 using namespace std;
 
-int h = -1;
 unordered_map<int, int> cnt;
 vector<vector<int>> t;
 
 void dfs(int r, int l) {
-    // l: length of the path from root to current node
-    h = max(h, l); // height
-    if (t[r].empty()) { // leaf node
-        cnt[l]++; // the number of leaf nodes at the level
-        return;
-    }
+    cnt[l]++;
     for (int i = 0; i < (int)t[r].size(); i++) {
         dfs(t[r][i], l + 1);
     }
@@ -54,11 +48,11 @@ int main(int argc, char const *argv[]) {
         }
     }
     int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    dfs(r, 1);
-    for (int i = 1; i <= h; i++) {
-        cout << cnt[i];
-        i <= h - 1 ? cout << " " : cout << "\n";
-    }
+    dfs(r, 0);
+    auto res = max_element(cnt.begin(), cnt.end(), [](pair<int, int> a, pair<int, int> b) {
+        return a.second < b.second;
+    });
+    cout << res->second << " " << res->first + 1 << "\n";
 
     return 0;
 }

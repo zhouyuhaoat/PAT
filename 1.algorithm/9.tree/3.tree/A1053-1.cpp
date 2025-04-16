@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805424153280512 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1053 Path of Equal Weight
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805424153280512
+    @pintia psid=994805342720868352 pid=994805424153280512 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1053 Path of Equal Weight
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805424153280512
 */
 
 // @pintia code=start

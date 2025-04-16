@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 12:29:53
- *	modified:	2023-03-29 14:40:10
+ *	created:	2023-03-29 14:45:53
+ *	modified:	2023-03-29 14:50:10
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -17,28 +17,34 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <vector>
+#include <queue>
 
 using namespace std;
 
 int cnt = 0;
-double p, r, ms = -1;
+double p, r, ml = -1;
 vector<vector<int>> t;
 
-void dfs(int rr, int l) {
-    // l: length of the path from root to leaf node
-    if (t[rr].empty()) { // leaf node
-        double s = p * pow(r, l);
-        if (s > ms) {
-            ms = s;
-            cnt = 1;
-        } else if (s == ms) {
-            cnt++;
+void bfs(int rr, int l) {
+    queue<pair<int, int>> q;
+    q.emplace(rr, l);
+    ml = -1;
+    cnt = 0;
+    while (!q.empty()) {
+        auto [node, level] = q.front();
+        q.pop();
+        if (t[node].empty()) {
+            if (level > ml) {
+                ml = level;
+                cnt = 1;
+            } else if (level == ml) {
+                cnt++;
+            }
+        } else {
+            for (int child : t[node]) {
+                q.emplace(child, level + 1);
+            }
         }
-        return;
-    }
-    for (int i = 0; i < (int)t[rr].size(); i++) {
-        dfs(t[rr][i], l + 1);
     }
 }
 
@@ -58,8 +64,8 @@ int main(int argc, char const *argv[]) {
             t[k].emplace_back(i);
         }
     }
-    dfs(rr, 0);
-    cout << fixed << setprecision(2) << ms << " " << cnt << "\n";
+    bfs(rr, 0);
+    cout << fixed << setprecision(2) << p * pow(r, ml) << " " << cnt << "\n";
 
     return 0;
 }

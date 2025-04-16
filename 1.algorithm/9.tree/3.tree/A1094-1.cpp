@@ -7,25 +7,25 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805372601090048 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1094 The Largest Generation
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805372601090048
+    @pintia psid=994805342720868352 pid=994805372601090048 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1094 The Largest Generation
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805372601090048
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
-map<int, int> cnt;
+unordered_map<int, int> cnt;
 vector<vector<int>> t;
 
 void dfs(int r, int l) {
-    ++cnt[l]; // cnt: the number of people in the generation
+    cnt[l]++; // cnt: the number of people in the generation
     for (int i = 0; i < (int)t[r].size(); i++) {
         dfs(t[r][i], l + 1);
     }
@@ -48,12 +48,12 @@ int main(int argc, char const *argv[]) {
         }
     }
     int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    dfs(r, 1);
+    dfs(r, 0);
     vector<pair<int, int>> ans(cnt.begin(), cnt.end());
     sort(ans.begin(), ans.end(), [](pair<int, int> a, pair<int, int> b) -> bool {
         return a.second > b.second;
     });
-    cout << ans[0].second << " " << ans[0].first << "\n";
+    cout << ans[0].second << " " << ans[0].first + 1 << "\n";
 
     return 0;
 }

@@ -1,16 +1,16 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 15:00:01
- *	modified:	2023-03-29 15:12:48
+ *	created:	2023-03-29 12:45:43
+ *	modified:	2023-03-29 14:49:47
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
 
 /*
-    @pintia psid=994805342720868352 pid=994805521431773184 compiler=GXX
+    @pintia psid=994805342720868352 pid=994805372601090048 compiler=GXX
     ProblemSet: PAT (Advanced Level) Practice
-    Title: 1004 Counting Leaves
-    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805521431773184
+    Title: 1094 The Largest Generation
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805372601090048
 */
 
 // @pintia code=start
@@ -21,22 +21,18 @@
 
 using namespace std;
 
-int hh = -1;
-vector<int> h;
 unordered_map<int, int> cnt;
 vector<vector<int>> t;
 
-void bfs(int r) { // dfs -> bfs
-    queue<int> q;
-    q.emplace(r);
+void bfs(int r, int l) {
+    queue<pair<int, int>> q;
+    q.emplace(r, l);
     while (!q.empty()) {
-        int f = q.front();
+        auto [node, level] = q.front();
         q.pop();
-        hh = max(hh, h[f]);
-        if (t[f].empty()) cnt[h[f]]++;
-        for (int i = 0; i < (int)t[f].size(); i++) {
-            h[t[f][i]] = h[f] + 1;
-            q.emplace(t[f][i]);
+        cnt[level]++;
+        for (int child : t[node]) {
+            q.emplace(child, level + 1);
         }
     }
 }
@@ -58,13 +54,11 @@ int main(int argc, char const *argv[]) {
         }
     }
     int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    h.resize(n + 1);
-    h[r] = 1;
-    bfs(r);
-    for (int i = 1; i <= hh; i++) {
-        cout << cnt[i];
-        i <= hh - 1 ? cout << " " : cout << "\n";
-    }
+    bfs(r, 0);
+    auto res = max_element(cnt.begin(), cnt.end(), [](pair<int, int> a, pair<int, int> b) {
+        return a.second < b.second;
+    });
+    cout << res->second << " " << res->first + 1 << "\n";
 
     return 0;
 }

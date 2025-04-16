@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 13:10:27
- *	modified:	2023-03-29 14:53:22
+ *	created:	2023-03-29 14:53:34
+ *	modified:	2023-03-29 14:57:36
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -19,34 +19,40 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <vector>
+#include <queue>
 
 using namespace std;
 
-int cnt = 0;
-double p, r, ls = INT_MAX;
+int cnt = 0, ll = INT_MAX;
 vector<vector<int>> t;
 
-void dfs(int rr, int l) {
-    // l: length of the path from root to leaf node
-    if (t[rr].empty()) { // leaf node
-        double s = p * pow(r, l);
-        if (s < ls) {
-            ls = s;
-            cnt = 1;
-        } else if (s == ls) {
-            cnt++;
+void bfs(int root, int l) {
+    queue<pair<int, int>> q;
+    q.emplace(root, l);
+    ll = INT_MAX;
+    cnt = 0;
+    while (!q.empty()) {
+        auto [node, level] = q.front();
+        q.pop();
+        if (t[node].empty()) {
+            if (level < ll) {
+                ll = level;
+                cnt = 1;
+            } else if (level == ll) {
+                cnt++;
+            }
+        } else {
+            for (int child : t[node]) {
+                q.emplace(child, level + 1);
+            }
         }
-        return;
-    }
-    for (int i = 0; i < (int)t[rr].size(); i++) {
-        dfs(t[rr][i], l + 1);
     }
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
+    double p, r;
     cin >> n >> p >> r;
     r = r / 100 + 1;
     t.resize(n);
@@ -62,8 +68,8 @@ int main(int argc, char const *argv[]) {
         }
     }
     int rr = find(isroot.begin(), isroot.end(), true) - isroot.begin();
-    dfs(rr, 0);
-    cout << fixed << setprecision(4) << ls << " " << cnt << "\n";
+    bfs(rr, 0);
+    cout << fixed << setprecision(4) << p * pow(r, ll) << " " << cnt << "\n";
 
     return 0;
 }

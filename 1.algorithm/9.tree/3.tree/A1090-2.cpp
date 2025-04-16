@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805376476626944 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1090 Highest Price in Supply Chain
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805376476626944
+    @pintia psid=994805342720868352 pid=994805376476626944 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1090 Highest Price in Supply Chain
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805376476626944
 */
 
 // @pintia code=start
@@ -29,12 +29,11 @@ void dfs(int rr, int l) {
     // l: length of the path from root to leaf node
     if (t[rr].empty()) { // leaf node
         if (l > ml) {
-            // update the maximum length
-            // not the maximum price
+            // update the maximum length, not the maximum price
             ml = l;
             cnt = 1;
         } else if (l == ml) {
-            ++cnt;
+            cnt++;
         }
         return;
     }

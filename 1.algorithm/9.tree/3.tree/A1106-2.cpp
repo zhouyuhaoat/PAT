@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805362341822464 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1106 Lowest Price in Supply Chain
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805362341822464
+    @pintia psid=994805342720868352 pid=994805362341822464 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1106 Lowest Price in Supply Chain
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805362341822464
 */
 
 // @pintia code=start
@@ -36,7 +36,7 @@ void dfs(int rr, int l) {
             ll = l;
             cnt = 1;
         } else if (l == ll) {
-            ++cnt;
+            cnt++;
         }
         return;
     }
