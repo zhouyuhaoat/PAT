@@ -20,6 +20,18 @@
 
 using namespace std;
 
+int isInsertionSort(vector<int>& d1, vector<int>& d2) {
+    int pos = 1;
+    while (pos < (int)d1.size() && d2[pos - 1] <= d2[pos]) { // sorted part
+        pos++;
+    }
+    int unsorted = pos;
+    while (pos < (int)d1.size() && d1[pos] == d2[pos]) { // unsorted part
+        pos++;
+    }
+    return pos == (int)d1.size() ? unsorted : -1;
+}
+
 int main(int argc, char const *argv[]) {
 
     int n;
@@ -31,15 +43,8 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> d2[i];
     }
-    int pos = 1; // insertion sort: sorted part + unsorted part
-    while (pos < n && d2[pos - 1] <= d2[pos]) { // sorted part
-        pos++;
-    }
-    int unsorted = pos;
-    while (pos < n && d1[pos] == d2[pos]) { // unsorted part
-        pos++;
-    }
-    if (pos == n) {
+    int unsorted = isInsertionSort(d1, d2); // insertion sort: sorted part + unsorted part
+    if (unsorted != -1) {
         cout << "Insertion Sort\n";
         sort(d1.begin(), d1.begin() + unsorted + 1);
     } else {
