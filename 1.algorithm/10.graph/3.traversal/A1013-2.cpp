@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805500414115840 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1013 Battle Over Cities
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805500414115840
+    @pintia psid=994805342720868352 pid=994805500414115840 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1013 Battle Over Cities
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805500414115840
 */
 
 // @pintia code=start
@@ -73,7 +73,7 @@ int main(int argc, char const *argv[]) {
         for (int i = 1; i <= n; i++) {
             int fi = find(i);
             if (i != id && !vis[fi]) {
-                ++cnt;
+                cnt++;
                 vis[fi] = true;
             }
         }

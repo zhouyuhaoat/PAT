@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805392092020736 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1076 Forwards on Weibo
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805392092020736
+    @pintia psid=994805342720868352 pid=994805392092020736 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1076 Forwards on Weibo
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805392092020736
 */
 
 // @pintia code=start
@@ -38,7 +38,7 @@ int bfs(int s, int l) {
             if (!vis[g[t][i]] && level[g[t][i]] <= l) {
                 q.emplace(g[t][i]);
                 vis[g[t][i]] = true;
-                ++cnt;
+                cnt++;
             }
         }
     }

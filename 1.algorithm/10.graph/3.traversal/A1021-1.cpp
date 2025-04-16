@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805482919673856 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1021 Deepest Root
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805482919673856
+    @pintia psid=994805342720868352 pid=994805482919673856 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1021 Deepest Root
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805482919673856
 */
 
 // @pintia code=start
@@ -29,11 +29,11 @@ vector<vector<int>> g;
 
 void dfs(int s, int l) {
     vis[s] = true;
-    if (l > maxl) {
+    if (maxl < l) {
         maxl = l;
         tmp.clear();
         tmp.emplace_back(s);
-    } else if (l == maxl) {
+    } else if (maxl == l) {
         tmp.emplace_back(s);
     }
     for (int i = 0; i < (int)g[s].size(); i++) {
@@ -81,7 +81,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 1; i <= n; i++) {
         int fi = find(i);
         if (!vis[fi]) {
-            ++cnt;
+            cnt++;
             vis[fi] = true;
         }
     }
@@ -93,7 +93,7 @@ int main(int argc, char const *argv[]) {
         fill(vis.begin(), vis.end(), false);
         dfs(tmp[0], 1);
         ans.insert(tmp.begin(), tmp.end());
-        for (auto it : ans) {
+        for (int it : ans) {
             cout << it << "\n";
         }
     } else {

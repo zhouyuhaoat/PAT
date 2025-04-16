@@ -1,48 +1,44 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-30 14:36:06
- *	modified:	2023-03-31 14:06:38
+ *	created:	2025-04-16 14:06:06
+ *	modified:	2025-04-16 14:36:38
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805456881434624 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1034 Head of a Gang
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805456881434624
+    @pintia psid=994805342720868352 pid=994805456881434624 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1034 Head of a Gang
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805456881434624
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
 
-vector<bool> vis;
-vector<int> pw;
-vector<vector<int>> g, w, ans;
+unordered_map<string, bool> vis;
+unordered_map<string, vector<string>> g;
+unordered_set<string> ps; // persons
+unordered_map<string, int> pw; // person weight
+unordered_map<string, unordered_map<string, int>> w; // weight between two persons
+vector<vector<string>> comps; // components
 
-void dfs(vector<int>& tmp, int s) {
-    vis[s] = true;
-    tmp.emplace_back(s);
-    for (int i = 0; i < (int)g[s].size(); i++) {
-        if (!vis[g[s][i]]) {
-            dfs(tmp, g[s][i]);
+void dfs(string u, vector<string>& comp) {
+    vis[u] = true;
+    comp.emplace_back(u);
+    if (g.count(u) != 0) {
+        for (const string& v : g[u]) {
+            if (!vis[v]) {
+                dfs(v, comp);
+            }
         }
-    }
-}
-
-int cnt = 1;
-map<string, int> mid;
-map<int, string> mstr;
-void getid(string s) {
-    if (mid[s] == 0) {
-        mid[s] = cnt;
-        mstr[cnt] = s;
-        ++cnt;
     }
 }
 
@@ -50,57 +46,49 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    vector<vector<int>> d(n);
     for (int i = 0; i < n; i++) {
         string n1, n2;
         int t;
         cin >> n1 >> n2 >> t;
-        getid(n1), getid(n2);
-        d[i].insert(d[i].end(), {mid[n1], mid[n2], t});
+        ps.emplace(n1), ps.emplace(n2);
+        g[n1].emplace_back(n2), g[n2].emplace_back(n1);
+        pw[n1] += t, pw[n2] += t;
+        w[n1][n2] += t, w[n2][n1] += t;
     }
-    g.resize(cnt), pw.resize(cnt);
-    w.resize(cnt, vector<int>(cnt));
-    for (int i = 0; i < n; i++) {
-        g[d[i][0]].emplace_back(d[i][1]);
-        g[d[i][1]].emplace_back(d[i][0]);
-        pw[d[i][0]] += d[i][2];
-        pw[d[i][1]] += d[i][2];
-        w[d[i][0]][d[i][1]] += d[i][2];
-        w[d[i][1]][d[i][0]] += d[i][2];
-    }
-    vis.resize(cnt, false);
-    for (int i = 1; i <= cnt - 1; i++) {
-        if (!vis[i]) {
-            vector<int> tmp; // connected component
-            dfs(tmp, i);
-            ans.emplace_back(tmp);
+    for (const string& p : ps) {
+        if (!vis[p]) {
+            vector<string> comp; // connected component
+            dfs(p, comp);
+            comps.emplace_back(comp);
         }
     }
     map<string, int> gang;
-    for (int i = 0; i < (int)ans.size(); i++) {
-        if (ans[i].size() > 2) {
-            int sum = 0; // each pair of people
-            for (int j = 0; j < (int)ans[i].size(); j++) {
-                for (int k = j + 1; k < (int)ans[i].size(); k++) {
-                    sum += w[ans[i][j]][ans[i][k]];
+    for (auto& comp : comps) {
+        if (comp.size() > 2) {
+            int total = 0; // each pair of people in the component
+            for (size_t i = 0; i < comp.size(); i++) {
+                for (size_t j = i + 1; j < comp.size(); j++) {
+                    string u = comp[i], v = comp[j];
+                    if (w.count(u) != 0 && w[u].count(v) != 0) {
+                        total += w[u][v];
+                    }
                 }
             }
-            if (sum > k) {
-                // head of gang
-                sort(ans[i].begin(), ans[i].end(), [](int a, int b) -> bool {
+            if (total > k) { // head of gang
+                sort(comp.begin(), comp.end(), [](const string& a, const string& b) {
                     if (pw[a] != pw[b]) {
                         return pw[a] > pw[b];
                     } else {
-                        return mstr[a] < mstr[b];
+                        return a < b;
                     }
                 });
-                gang[mstr[ans[i][0]]] = ans[i].size();
+                gang[comp[0]] = comp.size();
             }
         }
     }
     cout << gang.size() << "\n";
-    for (auto it : gang) {
-        cout << it.first << " " << it.second << "\n";
+    for (auto const& [head, size] : gang) {
+        cout << head << " " << size << "\n";
     }
 
     return 0;

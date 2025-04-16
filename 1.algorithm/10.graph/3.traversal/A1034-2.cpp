@@ -1,52 +1,47 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-31 13:40:09
- *	modified:	2023-03-31 14:27:03
+ *	created:	2025-04-16 10:40:09
+ *	modified:	2025-04-16 13:00:00
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805456881434624 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1034 Head of a Gang
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805456881434624
+    @pintia psid=994805342720868352 pid=994805456881434624 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1034 Head of a Gang
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805456881434624
 */
 
 // @pintia code=start
+#include <algorithm>
 #include <iostream>
 #include <map>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
 
-vector<bool> vis;
-vector<int> w;
-vector<vector<int>> g;
+unordered_map<string, bool> vis;
+unordered_map<string, vector<string>> g;
+unordered_map<string, int> w;
+unordered_set<string> ps;
 
-int cnt = 1;
-map<string, int> mid;
-map<int, string> mstr;
-void getid(string s) {
-    if (mid[s] == 0) {
-        mid[s] = cnt;
-        mstr[cnt] = s;
-        ++cnt;
-    }
-}
-
-void dfs(int v, int &num, int &sum, int &maxw, int &maxid) {
+void dfs(string u, int& num, int& total, int& maxw, string& head) {
     // update the information between dfs
-    vis[v] = true;
-    ++num;
-    sum += w[v];
-    if (w[v] > maxw) { // head of gang
-        maxw = w[v];
-        maxid = v;
+    vis[u] = true;
+    num++;
+    total += w[u];
+    if (maxw < w[u]) { // head of gang
+        maxw = w[u];
+        head = u;
     }
-    for (int i = 0; i < (int)g[v].size(); i++) {
-        if (!vis[g[v][i]]) {
-            dfs(g[v][i], num, sum, maxw, maxid);
+    if (g.count(u) != 0) {
+        for (const string& v : g[u]) {
+            if (!vis[v]) {
+                dfs(v, num, total, maxw, head);
+            }
         }
     }
 }
@@ -55,36 +50,28 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    vector<vector<int>> d;
     for (int i = 0; i < n; i++) {
         string n1, n2;
         int t;
         cin >> n1 >> n2 >> t;
-        getid(n1), getid(n2);
-        d.emplace_back(vector<int>{mid[n1], mid[n2], t});
-    }
-    g.resize(cnt), w.resize(cnt);
-    for (int i = 0; i < n; i++) {
-        g[d[i][0]].emplace_back(d[i][1]);
-        g[d[i][1]].emplace_back(d[i][0]);
-        w[d[i][0]] += d[i][2];
-        w[d[i][1]] += d[i][2];
+        ps.insert(n1), ps.insert(n2);
+        g[n1].emplace_back(n2), g[n2].emplace_back(n1);
+        w[n1] += t, w[n2] += t;
     }
     map<string, int> gang;
-    vis.resize(cnt, false);
-    for (int i = 1; i <= cnt - 1; i++) {
-        if (!vis[i]) {
-            // the information of connected component
-            int sum = 0, maxw = -1, maxid = -1, num = 0;
-            dfs(i, num, sum, maxw, maxid);
-            if (sum > 2 * k && num > 2) {
-                gang.emplace(make_pair(mstr[maxid], num));
+    for (const string& p : ps) {
+        if (!vis[p]) {
+            int total = 0, maxw = -1, num = 0;
+            string head; // the information of connected component
+            dfs(p, num, total, maxw, head);
+            if (total > 2 * k && num > 2) {
+                gang[head] = num;
             }
         }
     }
     cout << gang.size() << "\n";
-    for (auto it : gang) {
-        cout << it.first << " " << it.second << "\n";
+    for (auto const& [head, size] : gang) {
+        cout << head << " " << size << "\n";
     }
 
     return 0;
