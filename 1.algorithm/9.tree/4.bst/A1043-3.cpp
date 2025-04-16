@@ -14,35 +14,28 @@
 */
 
 // @pintia code=start
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-bool isMirror = false;
-vector<int> pre, post;
+vector<int> pre, post1, post2;
 
-void posttra(int r, int e) {
+auto makePred(int root, bool mirror) { // predicate
+    return [root, mirror](int a) {
+        return mirror ? a < root : a >= root; // BST & mirror BST
+    };
+}
+
+void posttra(int r, int e, vector<int>& post, bool mirror) {
     if (r > e) return;
-    int i = r + 1, j = e;
-    if (!isMirror) { // normal
-        while (i <= e && pre[i] < pre[r]) { // left subtree
-            i++;
-        }
-        while (j > r && pre[j] >= pre[r]) { // right subtree
-            j--;
-        }
-    } else { // mirror
-        while (i <= e && pre[i] >= pre[r]) { // left subtree
-            i++;
-        }
-        while (j > r && pre[j] < pre[r]) { // right subtree
-            j--;
-        }
-    }
-    if (i - j != 1) return; // not a BST
-    posttra(r + 1, j);
-    posttra(i, e);
+    auto pred = makePred(pre[r], mirror);
+    int i = find_if(pre.begin() + r + 1, pre.begin() + e + 1, pred) - pre.begin();
+    bool flag = all_of(pre.begin() + i, pre.begin() + e + 1, pred); // right subtree
+    if (!flag) return;
+    posttra(r + 1, i - 1, post, mirror);
+    posttra(i, e, post, mirror);
     post.emplace_back(pre[r]);
 }
 
@@ -54,19 +47,16 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
     }
-    posttra(0, n - 1);
-    if ((int)post.size() != n) { // possible mirror
-        isMirror = true;
-        post.clear();
-        posttra(0, n - 1);
-    }
-    if ((int)post.size() == n) { // a BST or mirror
+    posttra(0, n - 1, post1, true);
+    posttra(0, n - 1, post2, false);
+    if ((int)post1.size() == n || (int)post2.size() == n) {
         cout << "YES\n";
+        auto& post = (int)post1.size() == n ? post1 : post2;
         for (int i = 0; i < n; i++) {
             cout << post[i];
             i < n - 1 ? cout << " " : cout << "\n";
         }
-    } else { // not a BST and mirror
+    } else {
         cout << "NO\n";
     }
 

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805367987355648 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1099 Build A Binary Search Tree
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805367987355648
+    @pintia psid=994805342720868352 pid=994805367987355648 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1099 Build A Binary Search Tree
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805367987355648
 */
 
 // @pintia code=start
