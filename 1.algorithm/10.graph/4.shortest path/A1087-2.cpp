@@ -1,71 +1,76 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-31 09:36:52
- *	modified:	2023-03-31 10:14:37
+ *	created:	2025-04-16 21:36:42
+ *	modified:	2025-04-16 22:19:55
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805379664297984 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1087 All Roads Lead to Rome
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805379664297984
+    @pintia psid=994805342720868352 pid=994805379664297984 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1087 All Roads Lead to Rome
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805379664297984
 */
 
 // @pintia code=start
 #include <climits>
 #include <iostream>
-#include <map>
 #include <queue>
+#include <unordered_map>
 
 using namespace std;
 
 struct city {
-    int v, cost;
-    city(int v, int cost) : v(v), cost(cost) {
+    string v;
+    int cost;
+    city(string v, int cost) : v(v), cost(cost) {
     }
     friend bool operator<(city a, city b) {
         return a.cost > b.cost;
     }
 };
 
-vector<bool> vis;
-vector<int> h, c, pre, num, sum, cnt;
-vector<vector<city>> g;
+vector<string> cities;
+unordered_map<string, bool> vis;
+unordered_map<string, int> h, c, p, sumh, cntc; // cost, city
+unordered_map<string, string> pre;
+unordered_map<string, vector<city>> g;
 
-void dijkstra(int s) {
-    c[s] = 0, num[s] = 1, sum[s] = h[s];
+void dijkstra(string s) {
+    c[s] = 0, p[s] = 1, sumh[s] = h[s], cntc[s] = 0;
     priority_queue<city> q;
     q.emplace(s, 0);
     while (!q.empty()) {
         city t = q.top();
         q.pop();
-        int u = t.v;
+        string u = t.v;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
-        for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
-            if (!vis[v]) {
-                if (c[u] + g[u][i].cost < c[v]) {
-                    c[v] = c[u] + g[u][i].cost;
-                    pre[v] = u;
-                    num[v] = num[u];
-                    sum[v] = sum[u] + h[v];
-                    cnt[v] = cnt[u] + 1;
-                    q.emplace(v, c[v]);
-                } else if (c[u] + g[u][i].cost == c[v]) {
-                    num[v] += num[u];
-                    if (sum[u] + h[v] > sum[v]) {
-                        sum[v] = sum[u] + h[v];
+        if (g.count(u) != 0) {
+            for (int i = 0; i < (int)g[u].size(); i++) {
+                string v = g[u][i].v;
+                if (!vis[v]) {
+                    if (c[u] + g[u][i].cost < c[v]) {
+                        c[v] = c[u] + g[u][i].cost;
                         pre[v] = u;
-                        cnt[v] = cnt[u] + 1;
-                    } else if (sum[u] + h[v] == sum[v]) {
-                        if ((float)(sum[u] + h[v]) / (cnt[u] + 1) > (float)sum[v] / cnt[v]) {
+                        p[v] = p[u];
+                        sumh[v] = sumh[u] + h[v];
+                        cntc[v] = cntc[u] + 1;
+                        q.emplace(v, c[v]);
+                    } else if (c[u] + g[u][i].cost == c[v]) {
+                        p[v] += p[u];
+                        if (sumh[u] + h[v] > sumh[v]) {
+                            sumh[v] = sumh[u] + h[v];
                             pre[v] = u;
-                            cnt[v] = cnt[u] + 1;
+                            cntc[v] = cntc[u] + 1;
+                        } else if (sumh[u] + h[v] == sumh[v]) {
+                            if (cntc[v] > 0 && (float)(sumh[u] + h[v]) / (cntc[u] + 1) > (float)sumh[v] / cntc[v]) {
+                                pre[v] = u;
+                                cntc[v] = cntc[u] + 1;
+                            }
                         }
                     }
                 }
@@ -74,13 +79,15 @@ void dijkstra(int s) {
     }
 }
 
-vector<int> ans;
-void dfs(int s, int v) {
+vector<string> ans;
+void dfs(string s, string v) {
     if (v == s) {
         ans.emplace_back(v);
         return;
     }
-    dfs(s, pre[v]);
+    if (pre.count(v) != 0) {
+        dfs(s, pre[v]);
+    }
     ans.emplace_back(v);
 }
 
@@ -89,30 +96,32 @@ int main(int argc, char const *argv[]) {
     int n, k;
     string s;
     cin >> n >> k >> s;
-    c.resize(n, INT_MAX), vis.resize(n, false);
-    h.resize(n), pre.resize(n), num.resize(n);
-    sum.resize(n), cnt.resize(n), g.resize(n);
-    map<string, int> mid;
-    map<int, string> mstr;
-    mid[s] = 0, mstr[0] = s;
+    h[s] = 0;
+    cities.emplace_back(s);
     for (int i = 1; i < n; i++) {
-        string c;
-        cin >> c >> h[i];
-        mid[c] = i, mstr[i] = c;
+        string name;
+        int happiness;
+        cin >> name >> happiness;
+        h[name] = happiness;
+        cities.emplace_back(name);
+    }
+    for (const string& name : cities) {
+        c[name] = INT_MAX, p[name] = 0;
+        sumh[name] = 0, cntc[name] = 0;
     }
     for (int i = 0; i < k; i++) {
         string c1, c2;
         int cost;
         cin >> c1 >> c2 >> cost;
-        g[mid[c1]].emplace_back(mid[c2], cost);
-        g[mid[c2]].emplace_back(mid[c1], cost);
+        g[c1].emplace_back(c2, cost);
+        g[c2].emplace_back(c1, cost);
     }
-    dijkstra(mid[s]);
-    int e = mid["ROM"];
-    cout << num[e] << " " << c[e] << " " << sum[e] << " " << sum[e] / cnt[e] << "\n";
-    dfs(mid[s], e);
+    dijkstra(s);
+    string Rome = "ROM";
+    cout << p[Rome] << " " << c[Rome] << " " << sumh[Rome] << " " << (int)sumh[Rome] / cntc[Rome] << "\n";
+    dfs(s, Rome);
     for (int i = 0; i < (int)ans.size(); i++) {
-        cout << mstr[ans[i]];
+        cout << ans[i];
         i < (int)ans.size() - 1 ? cout << "->" : cout << "\n";
     }
 

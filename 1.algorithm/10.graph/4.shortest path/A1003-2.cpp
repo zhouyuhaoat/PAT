@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805523835109376 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1003 Emergency
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805523835109376
+    @pintia psid=994805342720868352 pid=994805523835109376 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1003 Emergency
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805523835109376
 */
 
 // @pintia code=start
@@ -22,17 +22,17 @@
 using namespace std;
 
 struct node {
-    int v, d;
-    node(int v, int d) : v(v), d(d) {
+    int v, dis;
+    node(int v, int dis) : v(v), dis(dis) {
     }
     friend bool operator<(node a, node b) {
-        return a.d > b.d;
+        return a.dis > b.dis;
     }
 };
 
 vector<bool> vis;
 vector<int> d, t;
-vector<vector<int>> pre;
+vector<vector<int>> pre; // predecessor
 vector<vector<node>> g;
 
 void dijkstra(int s) {
@@ -51,12 +51,12 @@ void dijkstra(int s) {
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].v;
             if (!vis[v]) {
-                if (d[u] + g[u][i].d < d[v]) {
-                    d[v] = d[u] + g[u][i].d;
+                if (d[u] + g[u][i].dis < d[v]) {
+                    d[v] = d[u] + g[u][i].dis;
                     pre[v].clear();
                     pre[v].emplace_back(u);
                     q.emplace(v, d[v]);
-                } else if (d[u] + g[u][i].d == d[v]) {
+                } else if (d[u] + g[u][i].dis == d[v]) {
                     pre[v].emplace_back(u);
                 }
             }
@@ -65,16 +65,16 @@ void dijkstra(int s) {
 }
 
 // predecessor + dfs: backtracking to find all paths
-int cnt = 0, maxt = -1;
+int p = 0, maxt = -1;
 vector<int> tmp;
 void dfs(int s, int v) {
     if (v == s) {
-        ++cnt;
+        p++;
         tmp.emplace_back(v);
         int sumt = accumulate(tmp.begin(), tmp.end(), 0, [](int acc, int idx) -> int {
             return acc + t[idx];
         });
-        if (sumt > maxt) {
+        if (maxt < sumt) {
             maxt = sumt;
         }
         tmp.pop_back();
@@ -104,7 +104,7 @@ int main(int argc, char const *argv[]) {
     }
     dijkstra(c1);
     dfs(c1, c2);
-    cout << cnt << " " << maxt << "\n";
+    cout << p << " " << maxt << "\n";
 
     return 0;
 }

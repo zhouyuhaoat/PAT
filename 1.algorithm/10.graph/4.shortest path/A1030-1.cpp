@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805464397627392 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1030 Travel Plan
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805464397627392
+    @pintia psid=994805342720868352 pid=994805464397627392 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1030 Travel Plan
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805464397627392
 */
 
 // @pintia code=start
@@ -30,7 +30,7 @@ struct node {
 };
 
 vector<bool> vis;
-vector<int> d, c, pre;
+vector<int> d, c, pre; // distance; cost; predecessor
 vector<vector<node>> g;
 
 void dijkstra(int s) {

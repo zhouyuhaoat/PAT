@@ -7,14 +7,13 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805464397627392 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1030 Travel Plan
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805464397627392
+    @pintia psid=994805342720868352 pid=994805464397627392 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1030 Travel Plan
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805464397627392
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <climits>
 #include <iostream>
 #include <queue>
@@ -22,11 +21,11 @@
 using namespace std;
 
 struct node {
-    int v, d;
-    node(int v, int d) : v(v), d(d) {
+    int v, dis;
+    node(int v, int dis) : v(v), dis(dis) {
     }
     friend bool operator<(node a, node b) {
-        return a.d > b.d;
+        return a.dis > b.dis;
     }
 };
 
@@ -50,12 +49,12 @@ void dijkstra(int s) {
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].v;
             if (!vis[v]) {
-                if (d[u] + g[u][i].d < d[v]) {
-                    d[v] = d[u] + g[u][i].d;
+                if (d[u] + g[u][i].dis < d[v]) {
+                    d[v] = d[u] + g[u][i].dis;
                     pre[v].clear();
                     pre[v].emplace_back(u);
                     q.emplace(v, d[v]);
-                } else if (d[u] + g[u][i].d == d[v]) {
+                } else if (d[u] + g[u][i].dis == d[v]) {
                     pre[v].emplace_back(u);
                 }
             }
@@ -65,15 +64,14 @@ void dijkstra(int s) {
 
 int minc = INT_MAX;
 vector<int> tmp, ans;
-void dfs(int s, int v) {
+void dfs(int s, int v) { // reversed path
     if (v == s) {
         tmp.emplace_back(v);
-        int sumc = 0;
-        // from the start to the end
+        int sumc = 0; // from the start to the end
         for (int i = tmp.size() - 1; i > 0; i--) {
             sumc += c[tmp[i]][tmp[i - 1]];
         }
-        if (sumc < minc) {
+        if (minc > sumc) {
             minc = sumc;
             ans = tmp;
         }
@@ -102,9 +100,8 @@ int main(int argc, char const *argv[]) {
     }
     dijkstra(s);
     dfs(s, e);
-    reverse(ans.begin(), ans.end());
-    for (auto it : ans) {
-        cout << it << " ";
+    for (int i = (int)ans.size() - 1; i >= 0; i--) {
+        cout << ans[i] << " ";
     }
     cout << d[e] << " " << minc << "\n";
 

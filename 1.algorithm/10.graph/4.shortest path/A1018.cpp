@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805489282433024 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1018 Public Bike Management
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805489282433024
+    @pintia psid=994805342720868352 pid=994805489282433024 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1018 Public Bike Management
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805489282433024
 */
 
 // @pintia code=start
@@ -30,7 +30,7 @@ struct sta {
 };
 
 vector<bool> vis;
-vector<int> d, b;
+vector<int> d, b; // bike
 vector<vector<sta>> g;
 vector<vector<int>> pre;
 
@@ -62,32 +62,31 @@ void dijkstra(int s) {
     }
 }
 
-int mtt = INT_MAX, mtb = INT_MAX;
+int minSend = INT_MAX, minBack = INT_MAX;
 vector<int> ans, tmp;
 void dfs(int s, int v) {
     if (v == s) {
         tmp.emplace_back(v);
-        int tt = 0, tb = 0; // take, back
-        // simulate the process step by step
-        for (int i = tmp.size() - 2; i >= 0; i--) {
-            int nb = b[tmp[i]];
-            if (nb < 0) { // not enough
-                if (tb >= abs(nb)) { // enough in hand at the moment
-                    tb += nb;
+        int send = 0, back = 0;
+        for (int i = tmp.size() - 2; i >= 0; i--) { // simulate the process step by step
+            int net = b[tmp[i]]; // net bike
+            if (net < 0) { // not enough
+                if (back >= abs(net)) { // enough in hand at the moment
+                    back += net; // take back less
                 } else { // not enough in hand at the moment
-                    tt += abs(nb) - tb; // take more in the beginning
-                    tb = 0; // more: just enough, empty in hand at the moment
+                    send += abs(net) - back; // send more in the beginning
+                    back = 0; // more: just enough, empty in hand at the moment
                 }
             } else { // enough: take back
-                tb += nb;
+                back += net;
             }
         }
-        if (tt < mtt) {
-            mtt = tt;
-            mtb = tb;
+        if (minSend > send) {
+            minSend = send;
+            minBack = back;
             ans = tmp;
-        } else if (tt == mtt && tb < mtb) {
-            mtb = tb;
+        } else if (send == minSend && back < minBack) {
+            minBack = back;
             ans = tmp;
         }
         tmp.pop_back();
@@ -118,10 +117,10 @@ int main(int argc, char const *argv[]) {
     }
     dijkstra(0);
     dfs(0, sp);
-    cout << mtt << " ";
+    cout << minSend << " ";
     for (int i = ans.size() - 1; i >= 0; i--) {
         cout << ans[i];
-        i > 0 ? cout << "->" : cout << " " << mtb << "\n";
+        i > 0 ? cout << "->" : cout << " " << minBack << "\n";
     }
 
     return 0;

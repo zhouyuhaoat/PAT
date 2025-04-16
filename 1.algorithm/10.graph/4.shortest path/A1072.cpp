@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805396953219072 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1072 Gas Station
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805396953219072
+    @pintia psid=994805342720868352 pid=994805396953219072 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1072 Gas Station
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805396953219072
 */
 
 // @pintia code=start
@@ -61,7 +61,7 @@ void dijkstra(int s) {
     }
 }
 
-int getid(string s, int n) {
+int getID(string s, int n) {
     int id = 0;
     if (!isdigit(s[0])) {
         s.erase(0, 1);
@@ -74,20 +74,17 @@ int main(int argc, char const *argv[]) {
 
     int n, m, k, ds;
     cin >> n >> m >> k >> ds;
-    d.resize(n + m + 1), vis.resize(n + m + 1);
-    g.resize(n + m + 1);
+    vis.resize(n + m + 1), d.resize(n + m + 1), g.resize(n + m + 1);
     for (int i = 0; i < k; i++) {
         string p1, p2;
         int dist;
         cin >> p1 >> p2 >> dist;
-        int id1 = getid(p1, n), id2 = getid(p2, n);
-        g[id1].emplace_back(id2, dist);
-        g[id2].emplace_back(id1, dist);
+        int id1 = getID(p1, n), id2 = getID(p2, n);
+        g[id1].emplace_back(id2, dist), g[id2].emplace_back(id1, dist);
     }
-    int maxdis = -1, can = -1;
-    double avedis = -1;
-    // traverse all gas stations
-    for (int s = n + 1; s <= n + m; s++) {
+    int maxdis = -1, can = -1; // candidate
+    double avgdis = -1;
+    for (int s = n + 1; s <= n + m; s++) { // traverse all gas stations
         dijkstra(s);
         int dis = INT_MAX, sumdis = 0;
         bool islaw = true;
@@ -99,23 +96,20 @@ int main(int argc, char const *argv[]) {
                 break;
             }
         }
-        if (islaw) {
-            if (dis > maxdis) {
-                maxdis = dis;
-                avedis = (double)sumdis / n;
-                can = s;
-            } else if (dis == maxdis) {
-                if ((double)sumdis / n < avedis) {
-                    avedis = (double)sumdis / n;
-                    can = s;
-                }
-            }
+        if (!islaw) continue;
+        if (maxdis < dis) {
+            maxdis = dis;
+            avgdis = (double)sumdis / n;
+            can = s;
+        } else if (maxdis == dis && (double)sumdis / n < avgdis) {
+            avgdis = (double)sumdis / n;
+            can = s;
         }
     }
     if (can != -1) {
         cout << "G" << can - n << "\n";
         cout << fixed << setprecision(1) << (double)maxdis << " ";
-        cout << fixed << setprecision(1) << round(avedis * 10) / 10 << "\n";
+        cout << fixed << setprecision(1) << round(avgdis * 10) / 10 << "\n";
     } else {
         cout << "No Solution\n";
     }
