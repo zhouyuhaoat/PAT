@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805380754817024 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1086 Tree Traversals Again
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805380754817024
+    @pintia psid=994805342720868352 pid=994805380754817024 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1086 Tree Traversals Again
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805380754817024
 */
 
 // @pintia code=start
