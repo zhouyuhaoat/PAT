@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805361586847744 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1107 Social Clusters
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805361586847744
+    @pintia psid=994805342720868352 pid=994805361586847744 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1107 Social Clusters
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805361586847744
 */
 
 // @pintia code=start
@@ -67,7 +67,7 @@ int main(int argc, char const *argv[]) {
     }
     map<int, int> c;
     for (int i = 1; i <= n; i++) {
-        ++c[find(i)];
+        c[find(i)]++;
     }
     // sort map by value
     vector<int> clu(c.size());
