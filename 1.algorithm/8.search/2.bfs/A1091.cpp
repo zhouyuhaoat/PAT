@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805375457411072 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1091 Acute Stroke
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805375457411072
+    @pintia psid=994805342720868352 pid=994805375457411072 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1091 Acute Stroke
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805375457411072
 */
 
 // @pintia code=start
@@ -20,7 +20,7 @@
 using namespace std;
 
 struct p {
-    int x, y, z;
+    int x, y, z; // slices
 };
 
 int m, n, l, t;
@@ -31,7 +31,7 @@ int X[6] = {-1, 1, 0, 0, 0, 0};
 int Y[6] = {0, 0, -1, 1, 0, 0};
 int Z[6] = {0, 0, 0, 0, -1, 1};
 
-bool islaw(int x, int y, int z) {
+bool valid(int x, int y, int z) {
     if (x < 0 || x >= l || y < 0 || y >= m || z < 0 || z >= n) {
         return false;
     }
@@ -41,7 +41,7 @@ bool islaw(int x, int y, int z) {
     return true;
 }
 
-int bfs(int x, int y, int z) {
+int bfs(int x, int y, int z) { // Flood Fill
     queue<p> q;
     q.emplace(p{x, y, z});
     v[x][y][z] = true;
@@ -49,20 +49,16 @@ int bfs(int x, int y, int z) {
     while (!q.empty()) {
         p f = q.front();
         q.pop();
-        ++cnt;
+        cnt++;
         for (int i = 0; i < 6; i++) {
             int vx = f.x + X[i], vy = f.y + Y[i], vz = f.z + Z[i];
-            if (islaw(vx, vy, vz)) {
+            if (valid(vx, vy, vz)) {
                 q.emplace(p{vx, vy, vz});
                 v[vx][vy][vz] = true;
             }
         }
     }
-    if (cnt >= t) {
-        return cnt;
-    } else {
-        return 0;
-    }
+    return cnt >= t ? cnt : 0;
 }
 
 int main(int argc, char const *argv[]) {
