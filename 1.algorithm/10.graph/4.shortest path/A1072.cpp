@@ -87,16 +87,16 @@ int main(int argc, char const *argv[]) {
     for (int s = n + 1; s <= n + m; s++) { // traverse all gas stations
         dijkstra(s);
         int dis = INT_MAX, sumdis = 0;
-        bool islaw = true;
+        bool valid = true;
         for (int i = 1; i <= n; i++) {
             dis = min(dis, d[i]);
             sumdis += d[i];
             if (d[i] > ds) { // out of range
-                islaw = false;
+                valid = false;
                 break;
             }
         }
-        if (!islaw) continue;
+        if (!valid) continue;
         if (maxdis < dis) {
             maxdis = dis;
             avgdis = (double)sumdis / n;
