@@ -7,26 +7,26 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805356599820288 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1114 Family Property
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805356599820288
+    @pintia psid=994805342720868352 pid=994805356599820288 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1114 Family Property
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805356599820288
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
-#include <map>
 #include <numeric>
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
 
 struct fam { // family
     int id, num;
-    double avges, avgar; // estate, area
+    double avgEs, avgAr; // estate, area
 };
 
 vector<int> f(1e5); // disjoint set union
@@ -52,17 +52,13 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    map<int, double> es, ar;
-    set<int> p; // person
-    vector<int> pp;
+    unordered_map<int, double> es, ar;
+    unordered_set<int> p; // persons
     iota(f.begin(), f.end(), 0);
     for (int i = 0; i < n; i++) {
-        int id;
-        cin >> id;
-        pp.emplace_back(id);
+        int id, fa, ma;
+        cin >> id >> fa >> ma;
         p.emplace(id);
-        int fa, ma;
-        cin >> fa >> ma;
         if (fa != -1) {
             joint(id, fa);
             p.emplace(fa);
@@ -81,25 +77,25 @@ int main(int argc, char const *argv[]) {
         }
         double a, b;
         cin >> a >> b;
-        es[id] = a;
-        ar[id] = b;
+        es[id] = a, ar[id] = b;
     }
-    map<int, int> famnum;
+    unordered_map<int, int> famNum;
+    unordered_map<int, double> famEs, famAr;
     for (auto it : p) {
-        ++famnum[find(it)];
-    }
-    map<int, double> fames, famar;
-    for (auto it : pp) {
-        fames[find(it)] += es[it];
-        famar[find(it)] += ar[it];
+        famNum[find(it)]++;
+        if (famEs.count(find(it)) != 0) {
+            famEs[find(it)] += es[it], famAr[find(it)] += ar[it];
+        } else {
+            famEs[find(it)] = es[it], famAr[find(it)] = ar[it];
+        }
     }
     vector<fam> ans;
-    for (auto it : famnum) {
-        ans.emplace_back(fam{it.first, it.second, fames[it.first] / it.second, famar[it.first] / it.second});
+    for (auto it : famNum) {
+        ans.emplace_back(fam{it.first, it.second, famEs[it.first] / it.second, famAr[it.first] / it.second});
     }
     sort(ans.begin(), ans.end(), [](fam a, fam b) -> bool {
-        if (a.avgar != b.avgar) {
-            return a.avgar > b.avgar;
+        if (a.avgAr != b.avgAr) {
+            return a.avgAr > b.avgAr;
         } else {
             return a.id < b.id;
         }
@@ -107,7 +103,7 @@ int main(int argc, char const *argv[]) {
     cout << ans.size() << "\n";
     for (auto it : ans) {
         cout << setfill('0') << setw(4) << it.id << " " << it.num;
-        cout << " " << fixed << setprecision(3) << it.avges << " " << it.avgar << "\n";
+        cout << " " << fixed << setprecision(3) << it.avgEs << " " << it.avgAr << "\n";
     }
 
     return 0;

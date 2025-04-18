@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805357258326016 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1113 Integer Set Partition
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805357258326016
+    @pintia psid=994805342720868352 pid=994805357258326016 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1113 Integer Set Partition
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805357258326016
 */
 
 // @pintia code=start
@@ -31,11 +31,11 @@ int main(int argc, char const *argv[]) {
         sum += d[i];
     }
     sort(d.begin(), d.end());
-    int suml = 0; // set partition
+    int sumL = 0; // set partition
     for (int i = 0; i <= n / 2 - 1; i++) {
-        suml += d[i];
+        sumL += d[i];
     }
-    cout << n % 2 << " " << sum - 2 * suml << "\n";
+    cout << n % 2 << " " << sum - 2 * sumL << "\n";
 
     return 0;
 }

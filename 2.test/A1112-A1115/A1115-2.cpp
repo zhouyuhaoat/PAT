@@ -7,15 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805355987451904 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1115 Counting Nodes in a Binary Search Tree
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805355987451904
+    @pintia psid=994805342720868352 pid=994805355987451904 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1115 Counting Nodes in a Binary Search Tree
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805355987451904
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -25,7 +25,7 @@ struct node {
 };
 
 node *insert(node *r, int v) {
-    if (r == nullptr) {
+    if (!r) {
         r = new node{v, nullptr, nullptr};
         return r;
     }
@@ -37,14 +37,14 @@ node *insert(node *r, int v) {
     return r;
 }
 
-int maxl = -1;
-map<int, int> cnt;
+int maxL = -1;
+unordered_map<int, int> cnt;
 void dfs(node *r, int l) {
-    if (r == nullptr) {
+    if (!r) {
         return;
     }
-    ++cnt[l];
-    maxl = max(maxl, l);
+    cnt[l]++;
+    maxL = max(maxL, l);
     dfs(r->lc, l + 1);
     dfs(r->rc, l + 1);
 }
@@ -60,7 +60,7 @@ int main(int argc, char const *argv[]) {
         r = insert(r, v);
     }
     dfs(r, 1);
-    cout << cnt[maxl] << " + " << cnt[maxl - 1] << " = " << cnt[maxl] + cnt[maxl - 1] << "\n";
+    cout << cnt[maxL] << " + " << cnt[maxL - 1] << " = " << cnt[maxL] + cnt[maxL - 1] << "\n";
 
     return 0;
 }

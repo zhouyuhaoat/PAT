@@ -1,0 +1,58 @@
+/*
+ *	author:		zhouyuhao
+ *	created:	2023-04-02 19:48:22
+ *	modified:	2023-04-02 20:09:08
+ *	item:		Programming Ability Test
+ *	site:		Yuting
+ */
+
+/*
+    @pintia psid=994805342720868352 pid=994805357933608960 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1112 Stucked Keyboard
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805357933608960
+*/
+
+// @pintia code=start
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main(int argc, char const *argv[]) {
+
+    int k;
+    string s;
+    cin >> k >> s;
+    unordered_set<char> notStk; // not stuck
+    for (int i = 0; i < (int)s.size(); i++) {
+        bool flag = true; // appear repeatedly
+        for (int j = 1; j < k && i + j <= (int)s.size(); j++) { // s[(int)s.size()]
+            if (s[i + j] != s[i]) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) { // candidates: possibly stuck
+            i += k - 1;
+        } else {
+            notStk.emplace(s[i]);
+        }
+    }
+    string res;
+    unordered_set<char> out;
+    for (int i = 0; i < (int)s.size(); i++) {
+        res += s[i];
+        if (notStk.find(s[i]) == notStk.end()) { // stuck
+            if (out.find(s[i]) == out.end()) { // not output yet
+                cout << s[i];
+                out.emplace(s[i]); // output only once
+            }
+            i += k - 1;
+        }
+    }
+    cout << "\n" << res << "\n";
+
+    return 0;
+}
+// @pintia code=end
