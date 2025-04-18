@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805349394006016 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1127 ZigZagging on a Tree
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805349394006016
+    @pintia psid=994805342720868352 pid=994805349394006016 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1127 ZigZagging on a Tree
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805349394006016
 */
 
 // @pintia code=start
@@ -28,26 +28,25 @@ struct node {
 vector<int> in, post;
 map<int, vector<int>> t;
 
-void create(int r, int s, int e, int l) {
+void create(int postR, int inL, int inH, int l) {
     // build tree by inorder and postorder
-    if (s > e) {
+    if (inL > inH) {
         return;
     }
-    t[l].emplace_back(post[r]);
-    int i = find(in.begin(), in.end(), post[r]) - in.begin();
-    create(r - (e - i) - 1, s, i - 1, l + 1);
-    create(r - 1, i + 1, e, l + 1);
+    t[l].emplace_back(post[postR]);
+    int inR = find(in.begin(), in.end(), post[postR]) - in.begin();
+    create(postR - (inH - inR) - 1, inL, inR - 1, l + 1); // size of right subtree: inH - inR
+    create(postR - 1, inR + 1, inH, l + 1);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    in.resize(n);
+    in.resize(n), post.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    post.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> post[i];
     }

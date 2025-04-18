@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805349851185152 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1126 Eulerian Path
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805349851185152
+    @pintia psid=994805342720868352 pid=994805349851185152 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1126 Eulerian Path
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805349851185152
 */
 
 // @pintia code=start
@@ -36,22 +36,15 @@ int main(int argc, char const *argv[]) {
     int n, m;
     cin >> n >> m;
     g.resize(n + 1);
-    vector<int> d(n + 1);
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
-        ++d[a], ++d[b];
-        g[a].emplace_back(b);
-        g[b].emplace_back(a);
+        g[a].emplace_back(b), g[b].emplace_back(a);
     }
-    int odd = 0, even = 0; // degree
+    int odd = 0, even = 0;
     for (int i = 1; i <= n; i++) {
-        if (d[i] % 2 != 0) {
-            ++odd;
-        } else {
-            ++even;
-        }
-        cout << d[i];
+        g[i].size() % 2 != 0 ? odd++ : even++; // degree
+        cout << g[i].size();
         i < n ? cout << " " : cout << "\n";
     }
     vis.resize(n + 1, false);
@@ -59,7 +52,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 1; i <= n; i++) {
         if (!vis[i]) {
             dfs(i);
-            ++cnt;
+            cnt++;
         }
     }
     // Eulerian path: visits every edge exactly once
