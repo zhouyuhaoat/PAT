@@ -7,16 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805355358306304 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1116 Come on! Let's C
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805355358306304
+    @pintia psid=994805342720868352 pid=994805355358306304 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1116 Come on! Let's C
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805355358306304
 */
 
 // @pintia code=start
-#include <cmath>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -24,7 +23,7 @@ bool isprime(int n) {
     if (n <= 1) {
         return false;
     }
-    for (int i = 2; i <= sqrt(n); i++) {
+    for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
             return false;
         }
@@ -36,7 +35,7 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    map<string, int> r; // rank
+    unordered_map<string, int> r; // rank
     for (int i = 0; i < n; i++) {
         string s;
         cin >> s;
@@ -44,7 +43,7 @@ int main(int argc, char const *argv[]) {
     }
     int k;
     cin >> k;
-    map<string, int> c; // whether checked
+    unordered_map<string, int> c; // whether checked, or visited: bool -> int
     for (int q = 0; q < k; q++) {
         string s;
         cin >> s;

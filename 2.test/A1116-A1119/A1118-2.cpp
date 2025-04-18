@@ -7,16 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805354108403712 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1118 Birds in Forest
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805354108403712
+    @pintia psid=994805342720868352 pid=994805354108403712 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1118 Birds in Forest
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805354108403712
 */
 
 // @pintia code=start
 #include <iostream>
 #include <numeric>
-#include <set>
 #include <vector>
 
 using namespace std;
@@ -35,10 +34,11 @@ int find(int x) {
     return x;
 }
 
-void joint(int a, int b) {
+void joint(int a, int b, int& cnt) {
     int fa = find(a), fb = find(b);
     if (fa != fb) {
         f[fa] = fb;
+        cnt++; // number of edges = number of merges
     }
 }
 
@@ -46,24 +46,22 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    set<int> b;
+    int total = 0, edge = 0;
     iota(f.begin(), f.end(), 0);
     for (int i = 0; i < n; i++) {
         int k, b1;
         cin >> k >> b1;
-        b.emplace(b1);
+        total = max(total, b1);
         for (int j = 1; j < k; j++) {
             int b2;
             cin >> b2;
-            joint(b1, b2);
-            b.emplace(b2);
+            joint(b1, b2, edge);
+            total = max(total, b2);
         }
     }
-    set<int> t;
-    for (auto it : b) {
-        t.emplace(find(it));
-    }
-    cout << t.size() << " " << b.size() << "\n";
+    // total nodes - number of merges = number of components
+    // each merge, add one edge, and remove one component
+    cout << total - edge << " " << total << "\n";
     int q;
     cin >> q;
     for (int qq = 0; qq < q; qq++) {

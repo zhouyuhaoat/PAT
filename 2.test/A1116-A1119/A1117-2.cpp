@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805354762715136 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1117 Eddington Number
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805354762715136
+    @pintia psid=994805342720868352 pid=994805354762715136 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1117 Eddington Number
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805354762715136
 */
 
 // @pintia code=start
