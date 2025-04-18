@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-02 22:17:15
- *	modified:	2023-04-02 22:20:30
+ *	created:	2023-04-01 20:37:03
+ *	modified:	2023-04-02 22:16:13
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -16,6 +16,7 @@
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
+#include <queue>
 #include <vector>
 
 using namespace std;
@@ -36,17 +37,20 @@ int getID(string s) {
     }
 }
 
-int maxID = -1, lastNode = -1;
-void dfs(int r, int id) {
-    if (r == -1) {
-        return;
+bool bfs(int r, int n, int& lastNode) {
+    queue<int> q;
+    q.emplace(r);
+    while (n--) { // ensure all nodes are visited
+        int f = q.front();
+        q.pop();
+        if (f == -1) { // if CBT, there is no empty node
+            return false;
+        }
+        lastNode = f;
+        q.emplace(t[f].lc);
+        q.emplace(t[f].rc);
     }
-    if (id > maxID) {
-        maxID = id;
-        lastNode = r;
-    }
-    dfs(t[r].lc, 2 * id + 1);
-    dfs(t[r].rc, 2 * id + 2);
+    return true;
 }
 
 int main(int argc, char const *argv[]) {
@@ -59,12 +63,11 @@ int main(int argc, char const *argv[]) {
         cin >> lc >> rc;
         t[i] = {getID(lc), getID(rc)};
     }
-    int r = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
-    dfs(r, 0);
-    if (maxID >= n) { // if CBT, the maximum id should be n-1
-        cout << "NO " << r << "\n";
-    } else {
+    int r = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin(), lastNode = -1;
+    if (bfs(r, n, lastNode)) {
         cout << "YES " << lastNode << "\n";
+    } else {
+        cout << "NO " << r << "\n";
     }
 
     return 0;

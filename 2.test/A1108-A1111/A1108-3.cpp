@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-01 19:46:31
- *	modified:	2023-04-01 20:09:12
+ *	created:	2025-04-07 17:14:38
+ *	modified:	2025-04-07 17:30:32
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -14,28 +14,18 @@
 */
 
 // @pintia code=start
+#include <cstdio>
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 
 using namespace std;
 
 bool valid(string s, double& num) {
-    try {
-        size_t pos; // the number of characters processed
-        num = stod(s, &pos);
-        if (pos < s.size()) { // there are any extra characters after the number
-            return false;
-        }
-    } catch (...) {
-        // stod throws an exception if the conversion fails
-        // 1. std::invalid_argument; 2. std::out_of_range
-        return false;
-    }
-    if (num < -1000 || num > 1000) {
-        return false;
-    }
-    size_t dot = s.find('.');
-    if (dot != string::npos && s.size() - dot > 3) {
+    char b[50];
+    sscanf(s.c_str(), "%lf", &num);
+    sprintf(b, "%.2lf", num);
+    if (strncmp(s.c_str(), b, s.size()) != 0 || num < -1000 || num > 1000) {
         return false;
     }
     return true;

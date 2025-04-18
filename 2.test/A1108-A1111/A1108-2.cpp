@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805360777347072 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1108 Finding Average
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805360777347072
+    @pintia psid=994805342720868352 pid=994805360777347072 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1108 Finding Average
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805360777347072
 */
 
 // @pintia code=start
@@ -19,6 +19,22 @@
 #include <sstream>
 
 using namespace std;
+
+bool valid(string s, double& num) {
+    istringstream iss(s);
+    if (!(iss >> num) || !iss.eof()) {
+        // iss >> num: the string can be converted to a number
+        // iss.eof(): there are any extra characters after the number
+        return false;
+    }
+    ostringstream oss;
+    oss << fixed << setprecision(2) << num;
+    string formatted = oss.str();
+    if (formatted.substr(0, s.size()) != s || num < -1000 || num > 1000) {
+        return false;
+    }
+    return true;
+}
 
 int main(int argc, char const *argv[]) {
 
@@ -29,28 +45,12 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         string s;
         cin >> s;
-        istringstream iss(s); // parse the string
-        double temp;
-        if (!(iss >> temp) || !iss.eof()) {
-            // iss.eof() checks if there are any extra characters after the number
-            cout << "ERROR: " << s << " is not a legal number\n";
-            continue;
-        }
-        ostringstream oss; // format the number
-        oss << fixed << setprecision(2) << temp;
-        string formatted = oss.str(); // convert to string
-        bool flag = false;
-        for (int j = 0; j < (int)s.size(); j++) {
-            if (s[j] != formatted[j]) {
-                flag = true;
-                break;
-            }
-        }
-        if (flag || temp < -1000 || temp > 1000) {
-            cout << "ERROR: " << s << " is not a legal number\n";
-        } else {
+        double num;
+        if (valid(s, num)) {
             cnt++;
-            sum += temp;
+            sum += num;
+        } else {
+            cout << "ERROR: " << s << " is not a legal number\n";
         }
     }
     if (cnt == 0) {

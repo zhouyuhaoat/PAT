@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805359372255232 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1110 Complete Binary Tree
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805359372255232
+    @pintia psid=994805342720868352 pid=994805359372255232 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1110 Complete Binary Tree
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805359372255232
 */
 
 // @pintia code=start
@@ -25,12 +25,12 @@ struct node {
     int lc, rc;
 };
 
-vector<bool> isroot;
+vector<bool> isRoot;
 vector<node> t;
 
-int getid(string s) { // get id from string, not char
+int getID(string s) { // get id from string, not char
     if (isdigit(s[0])) {
-        isroot[stoi(s)] = false;
+        isRoot[stoi(s)] = false;
         return stoi(s);
     } else {
         return -1; // -1 means null
@@ -51,19 +51,19 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n), isroot.resize(n, true);
+    t.resize(n), isRoot.resize(n, true);
     for (int i = 0; i < n; i++) {
         string lc, rc;
         cin >> lc >> rc;
-        t[i] = {i, 0, getid(lc), getid(rc)};
+        t[i] = {i, 0, getID(lc), getID(rc)};
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin();
+    int r = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
     dfs(r, 0);
     sort(t.begin(), t.end(), [](node a, node b) {
         return a.id < b.id;
     });
-    // if CBT, the id should be in ascending order, from 0 to n-1.
     for (int i = 0; i < n; i++) {
+        // if CBT, the id should be in ascending order, from 0 to n-1.
         if (t[i].id != i) {
             cout << "NO " << r << "\n";
             return 0;
