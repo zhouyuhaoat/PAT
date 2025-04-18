@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805352925609984 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1120 Friend Numbers
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805352925609984
+    @pintia psid=994805342720868352 pid=994805352925609984 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1120 Friend Numbers
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805352925609984
 */
 
 // @pintia code=start
@@ -19,7 +19,7 @@
 
 using namespace std;
 
-int trans(int n) { // sum of each digit
+int convert(int n) { // sum of each digit
     int sum = 0;
     while (n != 0) {
         sum += n % 10;
@@ -36,13 +36,12 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         int num;
         cin >> num;
-        ans.emplace(trans(num));
+        ans.emplace(convert(num));
     }
-    int size = ans.size();
-    cout << size << "\n";
-    for (auto it : ans) {
-        cout << it;
-        --size > 0 ? cout << " " : cout << "\n";
+    cout << ans.size() << "\n";
+    for (auto it = ans.begin(); it != ans.end(); it++) {
+        cout << *it;
+        next(it) != ans.end() ? cout << " " : cout << "\n";
     }
 
     return 0;

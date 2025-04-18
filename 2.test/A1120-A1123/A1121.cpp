@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805352359378944 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1121 Damn Single
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805352359378944
+    @pintia psid=994805342720868352 pid=994805352359378944 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1121 Damn Single
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805352359378944
 */
 
 // @pintia code=start
@@ -18,7 +18,6 @@
 #include <iostream>
 #include <set>
 #include <unordered_map>
-#include <vector>
 
 using namespace std;
 
@@ -26,8 +25,8 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    // int -> string: avoid id = 00000
     unordered_map<string, string> c; // couple
+    // int -> string: avoid id = 00000
     for (int i = 0; i < n; i++) {
         string c1, c2;
         cin >> c1 >> c2;
@@ -36,22 +35,21 @@ int main(int argc, char const *argv[]) {
     int m;
     cin >> m;
     unordered_map<string, bool> g; // guest
-    vector<string> d(m);
-    for (int i = 0; i < m; i++) {
-        cin >> d[i];
-        g[d[i]] = true;
-    }
     set<string> single; // damn single
     for (int i = 0; i < m; i++) {
-        if (!g[c[d[i]]]) { // if not couple
-            single.emplace(d[i]);
+        string id;
+        cin >> id;
+        if (g[c[id]]) {
+            single.erase(c[id]);
+        } else {
+            single.emplace(id);
         }
+        g[id] = true;
     }
-    int size = single.size();
-    cout << size << "\n";
-    for (auto it : single) {
-        cout << it;
-        --size > 0 ? cout << " " : cout << "\n";
+    cout << single.size() << "\n";
+    for (auto it = single.begin(); it != single.end(); it++) {
+        cout << *it;
+        next(it) != single.end() ? cout << " " : cout << "\n";
     }
 
     return 0;

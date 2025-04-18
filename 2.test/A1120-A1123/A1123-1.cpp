@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805351302414336 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1123 Is It a Complete AVL Tree
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805351302414336
+    @pintia psid=994805342720868352 pid=994805351302414336 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1123 Is It a Complete AVL Tree
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805351302414336
 */
 
 // @pintia code=start
