@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805346428633088 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1134 Vertex Cover
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805346428633088
+    @pintia psid=994805342720868352 pid=994805346428633088 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1134 Vertex Cover
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805346428633088
 */
 
 // @pintia code=start
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
             cin >> vertex;
             v.emplace(vertex);
         }
-        bool flag = true;
+        bool flag = true; // whether cover all edges
         for (auto& edge : e) {
             if (v.find(edge.first) == v.end() && v.find(edge.second) == v.end()) {
                 // cover: at least one vertex of the edge is in the set
@@ -47,11 +47,7 @@ int main(int argc, char const *argv[]) {
                 break;
             }
         }
-        if (flag) { // cover all edges
-            cout << "Yes\n";
-        } else {
-            cout << "No\n";
-        }
+        flag ? cout << "Yes\n" : cout << "No\n";
     }
 
     return 0;

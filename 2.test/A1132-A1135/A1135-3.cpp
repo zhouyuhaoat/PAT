@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-04 00:44:58
- *	modified:	2023-04-04 09:09:25
+ *	created:	2025-04-07 00:44:58
+ *	modified:	2025-04-07 09:09:25
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -22,22 +22,22 @@ using namespace std;
 struct node {
     int v, bh;
     node *lc, *rc;
+    node(int v, int bh, node *lc, node *rc) : v(v), lc(lc), rc(rc) {
+    }
 };
 
-vector<int> pre;
-
-int getBh(node *r) {
-    return !r ? 0 : r->bh;
+int getBh(node *root) {
+    return !root ? 0 : root->bh;
 }
 
-void updateBh(node *r) {
-    r->bh = max(getBh(r->lc), getBh(r->rc));
-    if (r->v > 0) r->bh++;
+void updateBh(node *root) {
+    root->bh = max(getBh(root->lc), getBh(root->rc));
+    if (root->v > 0) root->bh++;
 }
 
-node *insert(node *root, int v) { // suppose the tree is a binary search tree
+node *insert(node *root, int v) {
     if (!root) {
-        root = new node{v, v > 0 ? 1 : 0, nullptr, nullptr};
+        root = new node(v, v > 0 ? 1 : 0, nullptr, nullptr);
     } else if (abs(v) < abs(root->v)) {
         root->lc = insert(root->lc, v);
     } else {
@@ -47,24 +47,19 @@ node *insert(node *root, int v) { // suppose the tree is a binary search tree
     return root;
 }
 
-void dfs(node *root, bool& flag) {
-    if (!flag) return;
+bool judge1(node *root) { // property 4
+    if (!root) return true;
     if (root->v < 0) {
-        if (root->lc && root->lc->v < 0) {
-            flag = false;
-            return;
-        }
-        if (root->rc && root->rc->v < 0) {
-            flag = false;
-            return;
-        }
+        if (root->lc && root->lc->v < 0) return false;
+        if (root->rc && root->rc->v < 0) return false;
     }
-    if (getBh(root->lc) != getBh(root->rc)) {
-        flag = false;
-        return;
-    }
-    if (root->lc) dfs(root->lc, flag);
-    if (root->rc) dfs(root->rc, flag);
+    return judge1(root->lc) && judge1(root->rc);
+}
+
+bool judge2(node *root) { // property 5
+    if (!root) return true;
+    if (getBh(root->lc) != getBh(root->rc)) return false;
+    return judge2(root->lc) && judge2(root->rc);
 }
 
 int main(int argc, char const *argv[]) {
@@ -74,15 +69,13 @@ int main(int argc, char const *argv[]) {
     for (int q = 0; q < k; q++) {
         int n;
         cin >> n;
-        pre.resize(n);
+        vector<int> pre(n);
         node *root = nullptr;
         for (int i = 0; i < n; i++) {
             cin >> pre[i];
             root = insert(root, pre[i]);
         }
-        bool flag = true;
-        dfs(root, flag);
-        if (pre[0] < 0 || !flag) {
+        if (pre[0] < 0 || !judge1(root) || !judge2(root)) {
             cout << "No\n";
         } else {
             cout << "Yes\n";
