@@ -20,8 +20,8 @@
 
 using namespace std;
 
-vector<int> pre, post;
-unordered_map<int, int> loc; // location of inorder
+vector<int> pre;
+unordered_map<int, int> loc;
 
 void postTra(int preR, int inL, int inH) {
     if (inL > inH) {
@@ -30,7 +30,8 @@ void postTra(int preR, int inL, int inH) {
     int inR = loc[pre[preR]];
     postTra(preR + 1, inL, inR - 1);
     postTra(preR + (inR - inL) + 1, inR + 1, inH);
-    post.emplace_back(pre[preR]);
+    cout << pre[preR] << "\n";
+    exit(0);
 }
 
 int main(int argc, char const *argv[]) {
@@ -47,7 +48,6 @@ int main(int argc, char const *argv[]) {
         loc[in] = i;
     }
     postTra(0, 0, n - 1);
-    cout << post[0] << "\n";
 
     return 0;
 }

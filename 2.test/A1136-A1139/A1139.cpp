@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805344776077312 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1139 First Contact
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344776077312
+    @pintia psid=994805342720868352 pid=994805344776077312 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1139 First Contact
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344776077312
 */
 
 // @pintia code=start
@@ -18,14 +18,13 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
-const int maxn = 1e4;
-
-vector<vector<int>> g(maxn);
-map<int, int> isfri;
+unordered_map<int, vector<int>> g;
+map<pair<int, int>, bool> isFri;
 
 int main(int argc, char const *argv[]) {
 
@@ -36,11 +35,9 @@ int main(int argc, char const *argv[]) {
         cin >> s1 >> s2;
         int a = abs(stoi(s1)), b = abs(stoi(s2));
         if (s1.size() == s2.size()) { // same gender
-            g[a].emplace_back(b);
-            g[b].emplace_back(a);
+            g[a].emplace_back(b), g[b].emplace_back(a);
         }
-        // hashing manually: pair of numbers -> one number
-        isfri[a * maxn + b] = isfri[b * maxn + a] = true;
+        isFri[make_pair(a, b)] = isFri[make_pair(b, a)] = true;
     }
     int k;
     cin >> k;
@@ -55,7 +52,7 @@ int main(int argc, char const *argv[]) {
                 if (g[a][i] == b || a == g[b][j]) { // repeated
                     continue;
                 }
-                if (isfri[g[a][i] * maxn + g[b][j]]) {
+                if (isFri[make_pair(g[a][i], g[b][j])]) {
                     ans.emplace_back(make_pair(g[a][i], g[b][j]));
                 }
             }

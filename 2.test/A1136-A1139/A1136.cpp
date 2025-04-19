@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805345732378624 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1136 A Delayed Palindrome
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805345732378624
+    @pintia psid=994805342720868352 pid=994805345732378624 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1136 A Delayed Palindrome
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805345732378624
 */
 
 // @pintia code=start
@@ -19,17 +19,21 @@
 
 using namespace std;
 
+bool isPalindrome(string s) {
+    for (int lo = 0, hi = s.size() - 1; lo < hi; lo++, hi--) {
+        if (s[lo] != s[hi]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 string sum(string a, string b) { // sum of two string
     int carry = 0;
     for (int i = a.size() - 1; i >= 0; i--) {
         int sum = (a[i] - '0') + (b[i] - '0') + carry;
-        if (sum >= 10) {
-            carry = sum / 10;
-            sum %= 10;
-        } else {
-            carry = 0;
-        }
-        b[i] = sum + '0';
+        b[i] = sum % 10 + '0';
+        carry = sum / 10;
     }
     if (carry > 0) {
         b = char(carry + '0') + b;
@@ -41,9 +45,7 @@ int main(int argc, char const *argv[]) {
 
     string s;
     cin >> s;
-    string c = s;
-    reverse(c.begin(), c.end());
-    if (s == c) {
+    if (isPalindrome(s)) {
         cout << s << " is a palindromic number.\n";
         return 0;
     }
@@ -52,9 +54,7 @@ int main(int argc, char const *argv[]) {
         reverse(b.begin(), b.end());
         s = sum(a, b);
         cout << a << " + " << b << " = " << s << "\n";
-        c = s;
-        reverse(c.begin(), c.end());
-        if (c == s) {
+        if (isPalindrome(s)) {
             cout << s << " is a palindromic number.\n";
             return 0;
         }
