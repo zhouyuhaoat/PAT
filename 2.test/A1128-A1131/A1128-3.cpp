@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-03 09:43:15
- *	modified:	2023-04-03 10:07:32
+ *	created:	2025-04-07 09:43:15
+ *	modified:	2025-04-07 10:07:32
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -14,21 +14,22 @@
 */
 
 // @pintia code=start
+#include <bitset>
 #include <iostream>
-#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
 bool isQueen(vector<int> c) {
-    unordered_map<int, bool> row, diagL, diagR;
+    bitset<1001> row, diagL, diagR; // of each column
     for (int i = 1; i < (int)c.size(); i++) {
-        if (row[c[i]] || diagL[c[i] + i] || diagR[c[i] - i]) {
+        if (row.test(c[i]) || diagL.test(c[i]) || diagR.test(c[i])) {
             return false;
         }
-        row[c[i]] = true, diagL[c[i] + i] = true, diagR[c[i] - i] = true;
-        // diagL: main diagonal, (row + column) is constant
-        // diagR: anti diagonal, (row - column) is constant
+        row.set(c[i]), diagL.set(c[i]), diagR.set(c[i]);
+        diagL >>= 1, diagR <<= 1; // shift for next column
+        // diagL: main diagonal, from top left (down, >>) to bottom right
+        // diagR: anti diagonal, from bottom left (up, <<) to top right
     }
     return true;
 }
@@ -40,10 +41,9 @@ int main(int argc, char const *argv[]) {
     while (k--) {
         int n;
         cin >> n;
-        vector<int> c(n + 1); // all 1-based index
-        // chessboard: left-bottom corner is (1, 1)
-        for (int i = 1; i <= n; i++) { // column
-            cin >> c[i]; // row
+        vector<int> c(n + 1);
+        for (int i = 1; i <= n; i++) {
+            cin >> c[i];
         }
         isQueen(c) ? cout << "YES\n" : cout << "NO\n";
     }

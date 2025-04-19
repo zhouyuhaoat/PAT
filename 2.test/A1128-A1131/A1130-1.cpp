@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805347921805312 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1130 Infix Expression
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805347921805312
+    @pintia psid=994805342720868352 pid=994805347921805312 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1130 Infix Expression
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805347921805312
 */
 
 // @pintia code=start
@@ -26,21 +26,22 @@ struct node {
 };
 
 vector<node> t;
-vector<string> ans;
+string ans;
 
 void dfs(int r) {
-    if (t[r].lc != -1 || t[r].rc != -1) { // if not leaf node
-        ans.emplace_back("(");
+    bool nonLeaf = t[r].lc != -1 || t[r].rc != -1; // non-leaf node
+    if (nonLeaf) {
+        ans += "(";
     }
     if (t[r].lc != -1) {
         dfs(t[r].lc);
     }
-    ans.emplace_back(t[r].v);
+    ans += t[r].v;
     if (t[r].rc != -1) {
         dfs(t[r].rc);
     }
-    if (t[r].lc != -1 || t[r].rc != -1) { // if not leaf node
-        ans.emplace_back(")");
+    if (nonLeaf) {
+        ans += ")";
     }
 }
 
@@ -61,16 +62,12 @@ int main(int argc, char const *argv[]) {
     }
     int r = find(isroot.begin() + 1, isroot.end(), true) - isroot.begin();
     dfs(r); // inorder traversal for infix expression
-    if (ans[0] == "(") { // parentheses at the beginning and end
-        for (int i = 1; i < (int)ans.size() - 1; i++) {
-            cout << ans[i];
-        }
+    // same as non-leaf node, the parentheses of root are not needed
+    if (ans[0] == '(') { // parentheses of root: at the beginning and end
+        cout << ans.substr(1, ans.size() - 2) << "\n"; // remove the outer parentheses
     } else {
-        for (auto it : ans) {
-            cout << it;
-        }
+        cout << ans << "\n";
     }
-    cout << "\n";
 
     return 0;
 }

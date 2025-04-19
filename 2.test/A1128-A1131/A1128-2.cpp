@@ -7,25 +7,29 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805348915855360 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1128 N Queens Puzzle
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805348915855360
+    @pintia psid=994805342720868352 pid=994805348915855360 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1128 N Queens Puzzle
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805348915855360
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
 #include <vector>
 
 using namespace std;
 
-bool isque(vector<int> d) {
-    for (int i = 1; i < (int)d.size(); i++) { // <, not <=
-        for (int j = 1; j < i; j++) {
-            if (d[i] == d[j] || abs(d[i] - d[j]) == abs(i - j)) {
-                // d[i] == d[j]: same column
-                // abs(d[i] - d[j]) == abs(i - j): same diagonal
+bool isQueen(vector<int> c) {
+    for (int i = 1; i < (int)c.size(); i++) {
+        for (int j = 1; j < i; j++) { // all previous columns
+            if (c[i] == c[j] || i - j == abs(c[i] - c[j])) {
+                /*
+                1. c[i] == c[j]: same row
+                2. i - j == abs(c[i] - c[j]): same diagonal
+                    1. i - j: delta column
+                    2. c[i] - c[j]: delta row
+                    3. gradient of diagonal = delta row / delta column = 1 or -1
+                 */
                 return false;
             }
         }
@@ -37,18 +41,14 @@ int main(int argc, char const *argv[]) {
 
     int k;
     cin >> k;
-    for (int i = 0; i < k; i++) {
+    while (k--) {
         int n;
         cin >> n;
-        vector<int> d(n + 1);
-        for (int j = 1; j <= n; j++) {
-            cin >> d[j];
+        vector<int> c(n + 1);
+        for (int i = 1; i <= n; i++) {
+            cin >> c[i];
         }
-        if (isque(d)) {
-            cout << "YES\n";
-        } else {
-            cout << "NO\n";
-        }
+        isQueen(c) ? cout << "YES\n" : cout << "NO\n";
     }
 
     return 0;

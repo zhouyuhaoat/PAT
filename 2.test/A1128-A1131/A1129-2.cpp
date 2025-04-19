@@ -7,26 +7,25 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805348471259136 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1129 Recommendation System
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805348471259136
+    @pintia psid=994805342720868352 pid=994805348471259136 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1129 Recommendation System
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805348471259136
 */
 
 // @pintia code=start
 #include <iostream>
-#include <map>
 #include <set>
+#include <unordered_map>
 
 using namespace std;
 
-struct node {
-    int id, freq;
-    bool operator<(const node &n) const { // override operator< for set
-        if (freq != n.freq) {
-            return freq > n.freq;
+struct cmp {
+    bool operator()(const pair<int, int>& a, const pair<int, int>& b) const {
+        if (a.second != b.second) {
+            return a.second > b.second;
         } else {
-            return id < n.id;
+            return a.first < b.first;
         }
     }
 };
@@ -35,24 +34,24 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    map<int, int> cnt;
-    set<node> s;
+    unordered_map<int, int> freq;
+    set<pair<int, int>, cmp> s; // pair: <id, frequency>
     for (int i = 0; i < n; i++) {
         int id;
         cin >> id;
         if (!s.empty()) {
             cout << id << ":";
-            int temp = 0;
-            for (auto it = s.begin(); temp++ < k && it != s.end(); it++) {
-                cout << " " << it->id;
+            int cnt = 0;
+            for (auto it = s.begin(); cnt++ < k && it != s.end(); it++) {
+                cout << " " << it->first;
             }
             cout << "\n";
         }
-        auto it = s.find(node{id, cnt[id]});
+        auto it = s.find(make_pair(id, freq[id]));
         if (it != s.end()) {
             s.erase(it);
         }
-        s.insert(node{id, ++cnt[id]});
+        s.emplace(id, ++freq[id]);
     }
 
     return 0;
