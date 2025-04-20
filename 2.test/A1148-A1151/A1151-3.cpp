@@ -20,37 +20,18 @@
 
 using namespace std;
 
-struct node {
-    int v;
-    node *lc, *rc;
-};
-
-vector<int> pre, in;
-unordered_map<int, int> loc;
-unordered_map<int, bool> exist;
-
-int dfs(int preR, int inL, int inH, int u, int v) {
-    int inR = loc[pre[preR]];
-    int lca = -1;
-    if (inR > u && inR > v) { // left subtree
-        lca = dfs(preR + 1, inL, inR - 1, u, v);
-    } else if (inR < u && inR < v) { // right subtree
-        lca = dfs(preR + (inR - inL) + 1, inR + 1, inH, u, v);
-    } else { // found lca
-        lca = pre[preR];
-    }
-    return lca;
-}
-
 int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    pre.resize(n), in.resize(n);
+    vector<int> pre(n);
+    unordered_map<int, int> loc;
+    unordered_map<int, bool> exist;
     for (int i = 0; i < n; i++) {
-        cin >> in[i];
-        loc[in[i]] = i;
-        exist[in[i]] = true;
+        int v;
+        cin >> v;
+        loc[v] = i;
+        exist[v] = true;
     }
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
@@ -59,11 +40,20 @@ int main(int argc, char const *argv[]) {
         int u, v;
         cin >> u >> v;
         if (exist[u] && exist[v]) {
-            int left = loc[u], right = loc[v];
-            if (left > right) {
+            int left = loc[u], right = loc[v]; // index in inorder traversal
+            if (left > right) { // ensure left <= right
                 swap(left, right);
             }
-            int lca = dfs(0, 0, n - 1, left, right);
+            int lca = -1;
+            for (int i = 0; i < n; i++) { // preorder traversal
+                int root = loc[pre[i]];
+                // lca in binary tree is the first node in preorder traversal
+                // whose index in inorder traversal is between left and right
+                if (root >= left && root <= right) {
+                    lca = pre[i];
+                    break;
+                }
+            }
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
             } else {

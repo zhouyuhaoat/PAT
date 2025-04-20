@@ -7,16 +7,16 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1038430013544464384 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1150 Travelling Salesman Problem
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1038430013544464384
+    @pintia psid=994805342720868352 pid=1038430013544464384 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1150 Travelling Salesman Problem
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1038430013544464384
 */
 
 // @pintia code=start
 #include <climits>
 #include <iostream>
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -37,50 +37,50 @@ int main(int argc, char const *argv[]) {
     }
     int k;
     cin >> k;
-    int minid = -1, mindist = INT_MAX;
+    int minID = -1, minDist = INT_MAX;
     for (int q = 0; q < k; q++) {
-        set<int> path;
-        int nv, st;
-        cin >> nv >> st;
-        int lastid = st, en, dist = 0;
-        bool isrea = true;
+        int nv, src;
+        cin >> nv >> src;
+        int lastID = src, dst, dist = 0;
+        bool isRea = true; // reachable
+        unordered_set<int> path;
         for (int i = 1; i < nv; i++) {
-            cin >> en;
-            dist += d[lastid][en];
-            if (d[lastid][en] == 0) { // not reachable
-                isrea = false;
+            cin >> dst;
+            dist += d[lastID][dst];
+            if (d[lastID][dst] == 0) {
+                isRea = false;
             }
-            path.emplace(en);
-            lastid = en;
+            path.emplace(dst);
+            lastID = dst;
         }
-        bool issic = false, iscyc = false;
-        if (st == en && isrea) {
-            if (nv == n + 1 && (int)path.size() == n) { // TS simple cycle
-                issic = true;
-            } else if (nv > n + 1 && (int)path.size() == n) { // TS cycle
-                iscyc = true;
+        bool simCycle = false, cycle = false;
+        if (src == dst && isRea) { // start and end at the same vertex
+            if ((int)path.size() == n) { // TS cycle: visit each vertex at least once
+                cycle = true;
+                if (nv == n + 1) { // TS simple cycle: visit each vertex exactly once
+                    simCycle = true;
+                }
             }
         }
-        bool notsic = !issic && !iscyc; // not a TS cycle
         cout << "Path " << q + 1 << ": ";
-        if (isrea) {
+        if (isRea) {
             cout << dist;
-            if (!notsic && dist < mindist) {
-                mindist = dist;
-                minid = q + 1;
+            if ((simCycle || cycle) && dist < minDist) {
+                minDist = dist;
+                minID = q + 1;
             }
         } else {
             cout << "NA";
         }
-        if (issic) {
+        if (simCycle) {
             cout << " (TS simple cycle)\n";
-        } else if (iscyc) {
+        } else if (cycle) {
             cout << " (TS cycle)\n";
         } else {
             cout << " (Not a TS cycle)\n";
         }
     }
-    cout << "Shortest Dist(" << minid << ") = " << mindist << "\n";
+    cout << "Shortest Dist(" << minID << ") = " << minDist << "\n";
 
     return 0;
 }

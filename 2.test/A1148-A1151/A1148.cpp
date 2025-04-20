@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1038429808099098624 compiler=GXX
-  ProblemSet: Simple Version - PAT (Advanced Level) Practice
-  Title: 1148 Werewolf
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1038429808099098624
+    @pintia psid=994805342720868352 pid=1038429808099098624 compiler=GXX
+    ProblemSet: Simple Version - PAT (Advanced Level) Practice
+    Title: 1148 Werewolf
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1038429808099098624
 */
 
 // @pintia code=start
@@ -24,8 +24,8 @@ int main(int argc, char const *argv[]) {
     int n;
     cin >> n;
     vector<int> d(n + 1);
-    for (int i = 0; i < n; i++) {
-        cin >> d[i + 1];
+    for (int i = 1; i <= n; i++) {
+        cin >> d[i];
     }
     for (int i = 1; i <= n; i++) {
         for (int j = i + 1; j <= n; j++) {
