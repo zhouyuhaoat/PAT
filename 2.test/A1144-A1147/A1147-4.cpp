@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2024-05-15 11:51:47
- *	modified:	2024-05-15 11:55:06
+ *	created:	2025-04-20 11:51:47
+ *	modified:	2025-04-20 11:55:06
  *	item:		Programming Ability Test
  *	site:		914, Harbin
  */
@@ -14,17 +14,25 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
 vector<int> t, post;
+bool isMaxHeap, isMinHeap;
 
-void postTra(int r, int n) { // postorder traversal
+void postTra(int r, int n) {
     if (r >= n) {
         return;
+    }
+    if (r != 0) {
+        if (t[(r - 1) / 2] < t[r]) {
+            isMaxHeap = false;
+        }
+        if (t[(r - 1) / 2] > t[r]) {
+            isMinHeap = false;
+        }
     }
     postTra(2 * r + 1, n);
     postTra(2 * r + 2, n);
@@ -40,16 +48,15 @@ int main(int argc, char const *argv[]) {
         for (int i = 0; i < n; i++) {
             cin >> t[i];
         }
-        if (is_heap(t.begin(), t.end())) {
-            // is_heap() returns true if the range is a max heap
+        isMaxHeap = true, isMinHeap = true;
+        postTra(0, n);
+        if (isMaxHeap) {
             cout << "Max Heap\n";
-        } else if (is_heap(t.begin(), t.end(), greater<int>())) {
-            // is_heap(greater<int>()) returns true if the range is a min heap
+        } else if (isMinHeap) {
             cout << "Min Heap\n";
         } else {
             cout << "Not Heap\n";
         }
-        postTra(0, n);
         for (int i = 0; i < n; i++) {
             cout << post[i];
             i < n - 1 ? cout << " " : cout << "\n";

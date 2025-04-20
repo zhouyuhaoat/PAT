@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805343043829760 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1146 Topological Order
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805343043829760
+    @pintia psid=994805342720868352 pid=994805343043829760 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1146 Topological Order
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805343043829760
 */
 
 // @pintia code=start
@@ -19,17 +19,33 @@
 
 using namespace std;
 
+vector<vector<int>> g;
+vector<int> inDeg;
+
+bool isTopologicalOrder(vector<int>& d) {
+    vector<int> temp(inDeg);
+    for (int i = 0; i < (int)d.size(); i++) {
+        if (temp[d[i]] == 0) {
+            for (auto it : g[d[i]]) {
+                temp[it]--;
+            }
+        } else { // invalid
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> g(n + 1);
-    vector<int> ind(n + 1); // in degree
+    g.resize(n + 1), inDeg.resize(n + 1); // in degree
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
         g[a].emplace_back(b);
-        ++ind[b];
+        inDeg[b]++;
     }
     int k;
     cin >> k;
@@ -39,17 +55,8 @@ int main(int argc, char const *argv[]) {
         for (int i = 0; i < n; i++) {
             cin >> d[i];
         }
-        // validate the topological order
-        vector<int> indtemp(ind);
-        for (int i = 0; i < n; i++) {
-            if (indtemp[d[i]] == 0) {
-                for (auto it : g[d[i]]) {
-                    --indtemp[it];
-                }
-            } else { // invalid
-                ans.emplace_back(q);
-                break;
-            }
+        if (!isTopologicalOrder(d)) {
+            ans.emplace_back(q);
         }
     }
     for (int i = 0; i < (int)ans.size(); i++) {

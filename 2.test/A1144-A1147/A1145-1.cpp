@@ -7,25 +7,24 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805343236767744 compiler=GXX
-  ProblemSet: Average Search Time - PAT (Advanced Level) Practice
-  Title: 1145 Hashing
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805343236767744
+    @pintia psid=994805342720868352 pid=994805343236767744 compiler=GXX
+    ProblemSet: Average Search Time - PAT (Advanced Level) Practice
+    Title: 1145 Hashing
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805343236767744
 */
 
 // @pintia code=start
-#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-bool isprime(int n) {
+bool isPrime(int n) {
     if (n < 2) {
         return false;
     }
-    for (int i = 2; i <= sqrt(n); i++) {
+    for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
             return false;
         }
@@ -37,8 +36,8 @@ int main(int argc, char const *argv[]) {
 
     int msize, n, m;
     cin >> msize >> n >> m;
-    while (!isprime(msize)) { // adjust the size
-        ++msize;
+    while (!isPrime(msize)) { // adjust the size
+        msize++;
     }
     vector<int> ht(msize); // 0: empty
     for (int i = 0; i < n; i++) {
@@ -47,16 +46,16 @@ int main(int argc, char const *argv[]) {
         if (ht[key % msize] == 0) {
             ht[key % msize] = key;
         } else { // collision
-            bool isins = false;
+            bool isInsert = false;
             for (int j = 1; j <= msize; j++) { // quadratic probing
-                int hk = (key % msize + (int)pow(j, 2)) % msize;
+                int hk = (key % msize + j * j) % msize;
                 if (ht[hk] == 0) {
                     ht[hk] = key;
-                    isins = true;
+                    isInsert = true;
                     break;
                 }
             }
-            if (!isins) {
+            if (!isInsert) {
                 cout << key << " cannot be inserted.\n";
             }
         }
@@ -65,11 +64,11 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < m; i++) {
         int key;
         cin >> key;
-        ++cnt;
+        cnt++;
         if (ht[key % msize] != key && ht[key % msize] != 0) { // collision
             for (int j = 1; j <= msize; j++) {
-                ++cnt;
-                int hk = (key % msize + (int)pow(j, 2)) % msize; // quadratic probing
+                cnt++;
+                int hk = (key % msize + j * j) % msize; // quadratic probing
                 if (ht[hk] == key || ht[hk] == 0) {
                     break;
                 }
