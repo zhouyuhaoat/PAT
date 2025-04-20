@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-04 13:28:41
- *	modified:	2023-04-04 14:12:36
+ *	created:	2023-04-04 14:15:03
+ *	modified:	2023-04-04 14:22:07
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -14,51 +14,14 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
 
 using namespace std;
 
-struct node {
-    int v;
-    node *lc, *rc;
-};
-
-vector<int> pre, in;
+vector<int> pre;
 unordered_map<int, bool> exist;
-unordered_map<int, int> loc;
-
-node *create(node *root, int preR, int inL, int inH) {
-    // create binary search tree from preorder and inorder traversal
-    if (inL > inH) {
-        return nullptr;
-    }
-    root = new node;
-    root->v = pre[preR];
-    int inR = loc[pre[preR]];
-    root->lc = create(root->lc, preR + 1, inL, inR - 1);
-    root->rc = create(root->rc, preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
-    return root;
-}
-
-void dfs(node *root, int u, int v, int& lca) { // lowest common ancestor
-    if (!root) {
-        return;
-    }
-    // lowest common ancestor in binary search tree is the first node whose value is between u and v
-    if (root->v >= u && root->v <= v) {
-        lca = root->v;
-        return;
-    }
-    if (v < root->v) {
-        dfs(root->lc, u, v, lca);
-    }
-    if (u >= root->v) {
-        dfs(root->rc, u, v, lca);
-    }
-}
 
 int main(int argc, char const *argv[]) {
 
@@ -67,24 +30,24 @@ int main(int argc, char const *argv[]) {
     pre.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
-        in.emplace_back(pre[i]);
         exist[pre[i]] = true;
     }
-    sort(in.begin(), in.end()); // inorder of binary search tree is sorted
-    for (int i = 0; i < n; i++) {
-        loc[in[i]] = i;
-    }
-    node *root = create(nullptr, 0, 0, n - 1);
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
-        if (exist[u] && exist[v]) { // found
+        if (exist[u] && exist[v]) {
             int a = u, b = v;
-            if (a > b) { // make sure a < b for dfs lca
+            if (a > b) {
                 swap(a, b);
             }
             int lca = -1;
-            dfs(root, a, b, lca);
+            // no need to create a tree explicitly, just find the first node in preorder
+            for (int j = 0; j < n; j++) {
+                if (pre[j] >= a && pre[j] <= b) {
+                    lca = pre[j];
+                    break;
+                }
+            }
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
             } else if (lca == u && lca != v) {

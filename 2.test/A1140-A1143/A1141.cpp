@@ -7,16 +7,16 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805344222429184 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1141 PAT Ranking of Institutions
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344222429184
+    @pintia psid=994805342720868352 pid=994805344222429184 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1141 PAT Ranking of Institutions
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344222429184
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -30,27 +30,25 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    map<string, double> inss; // score
-    map<string, int> insc; // count
+    unordered_map<string, double> insSco; // score
+    unordered_map<string, int> insCnt; // count
     for (int i = 0; i < n; i++) {
         string id, sch;
         int sco;
         cin >> id >> sco >> sch;
-        for (int j = 0; j < (int)sch.size(); j++) {
-            sch[j] = tolower(sch[j]);
-        }
+        transform(sch.begin(), sch.end(), sch.begin(), ::tolower);
         if (id[0] == 'T') {
-            inss[sch] += sco * 1.5;
+            insSco[sch] += sco * 1.5;
         } else if (id[0] == 'B') {
-            inss[sch] += sco / 1.5;
+            insSco[sch] += sco / 1.5;
         } else {
-            inss[sch] += sco;
+            insSco[sch] += sco;
         }
-        ++insc[sch];
+        insCnt[sch]++;
     }
     vector<ins> ans; // map to vector
-    for (auto it : inss) {
-        ans.emplace_back(ins{1, (int)(it.second + 1e-8), insc[it.first], it.first});
+    for (auto it : insSco) {
+        ans.emplace_back(ins{1, (int)(it.second + 1e-8), insCnt[it.first], it.first});
         // 1e-8 is a small number, which is used to avoid floating point error
         // in the case of 0.9999999999999999, it will be rounded to 1
         // and in the case of 1.0000000000000001, it will be rounded to 1

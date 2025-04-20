@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-04 13:28:41
- *	modified:	2023-04-04 14:12:36
+ *	created:	2025-04-20 13:28:41
+ *	modified:	2025-04-20 14:12:36
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -31,7 +31,6 @@ unordered_map<int, bool> exist;
 unordered_map<int, int> loc;
 
 node *create(node *root, int preR, int inL, int inH) {
-    // create binary search tree from preorder and inorder traversal
     if (inL > inH) {
         return nullptr;
     }
@@ -39,25 +38,22 @@ node *create(node *root, int preR, int inL, int inH) {
     root->v = pre[preR];
     int inR = loc[pre[preR]];
     root->lc = create(root->lc, preR + 1, inL, inR - 1);
-    root->rc = create(root->rc, preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
+    root->rc = create(root->rc, preR + (inR - inL) + 1, inR + 1, inH);
     return root;
 }
 
-void dfs(node *root, int u, int v, int& lca) { // lowest common ancestor
-    if (!root) {
-        return;
+int dfs(node *root, int u, int v) { // LCA of BST: iteration
+    node *lca = root;
+    while (true) {
+        if (u < lca->v && v < lca->v) {
+            lca = lca->lc;
+        } else if (u > lca->v && v > lca->v) {
+            lca = lca->rc;
+        } else {
+            break;
+        }
     }
-    // lowest common ancestor in binary search tree is the first node whose value is between u and v
-    if (root->v >= u && root->v <= v) {
-        lca = root->v;
-        return;
-    }
-    if (v < root->v) {
-        dfs(root->lc, u, v, lca);
-    }
-    if (u >= root->v) {
-        dfs(root->rc, u, v, lca);
-    }
+    return lca->v;
 }
 
 int main(int argc, char const *argv[]) {
@@ -70,7 +66,7 @@ int main(int argc, char const *argv[]) {
         in.emplace_back(pre[i]);
         exist[pre[i]] = true;
     }
-    sort(in.begin(), in.end()); // inorder of binary search tree is sorted
+    sort(in.begin(), in.end());
     for (int i = 0; i < n; i++) {
         loc[in[i]] = i;
     }
@@ -78,13 +74,12 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
-        if (exist[u] && exist[v]) { // found
+        if (exist[u] && exist[v]) {
             int a = u, b = v;
-            if (a > b) { // make sure a < b for dfs lca
+            if (a > b) {
                 swap(a, b);
             }
-            int lca = -1;
-            dfs(root, a, b, lca);
+            int lca = dfs(root, a, b);
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
             } else if (lca == u && lca != v) {

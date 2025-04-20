@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=994805344490864640 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1140 Look-and-say Sequence
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344490864640
+    @pintia psid=994805342720868352 pid=994805344490864640 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1140 Look-and-say Sequence
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805344490864640
 */
 
 // @pintia code=start
@@ -23,12 +23,12 @@ int main(int argc, char const *argv[]) {
     string d;
     int n;
     cin >> d >> n;
-    for (int q = 0; q < n - 1; q++) {
+    while (--n) {
         string s;
         for (int i = 0; i < (int)d.size(); i++) {
             int j = i, cnt = 0; // count the number of the same digit
             while (d[j] == d[i] && j++ < (int)d.size()) {
-                ++cnt;
+                cnt++;
             }
             i = j - 1;
             s += d[i] + to_string(cnt);
