@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1071785408849047552 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1155 Heap Paths
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785408849047552
+    @pintia psid=994805342720868352 pid=1071785408849047552 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1155 Heap Paths
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785408849047552
 */
 
 // @pintia code=start
@@ -22,8 +22,9 @@ using namespace std;
 vector<int> t, path;
 
 void dfs(int r, int n) {
-    if (r * 2 > n) {
-        if (r <= n) { // valid node: possibly out of range
+    if (r * 2 > n) { // left node & empty node (out of range)
+        if (r <= n) { // left node
+            // no need to emplace and pop itself since emplaced and popped by parent
             for (int i = 0; i < (int)path.size(); i++) {
                 cout << path[i];
                 i < (int)path.size() - 1 ? cout << " " : cout << "\n";
@@ -38,6 +39,20 @@ void dfs(int r, int n) {
     dfs(r * 2, n);
     path.pop_back();
 }
+
+bool isMinHeap = true, isMaxHeap = true; // suppose it is a heap
+void isHeap(int n) {
+    // judge heap property by parent-child relationship in one pass
+    for (int i = 2; i <= n && (isMinHeap || isMaxHeap); i++) { // until the end or not a heap
+        if (t[i / 2] < t[i]) { // possibly be a min heap, can not be a max heap
+            isMaxHeap = false;
+        }
+        if (t[i / 2] > t[i]) { // possibly be a max heap, can not be a min heap
+            isMinHeap = false;
+        }
+    }
+}
+
 int main(int argc, char const *argv[]) {
 
     int n;
@@ -46,21 +61,13 @@ int main(int argc, char const *argv[]) {
     for (int i = 1; i <= n; i++) {
         cin >> t[i];
     }
-    path.emplace_back(t[1]);
+    path.emplace_back(t[1]); // source of the path: emplace itself -> emplace children
     dfs(1, n); // 1-based index
-    bool ismin = true, ismax = true;
-    // judge heap property by parent-child relationship in one pass
-    for (int i = 2; i <= n && (ismin || ismax); i++) { // until the end or not a heap
-        if (t[i / 2] > t[i]) { // possibly be a max heap, can not be a min heap
-            ismin = false;
-        } else if (t[i / 2] < t[i]) { // possibly be a min heap, can not be a max heap
-            ismax = false;
-        }
-    }
-    if (ismin) {
-        cout << "Min Heap\n";
-    } else if (ismax) {
+    isHeap(n);
+    if (isMaxHeap) {
         cout << "Max Heap\n";
+    } else if (isMinHeap) {
+        cout << "Min Heap\n";
     } else {
         cout << "Not Heap\n";
     }

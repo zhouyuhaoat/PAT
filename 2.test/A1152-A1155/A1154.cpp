@@ -7,15 +7,15 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1071785301894295552 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1154 Vertex Coloring
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785301894295552
+    @pintia psid=994805342720868352 pid=1071785301894295552 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1154 Vertex Coloring
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785301894295552
 */
 
 // @pintia code=start
 #include <iostream>
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -34,19 +34,20 @@ int main(int argc, char const *argv[]) {
     cin >> k;
     for (int q = 0; q < k; q++) {
         vector<int> c(n);
-        set<int> color;
+        unordered_set<int> color;
         for (int i = 0; i < n; i++) {
             cin >> c[i];
             color.emplace(c[i]);
         }
-        bool isclr = true; // validate vertex coloring
+        bool coloring = true;
         for (auto it : g) {
             if (c[it.first] == c[it.second]) {
-                isclr = false;
+                // no two vertices sharing the same edge have the same color
+                coloring = false;
                 break;
             }
         }
-        if (isclr) {
+        if (coloring) {
             cout << color.size() << "-coloring\n";
         } else {
             cout << "No\n";

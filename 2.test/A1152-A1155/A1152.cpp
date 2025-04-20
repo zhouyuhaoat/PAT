@@ -7,23 +7,22 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1071785055080476672 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1152 Google Recruitment
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785055080476672
+    @pintia psid=994805342720868352 pid=1071785055080476672 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1152 Google Recruitment
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785055080476672
 */
 
 // @pintia code=start
-#include <cmath>
 #include <iostream>
 
 using namespace std;
 
-bool isprime(int n) {
+bool isPrime(int n) {
     if (n < 2) {
         return false;
     }
-    for (int i = 2; i <= sqrt(n); i++) {
+    for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
             return false;
         }
@@ -39,7 +38,7 @@ int main(int argc, char const *argv[]) {
     cin >> s;
     for (int i = 0; i < (int)s.size() - k + 1; i++) {
         string ss = s.substr(i, k); // each k-length substring
-        if (isprime(stoi(ss))) {
+        if (isPrime(stoi(ss))) {
             cout << ss << "\n";
             return 0;
         }

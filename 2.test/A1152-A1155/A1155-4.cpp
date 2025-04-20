@@ -23,23 +23,20 @@ using namespace std;
 vector<int> t, path;
 
 void dfs(int r, int n) {
-    if (2 * r + 1 >= n) { // left node & empty node (out of range)
-        // possible unvalid before recursion
-        if (r < n) { // left node
-            path.emplace_back(t[r]);
+    path.emplace_back(t[r]); // elevate to here
+    if (2 * r + 1 >= n) {
+        if (r < n) {
+            // path.emplace_back(t[r]);
             for (int i = 0; i < (int)path.size(); i++) {
                 cout << path[i];
                 i < (int)path.size() - 1 ? cout << " " : cout << "\n";
             }
-            path.pop_back();
         }
+        path.pop_back();
         return;
     }
-    path.emplace_back(t[r]);
-    dfs(2 * r + 2, n);
-    // couteract between pop and emplace
-    // path.pop_back();
     // path.emplace_back(t[r]);
+    dfs(2 * r + 2, n);
     dfs(2 * r + 1, n);
     path.pop_back();
 }
@@ -52,12 +49,10 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> t[i];
     }
-    dfs(0, n); // 0-based index
+    dfs(0, n);
     if (is_heap(t.begin(), t.end())) {
-        // is_heap() returns true if the range is a max heap
         cout << "Max Heap\n";
     } else if (is_heap(t.begin(), t.end(), greater<int>())) {
-        // is_heap(greater<int>()) returns true if the range is a min heap
         cout << "Min Heap\n";
     } else {
         cout << "Not Heap\n";

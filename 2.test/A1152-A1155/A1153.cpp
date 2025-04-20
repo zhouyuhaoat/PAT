@@ -7,16 +7,16 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1071785190929788928 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1153 Decode Registration Card of PAT
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785190929788928
+    @pintia psid=994805342720868352 pid=1071785190929788928 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1153 Decode Registration Card of PAT
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785190929788928
 */
 
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -33,13 +33,13 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    map<string, int> sitec, sites; // count of testee, sum of scores of site
-    map<string, map<string, int>> date; // site and count of testee of the site of date
+    unordered_map<string, int> siteCnt, siteSum; // count of testee, sum of scores of site
+    unordered_map<string, unordered_map<string, int>> date; // site and count of testee of the site of date
     vector<pair<string, int>> card(n); // card number and score of testee
     for (int i = 0; i < n; i++) {
         cin >> card[i].first >> card[i].second;
-        sitec[card[i].first.substr(1, 3)]++;
-        sites[card[i].first.substr(1, 3)] += card[i].second;
+        siteCnt[card[i].first.substr(1, 3)]++;
+        siteSum[card[i].first.substr(1, 3)] += card[i].second;
         date[card[i].first.substr(4, 6)][card[i].first.substr(1, 3)]++;
     }
     sort(card.begin(), card.end(), cmp);
@@ -48,18 +48,18 @@ int main(int argc, char const *argv[]) {
         string term;
         cin >> type >> term;
         cout << "Case " << q + 1 << ": " << type << " " << term << "\n";
-        bool isempty = true;
+        bool flag = true;
         if (type == 1) {
             for (auto it : card) {
                 if (it.first[0] == term[0]) { // the level
                     cout << it.first << " " << it.second << "\n";
-                    isempty = false;
+                    flag = false;
                 }
             }
         } else if (type == 2) {
-            if (sitec[term] != 0) {
-                cout << sitec[term] << " " << sites[term] << "\n";
-                isempty = false;
+            if (siteCnt[term] != 0) {
+                cout << siteCnt[term] << " " << siteSum[term] << "\n";
+                flag = false;
             }
         } else {
             // map -> vector -> sort
@@ -67,10 +67,10 @@ int main(int argc, char const *argv[]) {
             sort(ans.begin(), ans.end(), cmp);
             for (auto it : ans) {
                 cout << it.first << " " << it.second << "\n";
-                isempty = false;
+                flag = false;
             }
         }
-        if (isempty) {
+        if (flag) {
             cout << "NA\n";
         }
     }

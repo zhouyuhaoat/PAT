@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1071785408849047552 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1155 Heap Paths
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785408849047552
+    @pintia psid=994805342720868352 pid=1071785408849047552 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1155 Heap Paths
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1071785408849047552
 */
 
 // @pintia code=start
@@ -23,7 +23,7 @@ vector<int> t, path;
 
 void dfs(int r, int n) {
     if (2 * r + 1 >= n) { // leaf node: right child also must not exist
-        // all valid nodes
+        // all valid nodes since valid before recursion
         path.emplace_back(t[r]);
         for (int i = 0; i < (int)path.size(); i++) {
             cout << path[i];
@@ -33,15 +33,46 @@ void dfs(int r, int n) {
         return;
     }
     // right subtree first
-    if (2 * r + 2 < n) { // valid node
+    if (2 * r + 2 < n) { // valid node before recursion
         path.emplace_back(t[r]);
         dfs(2 * r + 2, n);
-        path.pop_back(); // backtracking
+        path.pop_back();
     }
-    if (2 * r + 1 < n) { // valid node
+    if (2 * r + 1 < n) {
         path.emplace_back(t[r]);
         dfs(2 * r + 1, n);
-        path.pop_back(); // backtracking
+        path.pop_back();
+    }
+}
+
+bool isMaxHeap = true, isMinHeap = true; // suppose it is a max heap, or a min heap
+void isHeap(int n) {
+    if (t[0] > t[1]) { // possibly be a max heap
+        isMinHeap = false; // can not be a min heap
+        for (int i = 0; i < n / 2; i++) {
+            // judge whether the parent node is greater than its children
+            if (2 * i + 1 < n && t[2 * i + 1] > t[i]) {
+                isMaxHeap = false;
+                break;
+            }
+            if (2 * i + 2 < n && t[2 * i + 2] > t[i]) {
+                isMaxHeap = false;
+                break;
+            }
+        }
+    } else { // possibly be a min heap
+        isMaxHeap = false; // can not be a max heap
+        for (int i = 0; i < n / 2; i++) {
+            // judge whether the parent node is less than its children
+            if (2 * i + 1 < n && t[2 * i + 1] < t[i]) {
+                isMinHeap = false;
+                break;
+            }
+            if (2 * i + 2 < n && t[2 * i + 2] < t[i]) {
+                isMinHeap = false;
+                break;
+            }
+        }
     }
 }
 
@@ -54,39 +85,12 @@ int main(int argc, char const *argv[]) {
         cin >> t[i];
     }
     dfs(0, n); // 0-based index
-    bool ismax = true, ismin = true;
-    if (t[0] > t[1]) { // possibly be a max heap, can not be a min heap
-        for (int i = 0; i < n / 2; i++) {
-            // judge whether the parent node is greater than its children
-            if (2 * i + 1 < n && t[2 * i + 1] > t[i]) {
-                ismax = false;
-                break;
-            }
-            if (2 * i + 2 < n && t[2 * i + 2] > t[i]) {
-                ismax = false;
-                break;
-            }
-        }
-        if (ismax) {
-            cout << "Max Heap\n";
-        }
-    } else { // possibly be a min heap, can not be a max heap
-        for (int i = 0; i < n / 2; i++) {
-            // judge whether the parent node is less than its children
-            if (2 * i + 1 < n && t[2 * i + 1] < t[i]) {
-                ismin = false;
-                break;
-            }
-            if (2 * i + 2 < n && t[2 * i + 2] < t[i]) {
-                ismin = false;
-                break;
-            }
-        }
-        if (ismin) {
-            cout << "Min Heap\n";
-        }
-    }
-    if (!(ismax && ismin)) {
+    isHeap(n);
+    if (isMaxHeap) {
+        cout << "Max Heap\n";
+    } else if (isMinHeap) {
+        cout << "Min Heap\n";
+    } else {
         cout << "Not Heap\n";
     }
 
