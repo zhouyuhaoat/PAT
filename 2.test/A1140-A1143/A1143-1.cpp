@@ -27,77 +27,66 @@ struct node {
 };
 
 vector<int> pre, in;
-unordered_map<int, bool> exist;
 unordered_map<int, int> loc;
+unordered_map<int, bool> exist;
 
-node *create(node *root, int preR, int inL, int inH) {
+node *create(int preR, int inL, int inH) {
     // create binary search tree from preorder and inorder traversal
     if (inL > inH) {
         return nullptr;
     }
-    root = new node;
+    node *root = new node;
     root->v = pre[preR];
     int inR = loc[pre[preR]];
-    root->lc = create(root->lc, preR + 1, inL, inR - 1);
-    root->rc = create(root->rc, preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
+    root->lc = create(preR + 1, inL, inR - 1);
+    root->rc = create(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
     return root;
 }
 
-void dfs(node *root, int u, int v, int& lca) { // lowest common ancestor
-    if (!root) {
-        return;
-    }
+int dfs(node *root, int u, int v) { // lowest common ancestor
+    if (!root) return -1;
     // lowest common ancestor in binary search tree is the first node whose value is between u and v
     if (root->v >= u && root->v <= v) {
-        lca = root->v;
-        return;
+        return root->v;
     }
-    if (v < root->v) {
-        dfs(root->lc, u, v, lca);
-    }
-    if (u >= root->v) {
-        dfs(root->rc, u, v, lca);
-    }
+    if (root->v > v) return dfs(root->lc, u, v);
+    if (root->v <= u) return dfs(root->rc, u, v);
+    return -1;
 }
 
 int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    pre.resize(n);
+    pre.resize(n), in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
-        in.emplace_back(pre[i]);
+        in[i] = pre[i];
         exist[pre[i]] = true;
     }
     sort(in.begin(), in.end()); // inorder of binary search tree is sorted
     for (int i = 0; i < n; i++) {
         loc[in[i]] = i;
     }
-    node *root = create(nullptr, 0, 0, n - 1);
+    node *root = create(0, 0, n - 1);
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
-        if (exist[u] && exist[v]) { // found
-            int a = u, b = v;
-            if (a > b) { // make sure a < b for dfs lca
-                swap(a, b);
+        if (exist[u] && exist[v]) {
+            int left = u, right = v;
+            if (left > right) { // make sure left <= right for dfs lca
+                swap(left, right);
             }
-            int lca = -1;
-            dfs(root, a, b, lca);
+            int lca = dfs(root, left, right);
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
-            } else if (lca == u && lca != v) {
-                cout << u << " is an ancestor of " << v << ".\n";
             } else {
-                cout << v << " is an ancestor of " << u << ".\n";
+                cout << lca << " is an ancestor of " << (lca == u ? v : u) << ".\n";
             }
-        } else if (exist[u] && !exist[v]) {
-            cout << "ERROR: " << v << " is not found.\n";
-        } else if (!exist[u] && exist[v]) {
-            cout << "ERROR: " << u << " is not found.\n";
-        } else {
+        } else if (!exist[u] && !exist[v]) {
             cout << "ERROR: " << u << " and " << v << " are not found.\n";
+        } else {
+            cout << "ERROR: " << (exist[u] ? v : u) << " is not found.\n";
         }
     }
 

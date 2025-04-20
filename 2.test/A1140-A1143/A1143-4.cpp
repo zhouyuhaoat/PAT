@@ -36,31 +36,27 @@ int main(int argc, char const *argv[]) {
         int u, v;
         cin >> u >> v;
         if (exist[u] && exist[v]) {
-            int a = u, b = v;
-            if (a > b) {
-                swap(a, b);
+            int left = u, right = v;
+            if (left > right) {
+                swap(left, right);
             }
             int lca = -1;
             // no need to create a tree explicitly, just find the first node in preorder
             for (int j = 0; j < n; j++) {
-                if (pre[j] >= a && pre[j] <= b) {
+                if (pre[j] >= left && pre[j] <= right) {
                     lca = pre[j];
                     break;
                 }
             }
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
-            } else if (lca == u && lca != v) {
-                cout << u << " is an ancestor of " << v << ".\n";
             } else {
-                cout << v << " is an ancestor of " << u << ".\n";
+                cout << lca << " is an ancestor of " << (lca == u ? v : u) << ".\n";
             }
-        } else if (exist[u] && !exist[v]) {
-            cout << "ERROR: " << v << " is not found.\n";
-        } else if (!exist[u] && exist[v]) {
-            cout << "ERROR: " << u << " is not found.\n";
-        } else {
+        } else if (!exist[u] && !exist[v]) {
             cout << "ERROR: " << u << " and " << v << " are not found.\n";
+        } else {
+            cout << "ERROR: " << (exist[u] ? v : u) << " is not found.\n";
         }
     }
 
