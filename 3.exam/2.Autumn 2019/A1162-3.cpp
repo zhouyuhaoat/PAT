@@ -28,12 +28,12 @@ struct node {
 vector<node> d;
 
 string dfs(int r) {
+    if (r == -1) return ""; // empty node
     string res = "(";
-    if (d[r].lc == -1 && d[r].rc != -1) { // unary operator
+    if (d[r].lc == -1 && d[r].rc != -1) {
         res += d[r].v;
     }
-    if (d[r].lc != -1) res += dfs(d[r].lc);
-    if (d[r].rc != -1) res += dfs(d[r].rc);
+    res += dfs(d[r].lc) + dfs(d[r].rc);
     if (!(d[r].lc == -1 && d[r].rc != -1)) {
         res += d[r].v;
     }

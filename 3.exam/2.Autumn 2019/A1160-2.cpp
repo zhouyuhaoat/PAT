@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1478635415925800960 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1160 Forever
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635415925800960
+    @pintia psid=994805342720868352 pid=1478635415925800960 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1160 Forever
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635415925800960
 */
 
 // @pintia code=start
@@ -51,18 +51,16 @@ void dfs(int k, int sum, vector<pair<int, int>>& res) {
 vector<int> getPrimeFactors(int n) { // prime factorization
     vector<int> res;
     for (int i = 2; i * i <= n; i++) {
-        if (n % i == 0) { // avoid duplicates
+        if (n % i == 0) {
             res.emplace_back(i);
-            while (n % i == 0) {
+            while (n % i == 0) { // avoid duplicates
                 n /= i;
             }
         }
-        // while (n % i == 0) {
-        //     res.emplace_back(i);
-        //     n /= i;
-        // }
     }
-    if (n > 1) res.emplace_back(n);
+    if (n > 1) {
+        res.emplace_back(n);
+    }
     return res;
 }
 

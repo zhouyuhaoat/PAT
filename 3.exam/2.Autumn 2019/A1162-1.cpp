@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1478635599577522176 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1162 Postfix Expression
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635599577522176
+    @pintia psid=994805342720868352 pid=1478635599577522176 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1162 Postfix Expression
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635599577522176
 */
 
 // @pintia code=start
@@ -27,26 +27,14 @@ struct node {
 
 vector<node> d; // 1-based index
 
-void dfs(int r) { // postfix expression: binary, unary
+string dfs(int r) { // postfix expression: unary operator, binary operator
     if (d[r].lc != -1 && d[r].rc != -1) { // both left and right children
-        cout << "(";
-        dfs(d[r].lc);
-        dfs(d[r].rc);
-        cout << d[r].v << ")";
-        return;
-    } else if (d[r].lc != -1 && d[r].rc == -1) { // only left child
-        cout << "(";
-        dfs(d[r].lc);
-        cout << d[r].v << ")";
-        return;
-    } else if (d[r].lc == -1 && d[r].rc != -1) { // only right child
-        cout << "(" << d[r].v;
-        dfs(d[r].rc);
-        cout << ")";
-        return;
-    } else { // no children
-        cout << "(" << d[r].v << ")";
-        return;
+        return "(" + dfs(d[r].lc) + dfs(d[r].rc) + d[r].v + ")";
+    } else if (d[r].rc != -1) { // only right child
+        // for the case of only one child, the child must be on the right
+        return "(" + d[r].v + dfs(d[r].rc) + ")";
+    } else { // no child
+        return "(" + d[r].v + ")";
     }
 }
 
@@ -66,8 +54,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     int r = find(isroot.begin() + 1, isroot.end(), true) - isroot.begin();
-    dfs(r);
-    cout << "\n";
+    cout << dfs(r) << "\n";
 
     return 0;
 }

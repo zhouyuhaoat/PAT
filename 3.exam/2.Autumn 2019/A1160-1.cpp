@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1478635415925800960 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1160 Forever
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635415925800960
+    @pintia psid=994805342720868352 pid=1478635415925800960 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1160 Forever
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635415925800960
 */
 
 // @pintia code=start
@@ -19,11 +19,11 @@
 
 using namespace std;
 
-bool isprime(int n) {
+bool isPrime(int n) {
     if (n <= 2) {
         return false;
     }
-    for (int i = 2; i <= (int)sqrt(n); i++) {
+    for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
             return false;
         }
@@ -35,7 +35,7 @@ int gcd(int a, int b) { // greatest common divisor
     return !b ? a : gcd(b, a % b);
 }
 
-int getsum(int n) { // sum of digits
+int getSum(int n) { // sum of digits
     int sum = 0;
     while (n != 0) {
         sum += n % 10;
@@ -57,7 +57,7 @@ int main(int argc, char const *argv[]) {
         // 2. n < m: the suffix is 9s
         bool flag = false;
         for (int i = 3; i < m; i++) {
-            if (isprime(gcd(m, i))) {
+            if (isPrime(gcd(m, i))) {
                 if ((m - i + 1) % 9 == 0) { // m - i + 1: the number of digits in the suffix
                     int rc = (m - i + 1) / 9; // the number of 9s in the suffix
                     string suffix = string(rc, '9');
@@ -66,7 +66,7 @@ int main(int argc, char const *argv[]) {
                     if (sum >= 1 && sum <= lc * 9) { // valid
                         int lj = pow(10, lc - 1), rj = lj * 10 - 1; // the range of the prefix
                         for (int j = lj; j <= rj; j++) {
-                            if (getsum(j) == sum && j % 10 != 9) { // the last digit in the prefix is not 9
+                            if (getSum(j) == sum && j % 10 != 9) { // the last digit in the prefix is not 9
                                 cout << i << " " << j << suffix << "\n";
                                 flag = true;
                             }

@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-04-05 19:51:52
- *	modified:	2023-04-05 20:10:36
+ *	created:	2024-05-16 21:30:52
+ *	modified:	2024-05-16 21:40:03
  *	item:		Programming Ability Test
- *	site:		Shahu
+ *	site:		226, Harbin
  */
 
 /*
@@ -29,13 +29,12 @@ vector<node> d;
 
 string dfs(int r) {
     string res = "(";
-    if (d[r].lc == -1 && d[r].rc != -1) { // unary operator
-        res += d[r].v;
+    if (d[r].lc * d[r].rc > 1) { // binary operator
+        res += dfs(d[r].lc) + dfs(d[r].rc);
     }
-    if (d[r].lc != -1) res += dfs(d[r].lc);
-    if (d[r].rc != -1) res += dfs(d[r].rc);
-    if (!(d[r].lc == -1 && d[r].rc != -1)) {
-        res += d[r].v;
+    res += d[r].v;
+    if (d[r].lc * d[r].rc < 0) { // unary operator
+        res += dfs(d[r].rc);
     }
     res += ")";
     return res;

@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1478635670373253120 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1163 Dijkstra Sequence
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635670373253120
+    @pintia psid=994805342720868352 pid=1478635670373253120 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1163 Dijkstra Sequence
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635670373253120
 */
 
 // @pintia code=start
@@ -21,11 +21,11 @@
 using namespace std;
 
 struct node {
-    int v, w; // vertex id, weight
-    node(int v, int w) : v(v), w(w) { // constructor
+    int v, dis; // vertex id, distance
+    node(int v, int dis) : v(v), dis(dis) { // constructor
     }
     friend bool operator<(node a, node b) { // overload < operator for min-heap
-        return a.w > b.w;
+        return a.dis > b.dis;
     }
 };
 
@@ -36,9 +36,8 @@ vector<vector<node>> g;
 void dijkstra(int s) { // Dijkstra's algorithm
     fill(d.begin(), d.end(), INT_MAX);
     fill(vis.begin(), vis.end(), false);
-    d[s] = 0;
     priority_queue<node> q;
-    q.emplace(s, 0);
+    d[s] = 0, q.emplace(s, 0);
     while (!q.empty()) {
         node t = q.top();
         q.pop();
@@ -49,8 +48,8 @@ void dijkstra(int s) { // Dijkstra's algorithm
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].v;
-            if (!vis[v] && d[u] + g[u][i].w < d[v]) { // relaxation
-                d[v] = d[u] + g[u][i].w;
+            if (!vis[v] && d[u] + g[u][i].dis < d[v]) { // relaxation
+                d[v] = d[u] + g[u][i].dis;
                 q.emplace(v, d[v]);
             }
         }
@@ -65,8 +64,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < ne; i++) {
         int a, b, c;
         cin >> a >> b >> c;
-        g[a].emplace_back(b, c);
-        g[b].emplace_back(a, c);
+        g[a].emplace_back(b, c), g[b].emplace_back(a, c);
     }
     int k;
     cin >> k;
@@ -84,11 +82,7 @@ int main(int argc, char const *argv[]) {
                 break;
             }
         }
-        if (flag) {
-            cout << "Yes\n";
-        } else {
-            cout << "No\n";
-        }
+        flag ? cout << "Yes\n" : cout << "No\n";
     }
 
     return 0;
