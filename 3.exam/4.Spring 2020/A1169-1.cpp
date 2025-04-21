@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1621700048826490880 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1169 The Judger
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1621700048826490880
+    @pintia psid=994805342720868352 pid=1621700048826490880 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1169 The Judger
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1621700048826490880
 */
 
 // @pintia code=start
@@ -38,9 +38,9 @@ int main(int argc, char const *argv[]) {
         }
     }
     vector<bool> out(n + 1); // kicked out
-    int cntout = 0;
-    for (int q = 1; q <= m && cntout < n; q++) {
-        vector<int> outid;
+    int cntOut = 0;
+    for (int q = 1; q <= m && cntOut < n; q++) {
+        vector<int> outID;
         for (int i = 1; i <= n; i++) {
             if (out[i]) {
                 continue;
@@ -56,13 +56,13 @@ int main(int argc, char const *argv[]) {
                 pre.emplace_back(num);
             } else { // kicked out
                 out[i] = true;
-                outid.emplace_back(i);
-                if (++cntout == n) {
+                outID.emplace_back(i);
+                if (++cntOut == n) {
                     break;
                 }
             }
         }
-        for (auto it : outid) {
+        for (auto it : outID) {
             cout << "Round #" << q << ": " << it << " is out.\n";
         }
     }

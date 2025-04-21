@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1621700048826490880 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1169 The Judger
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1621700048826490880
+    @pintia psid=994805342720868352 pid=1621700048826490880 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1169 The Judger
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1621700048826490880
 */
 
 // @pintia code=start

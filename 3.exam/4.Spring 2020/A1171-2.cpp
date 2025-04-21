@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1621700097589465088 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1171 Replacement Selection
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1621700097589465088
+    @pintia psid=994805342720868352 pid=1621700097589465088 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1171 Replacement Selection
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1621700097589465088
 */
 
 // @pintia code=start
