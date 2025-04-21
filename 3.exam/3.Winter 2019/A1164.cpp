@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1478635767601967104 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1164 Good in C
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635767601967104
+    @pintia psid=994805342720868352 pid=1478635767601967104 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1164 Good in C
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1478635767601967104
 */
 
 // @pintia code=start
@@ -18,6 +18,24 @@
 #include <vector>
 
 using namespace std;
+
+vector<string> split(string s) {
+    vector<string> w; // split words with capital letters
+    for (int i = 0; i < (int)s.size(); i++) {
+        while (i < (int)s.size() && !isupper(s[i])) { // skip non-capital letters
+            i++;
+        }
+        int j = i;
+        while (j < (int)s.size() && isupper(s[j])) {
+            j++;
+        }
+        if (i != j) { // if there is a word
+            w.emplace_back(s.substr(i, j - i));
+            i = j;
+        }
+    }
+    return w;
+}
 
 int main(int argc, char const *argv[]) {
 
@@ -30,20 +48,7 @@ int main(int argc, char const *argv[]) {
     string t;
     getchar();
     getline(cin, t);
-    vector<string> w; // split words with capital letters
-    for (int i = 0; i < (int)t.size(); i++) {
-        while (i < (int)t.size() && !isupper(t[i])) { // skip non-capital letters
-            i++;
-        }
-        int j = i;
-        while (j < (int)t.size() && isupper(t[j])) {
-            j++;
-        }
-        if (i != j) { // if there is a word
-            w.emplace_back(t.substr(i, j - i));
-            i = j;
-        }
-    }
+    vector<string> w = split(t);
     for (int i = 0; i < (int)w.size(); i++) {
         for (int j = 0; j < 7; j++) {
             for (int k = 0; k < (int)w[i].size(); k++) {
