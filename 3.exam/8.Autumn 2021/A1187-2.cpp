@@ -25,17 +25,17 @@ struct node {
 vector<node> t;
 vector<int> level;
 
-int insert(int root, int i) {
-    if (root == -1) return i;
-    if (t[i].key < t[root].key) {
-        t[root].lc = insert(t[root].lc, i);
+int insert(int root, int id) {
+    if (root == -1) return id;
+    if (t[id].key < t[root].key) {
+        t[root].lc = insert(t[root].lc, id);
     } else {
-        t[root].rc = insert(t[root].rc, i);
+        t[root].rc = insert(t[root].rc, id);
     }
     return root;
 }
 
-void leveltra(int root) {
+void bfs(int root) {
     queue<int> q;
     q.emplace(root);
     while (!q.empty()) {
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
     for (int i = 1; i <= n; i++) {
         root = insert(root, i);
     }
-    leveltra(root);
+    bfs(root);
     for (int i = 0; i < (int)level.size(); i++) {
         cout << t[level[i]].key;
         i < (int)level.size() - 1 ? cout << " " : cout << "\n";

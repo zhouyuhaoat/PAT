@@ -28,22 +28,22 @@ struct node {
 
 vector<node> t, level;
 
-node *insert(node *root, int i) {
-    // insert a node with index 'i' into the tree rooted at 'root'
+node *insert(node *root, int id) {
+    // insert a node with index 'id' into the tree rooted at 'root'
     // and return the root of the tree
     if (!root) {
-        root = new node{t[i].key, t[i].pri, nullptr, nullptr};
+        root = new node{t[id].key, t[id].pri, nullptr, nullptr};
         return root;
     }
-    if (t[i].key < root->key) { // keys: inorder sorted
-        root->lc = insert(root->lc, i);
+    if (t[id].key < root->key) { // keys: inorder sorted
+        root->lc = insert(root->lc, id);
     } else {
-        root->rc = insert(root->rc, i);
+        root->rc = insert(root->rc, id);
     }
     return root;
 }
 
-void leveltra(node root) { // level-order traversal
+void bfs(node root) { // level-order traversal
     queue<node> q;
     q.emplace(root);
     while (!q.empty()) {
@@ -71,7 +71,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 1; i <= n; i++) {
         root = insert(root, i);
     }
-    leveltra(*root);
+    bfs(*root);
     for (int i = 0; i < (int)level.size(); i++) {
         cout << level[i].key;
         i < (int)level.size() - 1 ? cout << " " : cout << "\n";

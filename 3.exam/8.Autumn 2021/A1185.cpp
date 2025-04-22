@@ -13,7 +13,7 @@
 
 #include <algorithm>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]) {
     }
     vector<int> s(d); // size of hats
     sort(s.begin(), s.end(), greater<int>()); // larger hats first
-    map<int, int> order; // size -> index -> person
+    unordered_map<int, int> order; // size -> index -> person
     for (int i = 0; i < n; i++) {
         order[s[i]] = i;
     }

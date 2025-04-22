@@ -20,7 +20,7 @@ using namespace std;
 vector<set<int>> g;
 vector<bool> vis;
 
-void dfs(int u, int s, int &l) {
+void dfs(int u, int s, int& l) {
     vis[u] = true;
     l++;
     for (int v : g[u]) {
@@ -43,17 +43,17 @@ int main(int argc, char const *argv[]) {
         cin >> u >> v;
         g[u].emplace(v), g[v].emplace(u);
     }
-    int s = -1, maxl = -1; // l: length of the path, or level of the tree in the graph
+    int s = -1, maxL = -1; // l: length of the path, or level of the tree in the graph
     for (int i = 1; i <= n; i++) {
         fill(vis.begin(), vis.end(), false);
         int l = 0;
         dfs(i, i, l);
-        if (maxl < l) {
-            maxl = l;
+        if (maxL < l) {
+            maxL = l;
             s = i;
         }
     }
-    cout << s << " " << maxl << "\n";
+    cout << s << " " << maxL << "\n";
 
     return 0;
 }
