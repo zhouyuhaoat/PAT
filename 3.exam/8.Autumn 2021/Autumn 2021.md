@@ -3,11 +3,11 @@
 
 Let's design a data structure $A$ that combines arrays and linked lists as the following:
 
-At the very beginning, an integer array $A_0$​ of length $L_0$​ is initialized for the user. When the user tries to access the ith element $A[i]$, if $0\leq i \lt L_0$​, then $A[i]$ is just $A_0​[i]$. Now our system is supposed to return $h_0 ​+ i \times sizeof(int)$ as the accessed address, where $h_0$​ is the initial address of $A_0$​, and $sizeof(int)$ is the size of the array element, which is simply **int**, taking 4 bytes.
+At the very beginning, an integer array $A_0$ of length $L_0$ is initialized for the user. When the user tries to access the ith element $A[i]$, if $0\leq i \lt L_0$, then $A[i]$ is just $A_0[i]$. Now our system is supposed to return $h_0 + i \times sizeof(int)$ as the accessed address, where $h_0$ is the initial address of $A_0$, and $sizeof(int)$ is the size of the array element, which is simply **int**, taking 4 bytes.
 
-In case there is an overflow of the user's access (that is, $i\geq L_0$​), our system will declare another array $A_1$​ of length $L_1$​. Now $A[i]$ corresponds to $A_1​[j]$ (It's your job to figure out the relationship between $i$ and $j$). If $0\leq j\lt L_1$​, then $h_1 ​+ j \times sizeof(int)$ is returned as the accessed address, where $h_1$​ is the initial address of $A_1$​.
+In case there is an overflow of the user's access (that is, $i\geq L_0$), our system will declare another array $A_1$ of length $L_1$. Now $A[i]$ corresponds to $A_1[j]$ (It's your job to figure out the relationship between $i$ and $j$). If $0\leq j\lt L_1$, then $h_1 + j \times sizeof(int)$ is returned as the accessed address, where $h_1$ is the initial address of $A_1$.
 
-And if there is yet another overflow of the user's access to $A_1​[j]$, our system will declare another array $A_2$​ of length $L_2$​, and so on so forth.
+And if there is yet another overflow of the user's access to $A_1[j]$, our system will declare another array $A_2$ of length $L_2$, and so on so forth.
 
 Your job is to implement this data structure and to return the address of any access.
 
@@ -53,17 +53,17 @@ Illegal Access
 
 **Hint:**
 
-$A[2]$ is just $A_0​[2]$, so the accessed address is $2048 + 2 \times 4 = 2056$.
+$A[2]$ is just $A_0[2]$, so the accessed address is $2048 + 2 \times 4 = 2056$.
 
-In order to access $A[12]$, declaring $A_1$​ is not enough, we need $A_2$​ with initial address $h_2​ = 4016$. Since $A[12] = A_2​[1]$, the accessed address is $4016 + 1 \times 4 = 4020$.
+In order to access $A[12]$, declaring $A_1$ is not enough, we need $A_2$ with initial address $h_2 = 4016$. Since $A[12] = A_2[1]$, the accessed address is $4016 + 1 \times 4 = 4020$.
 
-In order to access $A[25]$, we need $A_3$​ with initial address $h_3​ = 1024$. Since $A[25] = A_3​[4]$, the accessed address is $1024 + 4 \times 4 = 1040$.
+In order to access $A[25]$, we need $A_3$ with initial address $h_3 = 1024$. Since $A[25] = A_3[4]$, the accessed address is $1024 + 4 \times 4 = 1040$.
 
 The access of $A[50]$ exceeds the maximum boundary of all the arrays, and hence an illegal access. There is no extra array declared.
 
-In order to access $A[28]$, we need $A_4$​ with initial address $h_4 ​= 3072$. Since $A[28] = A_4​[0]$, the accessed address is just $3072$.
+In order to access $A[28]$, we need $A_4$ with initial address $h_4 = 3072$. Since $A[28] = A_4[0]$, the accessed address is just $3072$.
 
-It is clear to see that $A[8] = A_1​[3]$ and hence the accessed address is $128 + 3 \times 4 = 140$; and $A[39] = A_4​[11]$ so the accessed address is $3072 + 11 \times 4 = 3116$.
+It is clear to see that $A[8] = A_1[3]$ and hence the accessed address is $128 + 3 \times 4 = 140$; and $A[39] = A_4[11]$ so the accessed address is $3072 + 11 \times 4 = 3116$.
 
 All together there are 5 arrays used for the above queries.
 
