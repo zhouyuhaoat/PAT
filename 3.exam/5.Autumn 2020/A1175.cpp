@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1697151678120173571 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1175 Professional Ability Test
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1697151678120173571
+    @pintia psid=994805342720868352 pid=1697151678120173571 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1175 Professional Ability Test
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1697151678120173571
 */
 
 // @pintia code=start
@@ -21,21 +21,24 @@
 using namespace std;
 
 struct node {
-    int v, s; // id, score
-    node(int v, int s) : v(v), s(s) { // constructor
+    int v, sco, vou; // id, score, vouch
+    node(int v, int sco, int vou) : v(v), sco(sco), vou(vou) { // constructor
     }
-    friend bool operator<(node a, node b) { // overload < operator for min-heap
-        return a.s > b.s;
+    friend bool operator<(node a, node b) { // overload < operator for minmax-heap
+        if (a.sco != b.sco) {
+            return a.sco > b.sco;
+        } else {
+            return a.vou < b.vou;
+        }
     }
 };
 
-vector<int> ind, indtemp; // in degree
+vector<int> inDeg, inDegTemp; // in degree
 vector<int> s, d, pre; // score of shortest path, distance of vouch
 vector<bool> vis;
-vector<vector<int>> vouch;
 vector<vector<node>> g;
 
-bool topologicalsort(int n) { // check if the graph is a DAG
+bool topologicalSort(int n) { // check if the graph is a DAG
     queue<int> q;
     q.emplace(n);
     int cnt = 0;
@@ -45,7 +48,7 @@ bool topologicalsort(int n) { // check if the graph is a DAG
         cnt++;
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].v;
-            if (--indtemp[v] == 0) {
+            if (--inDegTemp[v] == 0) {
                 q.emplace(v);
             }
         }
@@ -53,10 +56,10 @@ bool topologicalsort(int n) { // check if the graph is a DAG
     return cnt == n + 1;
 }
 
-void dijkstra(int st) {
-    s[st] = 0, d[st] = 0;
+void dijkstra(int src) {
     priority_queue<node> q;
-    q.emplace(st, 0);
+    q.emplace(src, 0, 0);
+    s[src] = 0, d[src] = 0;
     while (!q.empty()) {
         node t = q.top();
         q.pop();
@@ -68,13 +71,13 @@ void dijkstra(int st) {
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].v;
             if (!vis[v]) {
-                if (s[u] + g[u][i].s < s[v]) { // relaxation
-                    s[v] = s[u] + g[u][i].s;
-                    d[v] = d[u] + vouch[u][v];
+                if (s[u] + g[u][i].sco < s[v]) { // relaxation
+                    s[v] = s[u] + g[u][i].sco;
+                    d[v] = d[u] + g[u][i].vou;
                     pre[v] = u;
-                    q.emplace(v, s[v]);
-                } else if (s[u] + g[u][i].s == s[v] && d[u] + vouch[u][v] > d[v]) {
-                    d[v] = d[u] + vouch[u][v];
+                    q.emplace(v, s[v], d[v]);
+                } else if (s[u] + g[u][i].sco == s[v] && d[u] + g[u][i].vou > d[v]) {
+                    d[v] = d[u] + g[u][i].vou;
                     pre[v] = u;
                 }
             }
@@ -86,26 +89,23 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    ind.resize(n + 1), g.resize(n + 1);
-    vouch.resize(n + 1, vector<int>(n + 1));
+    inDeg.resize(n + 1), g.resize(n + 1);
     for (int i = 0; i < m; i++) {
         int u, v, sco, vou;
         cin >> u >> v >> sco >> vou;
-        ind[v]++;
-        g[u].emplace_back(v, sco);
-        vouch[u][v] = vou;
+        inDeg[v]++;
+        g[u].emplace_back(v, sco, vou);
     }
-    indtemp = ind;
-    // multiple sources: add a virtual node as the super source
+    inDegTemp = inDeg; // multiple sources: add a virtual node as the super source
     for (int i = 0; i < n; i++) {
-        if (indtemp[i] == 0) {
-            indtemp[i]++;
-            g[n].emplace_back(i, 0);
+        if (inDegTemp[i] == 0) {
+            inDegTemp[i]++;
+            g[n].emplace_back(i, 0, 0);
         }
     }
     int k;
     cin >> k;
-    bool flag = topologicalsort(n); // DAG: directed acyclic graph
+    bool flag = topologicalSort(n); // DAG: directed acyclic graph
     if (flag) {
         cout << "Okay.\n";
         s.resize(n + 1, INT_MAX), d.resize(n + 1, INT_MIN);
@@ -115,15 +115,15 @@ int main(int argc, char const *argv[]) {
         cout << "Impossible.\n";
     }
     for (int q = 0; q < k; q++) {
-        int en; // end
-        cin >> en;
-        if (ind[en] == 0) { // no prerequisite
-            cout << "You may take test " << en << " directly.\n";
+        int dst; // destination
+        cin >> dst;
+        if (inDeg[dst] == 0) { // no prerequisite
+            cout << "You may take test " << dst << " directly.\n";
         } else if (flag) { // consistent plan
             vector<int> ans;
-            while (en != n) { // backtrack
-                ans.emplace_back(en);
-                en = pre[en];
+            while (dst != n) { // backtrack
+                ans.emplace_back(dst);
+                dst = pre[dst];
             }
             for (int i = ans.size() - 1; i >= 0; i--) {
                 cout << ans[i];

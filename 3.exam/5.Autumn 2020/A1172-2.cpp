@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1697151678120173568 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1172 Panda and PP Milk
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1697151678120173568
+    @pintia psid=994805342720868352 pid=1697151678120173568 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1172 Panda and PP Milk
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1697151678120173568
 */
 
 // @pintia code=start
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     int sum = 0;
-    for (auto it : m) {
+    for (int it : m) {
         sum += it;
     }
     cout << sum << "\n";

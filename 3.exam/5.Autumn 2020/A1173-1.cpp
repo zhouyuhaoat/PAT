@@ -7,10 +7,10 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1697151678120173569 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1173 How Many Ways to Buy a Piece of Land
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1697151678120173569
+    @pintia psid=994805342720868352 pid=1697151678120173569 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1173 How Many Ways to Buy a Piece of Land
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1697151678120173569
 */
 
 // @pintia code=start
@@ -32,7 +32,7 @@ int main(int argc, char const *argv[]) {
     int cnt = 0;
     for (int i = 1; i <= n; i++) { // two loops for all pairs
         for (int j = i; j <= n; j++) {
-            if (d[j] - d[i - 1] <= m) {
+            if (d[j] - d[i - 1] <= m) { // [i, j]
                 cnt++;
             } else {
                 break;
