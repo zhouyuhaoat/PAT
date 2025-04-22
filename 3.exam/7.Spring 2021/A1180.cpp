@@ -16,15 +16,15 @@
 
 using namespace std;
 
-vector<bool> isprime;
+vector<bool> isPrime;
 
 void sieve(int n) { // Sieve of Eratosthenes
-    isprime.resize(n + 1, true);
-    isprime[0] = isprime[1] = false;
+    isPrime.resize(n + 1, true);
+    isPrime[0] = isPrime[1] = false;
     for (int i = 2; i <= n; i++) {
-        if (isprime[i]) {
+        if (isPrime[i]) {
             for (int j = 2 * i; j <= n; j += i) { // multiples
-                isprime[j] = false;
+                isPrime[j] = false;
             }
         }
     }
@@ -32,43 +32,45 @@ void sieve(int n) { // Sieve of Eratosthenes
 
 int main(int argc, char const *argv[]) {
 
-    int n, maxp; // maximum prime
-    cin >> n >> maxp;
-    sieve(maxp);
-    while (!isprime[maxp]) {
-        maxp--;
+    int n, maxP; // maximum prime
+    cin >> n >> maxP;
+    sieve(maxP);
+    while (!isPrime[maxP]) {
+        maxP--;
     }
     if (n == 1) {
-        cout << maxp << "\n";
+        cout << maxP << "\n";
         return 0;
     }
-    int maxdif = -1, lastp = -1; // dif: difference; p: prime
-    for (int dif = maxp / (n - 1); dif >= 1; dif--) {
-        bool isok = false; // flag to check if a valid sequence is found
-        for (int e = maxp; e > maxp - dif; e--) { // end of the sequence
-            if (!isprime[e]) continue;
+    int maxDif = -1, lastP = -1; // dif: difference; p: prime
+    for (int dif = maxP / (n - 1); dif >= 1; dif--) {
+        bool ok = false; // flag to check if a valid sequence is found
+        for (int e = maxP; e > maxP - dif; e--) { // end of the sequence
+            if (!isPrime[e]) continue;
             bool flag = true; // flag to check if all elements are prime
             for (int i = 0; i < n; i++) {
-                if (!isprime[e - i * dif]) {
+                if (!isPrime[e - i * dif]) {
                     flag = false;
                     break;
                 }
             }
             if (flag) {
-                isok = true;
-                maxdif = dif, lastp = e;
+                ok = true;
+                maxDif = dif, lastP = e;
                 break;
             }
         }
-        if (isok) break;
+        if (ok) {
+            break;
+        }
     }
-    if (maxdif != -1) {
+    if (maxDif != -1) {
         for (int i = n - 1; i >= 0; i--) {
-            cout << lastp - i * maxdif;
+            cout << lastP - i * maxDif;
             i > 0 ? cout << " " : cout << "\n";
         }
     } else {
-        cout << maxp << "\n";
+        cout << maxP << "\n";
     }
 
     return 0;

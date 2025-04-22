@@ -38,11 +38,11 @@ int main(int argc, char const *argv[]) {
         }
     });
     int cnt = 1;
-    string lastexi = p[0].exi;
+    string lastExi = p[0].exi;
     for (int i = 1; i < n; i++) {
-        if (p[i].ent >= lastexi) { // not overlap: enter after last exit
+        if (p[i].ent >= lastExi) { // not overlap: enter after last exit
             cnt++;
-            lastexi = p[i].exi;
+            lastExi = p[i].exi;
         }
     }
     cout << cnt << "\n";

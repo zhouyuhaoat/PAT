@@ -57,15 +57,15 @@ int main(int argc, char const *argv[]) {
     floyd(n); // all pairs shortest path
     vector<bool> vis(n + 1, false);
     vector<int> ans;
-    int sum = 0, st = 0;
-    vis[st] = true;
-    ans.emplace_back(st);
+    int sum = 0, src = 0;
+    vis[src] = true;
+    ans.emplace_back(src);
     while (true) {
         priority_queue<node> q;
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i <= n; i++) { // route
             if (!vis[i]) {
-                q.emplace(i, d[st][i]);
-                // st: the starting point in each step
+                q.emplace(i, d[src][i]);
+                // src: the source point in each step
             }
         }
         if (q.empty() || q.top().dis == INT_MAX) {
@@ -75,7 +75,7 @@ int main(int argc, char const *argv[]) {
         vis[t.id] = true;
         ans.emplace_back(t.id);
         sum += t.dis;
-        st = t.id;
+        src = t.id;
     }
     for (int i = 0; i < (int)ans.size(); i++) {
         cout << ans[i];
@@ -84,15 +84,15 @@ int main(int argc, char const *argv[]) {
     if ((int)ans.size() == n + 1) { // all nodes are visited
         cout << sum << "\n";
     } else {
-        vector<int> notvis;
+        vector<int> notVis;
         for (int i = 0; i <= n; i++) {
             if (!vis[i]) {
-                notvis.emplace_back(i);
+                notVis.emplace_back(i);
             }
         }
-        for (int i = 0; i < (int)notvis.size(); i++) {
-            cout << notvis[i];
-            i < (int)notvis.size() - 1 ? cout << " " : cout << "\n";
+        for (int i = 0; i < (int)notVis.size(); i++) {
+            cout << notVis[i];
+            i < (int)notVis.size() - 1 ? cout << " " : cout << "\n";
         }
     }
 
