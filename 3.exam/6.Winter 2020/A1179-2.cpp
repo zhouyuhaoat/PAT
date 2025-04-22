@@ -7,56 +7,56 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1729419732192542723 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1179 Chemical Equation
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1729419732192542723
+    @pintia psid=994805342720868352 pid=1729419732192542723 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1179 Chemical Equation
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1729419732192542723
 */
 
 // @pintia code=start
 #include <iomanip>
 #include <iostream>
-#include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
-map<int, int> rea;
+unordered_map<int, int> rea;
 vector<int> pro;
-map<int, set<vector<int>>> equ;
-map<int, vector<int>> ans;
+unordered_map<int, set<vector<int>>> equ;
+unordered_map<int, vector<int>> ans;
 
-void dfs(int ps, int pe) { // bool -> void
-    if (ps == pe) {
-        for (auto it : pro) {
-            for (int i = 0; i < (int)ans[it].size(); i++) {
-                cout << setfill('0') << setw(2) << ans[it][i];
-                i < (int)ans[it].size() - 1 ? cout << " + " : cout << " -> ";
+void dfs(int preL, int preH) { // bool -> void
+    if (preL == preH) {
+        for (auto proID : pro) {
+            for (int i = 0; i < (int)ans[proID].size(); i++) {
+                cout << setfill('0') << setw(2) << ans[proID][i];
+                i < (int)ans[proID].size() - 1 ? cout << " + " : cout << " -> ";
             }
-            cout << setfill('0') << setw(2) << it << "\n";
+            cout << setfill('0') << setw(2) << proID << "\n";
         }
         exit(0); // exit the program
     }
-    int pi = pro[ps];
-    for (auto it : equ[pi]) {
-        bool isok = true;
-        for (auto is : it) {
-            if (rea[is] == 0) {
-                isok = false;
+    int proID = pro[preL];
+    for (auto act : equ[proID]) {
+        bool flag = true;
+        for (auto reaID : act) {
+            if (rea[reaID] == 0) {
+                flag = false;
                 break;
             }
         }
-        if (!isok) {
+        if (!flag) {
             continue;
         }
-        ans[pi] = it;
-        for (auto is : it) {
-            rea[is]--;
+        ans[proID] = act;
+        for (auto reaID : act) {
+            rea[reaID]--;
         }
-        dfs(ps + 1, pe);
-        for (auto is : it) {
-            rea[is]++;
+        dfs(preL + 1, preH);
+        for (auto reaID : act) {
+            rea[reaID]++;
         }
     }
 }

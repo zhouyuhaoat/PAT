@@ -7,17 +7,17 @@
  */
 
 /*
-  @pintia psid=994805342720868352 pid=1729419732192542722 compiler=GXX
-  ProblemSet: PAT (Advanced Level) Practice
-  Title: 1178 File Path
-  https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1729419732192542722
+    @pintia psid=994805342720868352 pid=1729419732192542722 compiler=GXX
+    ProblemSet: PAT (Advanced Level) Practice
+    Title: 1178 File Path
+    https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=1729419732192542722
 */
 
 // @pintia code=start
 #include <iomanip>
 #include <iostream>
-#include <map>
 #include <stack>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -43,8 +43,8 @@ int main(int argc, char const *argv[]) {
     cin >> n;
     getchar();
     stack<int> st; // for parent in the tree
-    map<int, int> level; // indent by spaces
-    map<int, bool> exist;
+    unordered_map<int, int> level; // indent by spaces
+    unordered_map<int, bool> exist;
     for (int i = 0; i < n; i++) {
         string s;
         getline(cin, s);
