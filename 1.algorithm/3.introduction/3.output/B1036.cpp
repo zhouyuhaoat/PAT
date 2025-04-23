@@ -18,24 +18,24 @@
 
 using namespace std;
 
-void print(int n, char ch, bool flag = false) {
+void print(int n, char ch, bool newLine = false) {
     for (int i = 0; i < n; i++) {
         cout << ch;
     }
-    if (flag) cout << "\n";
+    if (newLine) cout << "\n";
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
-    char c;
-    cin >> n >> c;
+    char ch;
+    cin >> n >> ch;
     int col = n, row = n / 2.0 + 0.5;
-    print(col, c, true);
+    print(col, ch, true);
     for (int i = 1; i < row - 1; i++) {
-        cout << c, print(col - 2, ' '), cout << c << "\n";
+        cout << ch, print(col - 2, ' '), cout << ch << "\n";
     }
-    print(col, c, true);
+    print(col, ch, true);
 
     return 0;
 }

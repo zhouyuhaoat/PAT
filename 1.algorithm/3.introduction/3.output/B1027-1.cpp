@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
         print(i, ' '), print(col, ch), cout << "\n";
         col -= 2;
     }
-    col += 2; // restore the middle one
+    col += 2; // restore the middle one: row - 1
     for (int i = row - 2; i >= 0; i--) { // down
         col += 2;
         print(i, ' '), print(col, ch), cout << "\n";

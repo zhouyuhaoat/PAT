@@ -37,12 +37,12 @@ int main(int argc, char const *argv[]) {
     // all: 2 * row * row - 1
     int row = (int)sqrt((n + 1) / 2); // floor
     int col = 2 * row - 1;
-    for (int i = 0; i < row; i++) { // up + middle
+    for (int i = 0; i < row; i++) {
         print(i, ' '), print(col, ch), cout << "\n";
         col -= 2;
     }
-    col += 2; // restore the middle one
-    for (int i = row - 2; i >= 0; i--) { // down
+    col += 2;
+    for (int i = row - 2; i >= 0; i--) {
         col += 2;
         print(i, ' '), print(col, ch), cout << "\n";
     }

@@ -30,10 +30,9 @@ int main(int argc, char const *argv[]) {
     cin >> s;
     int n = s.size() + 2;
     int n1 = n / 3, n3 = n1, n2 = n - n1 - n3;
-    int lo = 0, hi = s.size() - 1;
-    while (lo < n1 - 1) {
+    int lo = 0, hi = s.size() - 1; // two ends of U-shape string
+    for (; lo < n1 - 1; lo++, hi--) {
         cout << s[lo], print(n2 - 2, ' '), cout << s[hi] << "\n";
-        lo++, hi--;
     }
     while (lo <= hi) {
         cout << s[lo++];

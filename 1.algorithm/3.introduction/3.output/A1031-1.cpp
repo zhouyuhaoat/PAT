@@ -30,12 +30,11 @@ int main(int argc, char const *argv[]) {
     cin >> s;
     // calculate manually
     int n = s.size();
-    int n1 = 0, n2 = 0, n3 = 0;
-    for (int i = 3; i <= n; i++) {
-        int tmp = n + 2 - i;
-        if (tmp % 2 == 0 && tmp / 2 <= i) {
-            n1 = n3 = tmp / 2;
-            n2 = i;
+    int n1 = 0, n2 = 0, n3 = 0; // left vertical, bottom, right vertical
+    for (n2 = 3; n2 <= n; n2++) { // suppose
+        int temp = n + 2 - n2; // 2 for corners
+        if (temp % 2 == 0 && temp / 2 <= n2) {
+            n1 = n3 = temp / 2;
             break;
         }
     }
