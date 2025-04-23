@@ -22,32 +22,30 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    map<int, double> a;
-    int k1;
-    cin >> k1;
-    for (int i = 0; i < k1; i++) {
-        int a1;
-        double a2;
-        cin >> a1 >> a2;
-        a[a1] = a2;
+    map<int, double, greater<int>> poly1, poly2; // polynomial: exponent -> coefficient
+    int k;
+    cin >> k;
+    for (int i = 0; i < k; i++) {
+        int exp;
+        double coef;
+        cin >> exp >> coef;
+        poly1[exp] = coef;
     }
-    map<int, double, greater<int>> b;
-    int k2;
-    cin >> k2;
-    for (int i = 0; i < k2; i++) {
-        int a1;
-        double a2;
-        cin >> a1 >> a2;
-        for (auto it : a) {
-            b[a1 + it.first] += a2 * it.second;
-            if (b[a1 + it.first] == 0) {
-                b.erase(a1 + it.first);
+    cin >> k;
+    for (int i = 0; i < k; i++) {
+        int exp2;
+        double coef2;
+        cin >> exp2 >> coef2;
+        for (auto [exp1, coef1] : poly1) { // product
+            poly2[exp1 + exp2] += coef1 * coef2;
+            if (poly2[exp1 + exp2] == 0) {
+                poly2.erase(exp1 + exp2);
             }
         }
     }
-    cout << b.size();
-    for (auto it : b) {
-        cout << " " << it.first << " " << fixed << setprecision(1) << it.second;
+    cout << poly2.size();
+    for (auto [exp, coef] : poly2) {
+        cout << " " << exp << " " << fixed << setprecision(1) << coef;
     }
     cout << "\n";
 

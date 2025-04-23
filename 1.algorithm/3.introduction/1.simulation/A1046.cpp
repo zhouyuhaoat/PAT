@@ -23,24 +23,24 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<long long> d(n + 1); // d[i]: prefix sum, the distance from 1 to i
-    long long td = 0;
+    vector<long long> dist(n + 1); // dist[i]: prefix sum, the distance from 1 to i
+    long long sum = 0;
     for (int i = 1; i < n + 1; i++) {
-        d[i] = td;
-        int dis;
-        cin >> dis;
-        td += dis;
+        dist[i] = sum;
+        int d;
+        cin >> d;
+        sum += d;
     }
     int m;
     cin >> m;
     for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        if (a > b) { // prefix sum is increasing
-            swap(a, b);
+        int src, dst; // source -> destination
+        cin >> src >> dst;
+        if (src > dst) { // ensure src <= dst
+            swap(src, dst);
         }
-        long long sd = d[b] - d[a];
-        cout << min(sd, td - sd) << "\n"; // another direction
+        long long d = dist[dst] - dist[src];
+        cout << min(d, sum - d) << "\n"; // another direction
     }
 
     return 0;

@@ -22,18 +22,18 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    int ca = 0, cb = 0;
+    int cnt1 = 0, cnt2 = 0; // lose
     for (int i = 0; i < n; i++) {
-        int a, aa, b, bb;
-        cin >> a >> aa >> b >> bb;
-        int c = a + b;
-        if (aa == c && bb != c) {
-            cb++;
-        } else if (aa != c && bb == c) {
-            ca++;
+        int m1, h1, m2, h2; // mouth, hand
+        cin >> m1 >> h1 >> m2 >> h2;
+        int sum = m1 + m2;
+        if (h1 == sum && h2 != sum) {
+            cnt2++;
+        } else if (h1 != sum && h2 == sum) {
+            cnt1++;
         }
     }
-    cout << ca << " " << cb << "\n";
+    cout << cnt1 << " " << cnt2 << "\n";
 
     return 0;
 }

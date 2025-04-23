@@ -14,17 +14,21 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
-#include <map>
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-void print(vector<int> v) {
-    for (int i = 0; i < (int)v.size(); i++) {
-        cout << v[i];
-        i < (int)v.size() - 1 ? cout << " " : cout << "\n";
+struct player {
+    int win = 0, tie = 0, lose = 0;
+    char pos = 'B'; // default posture
+    unordered_map<char, int> cnt;
+};
+
+void updatePos(player& p, char pos) {
+    p.cnt[pos]++;
+    if (p.cnt[pos] > p.cnt[p.pos] || (p.cnt[pos] == p.cnt[p.pos] && pos < p.pos)) {
+        p.pos = pos;
     }
 }
 
@@ -32,28 +36,25 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> a(3), b(3);
-    vector<int> ap(3), bp(3);
-    char pos[3] = {'B', 'C', 'J'};
-    map<char, int> m = {{'B', 0}, {'C', 1}, {'J', 2}};
+    player p1, p2;
+    unordered_map<char, int> m = {{'B', 0}, {'C', 1}, {'J', 2}};
     for (int i = 0; i < n; i++) {
-        char ca, cb;
-        cin >> ca >> cb;
-        int ia = m[ca], ib = m[cb];
-        if ((ia + 1) % 3 == ib) { // circular order
-            a[0]++, b[2]++;
-            ap[ia]++;
-        } else if ((ib + 1) % 3 == ia) {
-            a[2]++, b[0]++;
-            bp[ib]++;
+        char pos1, pos2;
+        cin >> pos1 >> pos2;
+        int h1 = m[pos1], h2 = m[pos2]; // hand
+        if ((h1 + 1) % 3 == h2) { // circular order
+            p1.win++, p2.lose++;
+            updatePos(p1, pos1);
+        } else if ((h2 + 1) % 3 == h1) {
+            p1.lose++, p2.win++;
+            updatePos(p2, pos2);
         } else {
-            a[1]++, b[1]++;
+            p1.tie++, p2.tie++;
         }
     }
-    int am = max_element(ap.begin(), ap.end()) - ap.begin();
-    int bm = max_element(bp.begin(), bp.end()) - bp.begin();
-    print(a), print(b);
-    cout << pos[am] << " " << pos[bm] << "\n";
+    cout << p1.win << " " << p1.tie << " " << p1.lose << "\n";
+    cout << p2.win << " " << p2.tie << " " << p2.lose << "\n";
+    cout << p1.pos << " " << p2.pos << "\n";
 
     return 0;
 }

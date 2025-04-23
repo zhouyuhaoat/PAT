@@ -24,33 +24,36 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<float> a(5);
-    vector<int> cnt(5);
+    vector<int> sum(5), cnt(5);
     for (int i = 0; i < n; i++) {
         int num;
         cin >> num;
-        switch (num % 5) {
-            case 0:
+        switch (num % 5) { // type by remainder
+            case 0: // even
                 if (num % 2 == 0) {
-                    a[0] += num;
+                    sum[0] += num;
                     cnt[0]++;
                 }
                 break;
-            case 1:
-                a[1] += cnt[1] % 2 == 0 ? num : -num;
+            case 1: // alternating sum
+                if (cnt[1] % 2 == 0) {
+                    sum[1] += num;
+                } else {
+                    sum[1] -= num;
+                }
                 cnt[1]++;
                 break;
-            case 2:
-                a[2]++;
+            case 2: // count
+                sum[2]++;
                 cnt[2]++;
                 break;
-            case 3:
-                a[3] += num;
+            case 3: // average
+                sum[3] += num;
                 cnt[3]++;
                 break;
-            case 4:
-                if (num > a[4]) {
-                    a[4] = num;
+            case 4: // max
+                if (num > sum[4]) {
+                    sum[4] = num;
                     cnt[4]++;
                 }
                 break;
@@ -61,9 +64,9 @@ int main(int argc, char const *argv[]) {
             cout << "N";
         } else {
             if (i != 3) {
-                cout << (int)a[i];
+                cout << sum[i];
             } else {
-                cout << fixed << setprecision(1) << a[3] / cnt[3];
+                cout << fixed << setprecision(1) << sum[3] * 1.0 / cnt[3];
             }
         }
         i < 4 ? cout << " " : cout << "\n";

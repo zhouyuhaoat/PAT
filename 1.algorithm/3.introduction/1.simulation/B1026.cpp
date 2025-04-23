@@ -16,6 +16,7 @@
 // @pintia code=start
 #include <iomanip>
 #include <iostream>
+#define CLK_TCK 100 // clock tick per second
 
 using namespace std;
 
@@ -23,11 +24,11 @@ int main(int argc, char const *argv[]) {
 
     int c1, c2;
     cin >> c1 >> c2;
-    int sec = (c2 - c1) / 100.0 + 0.5;
-    int t[3] = {sec / 60 / 60, sec / 60 % 60, sec % 60};
-    cout << setfill('0') << setw(2) << t[0] << ":";
-    cout << setfill('0') << setw(2) << t[1] << ":";
-    cout << setfill('0') << setw(2) << t[2] << "\n";
+    int sec = (c2 - c1) * 1.0 / CLK_TCK + 0.5;
+    int hh = sec / 60 / 60, mm = sec / 60 % 60, ss = sec % 60;
+    cout << setfill('0') << setw(2) << hh << ":";
+    cout << setfill('0') << setw(2) << mm << ":";
+    cout << setfill('0') << setw(2) << ss << "\n";
 
     return 0;
 }

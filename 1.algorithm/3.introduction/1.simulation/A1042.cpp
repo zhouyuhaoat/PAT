@@ -23,16 +23,16 @@ int main(int argc, char const *argv[]) {
 
     int k;
     cin >> k;
-    const int n = 54;
+    const int n = 54; // 13 * 4 + 2 joker
     vector<int> res(n + 1), next(n + 1);
     for (int i = 1; i <= n; i++) {
-        res[i] = i;
+        res[i] = i; // original
         cin >> next[i];
     }
-    for (int i = 0; i < k; i++) {
+    for (int t = 0; t < k; t++) { // shuffle multiple times
         vector<int> temp = res;
-        for (int j = 1; j <= n; j++) {
-            res[next[j]] = temp[j]; // move the j-th card to the next[j]-th position
+        for (int i = 1; i <= n; i++) {
+            res[next[i]] = temp[i]; // move the j-th card to the next[j]-th position
         }
     }
     string suit = "SHCDJ"; // 0-based suit = (id - 1) / 13; 1-based value = (id - 1) % 13 + 1

@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]) {
     int cnt = 0;
     while (n != 1) {
         if (n % 2 != 0) {
-            n = 3 * n + 1;
+            n = 3 * n + 1; // 3x + 1 problem, Collatz Conjecture, hailstone sequence
         }
         n /= 2;
         cnt++;

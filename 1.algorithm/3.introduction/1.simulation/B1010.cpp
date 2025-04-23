@@ -21,26 +21,20 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    map<int, int, greater<int>> p;
-    int a, b;
-    while (cin >> a >> b) {
-        if (b != 0) {
-            p.insert(make_pair(b - 1, a * b));
+    map<int, int, greater<int>> poly; // polynomial: exponent -> coefficient
+    int coef, exp;
+    while (cin >> coef >> exp) {
+        if (coef * exp != 0) {
+            poly.emplace(exp - 1, coef * exp); // derivative
         }
     }
-    if (p.empty()) {
+    if (poly.empty()) {
         cout << "0 0\n";
     } else {
-        bool first = true;
-        for (auto it : p) {
-            if (first) {
-                first = false;
-            } else {
-                cout << " ";
-            }
-            cout << it.second << " " << it.first;
+        for (auto it = poly.begin(); it != poly.end(); it++) {
+            cout << it->second << " " << it->first;
+            next(it) != poly.end() ? cout << " " : cout << "\n";
         }
-        cout << "\n";
     }
 
     return 0;

@@ -19,11 +19,11 @@
 
 using namespace std;
 
-int trans(string s, char c) {
-    int cnt = count(s.begin(), s.end(), c);
-    string t = string(cnt, c);
-    if (!t.empty()) {
-        return stoi(t);
+int convert(string s, char ch) {
+    int cnt = count(s.begin(), s.end(), ch);
+    string res = string(cnt, ch);
+    if (!res.empty()) {
+        return stoi(res);
     }
     return 0;
 }
@@ -31,9 +31,10 @@ int trans(string s, char c) {
 int main(int argc, char const *argv[]) {
 
     string a, b;
-    char da, db;
+    char da, db; // digit
     cin >> a >> da >> b >> db;
-    cout << trans(a, da) + trans(b, db) << "\n";
+    int pa = convert(a, da), pb = convert(b, db); // partial
+    cout << pa + pb << "\n";
 
     return 0;
 }

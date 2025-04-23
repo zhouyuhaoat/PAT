@@ -18,10 +18,10 @@
 
 using namespace std;
 
-int trans(string s, char c) {
+int convert(string s, char ch) {
     int res = 0;
     for (int i = 0; i < (int)s.size(); i++) {
-        if (s[i] == c) {
+        if (s[i] == ch) {
             res = res * 10 + (s[i] - '0');
         }
     }
@@ -33,7 +33,8 @@ int main(int argc, char const *argv[]) {
     string a, b;
     char da, db;
     cin >> a >> da >> b >> db;
-    cout << trans(a, da) + trans(b, db) << "\n";
+    int pa = convert(a, da), pb = convert(b, db);
+    cout << pa + pb << "\n";
 
     return 0;
 }

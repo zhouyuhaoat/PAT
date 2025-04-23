@@ -23,10 +23,10 @@ int main(int argc, char const *argv[]) {
     int t;
     cin >> t;
     for (int i = 0; i < t; i++) {
-        long long a, b, c, sum;
+        long long a, b, c;
         cin >> a >> b >> c;
-        sum = a + b;
-        bool flag = false;
+        long long sum = a + b;
+        bool flag = false; // whether a + b > c if 64-bit
         if (a > 0 && b > 0 && sum < 0) {
             // overflow: a > 0 && b > 0 && sum < 0
             // 2^63 - 1 + 2^63 - 1 = 2^64 - 2 = -2 (mod 2^64)

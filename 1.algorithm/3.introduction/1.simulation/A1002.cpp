@@ -22,23 +22,23 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    map<int, float, greater<int>> p;
-    for (int i = 0; i < 2; i++) {
+    map<int, double, greater<int>> poly; // polynomial: exponent -> coefficient
+    for (int p = 0; p < 2; p++) {
         int k;
         cin >> k;
-        for (int j = 0; j < k; j++) {
-            int a;
-            float b;
-            cin >> a >> b;
-            p[a] += b;
-            if (p[a] == 0) {
-                p.erase(a);
+        for (int i = 0; i < k; i++) {
+            int exp;
+            double coef;
+            cin >> exp >> coef;
+            poly[exp] += coef;
+            if (poly[exp] == 0) {
+                poly.erase(exp);
             }
         }
     }
-    cout << p.size();
-    for (auto it : p) {
-        cout << " " << it.first << " " << fixed << setprecision(1) << it.second;
+    cout << poly.size();
+    for (auto [exp, coef] : poly) {
+        cout << " " << exp << " " << fixed << setprecision(1) << coef;
     }
     cout << "\n";
 

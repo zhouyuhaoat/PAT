@@ -19,12 +19,11 @@
 
 using namespace std;
 
-int print(vector<int> a, int l, int r, int c) {
-    for (int i = l; i < r; i++) {
-        cout << a[i];
-        --c ? cout << " " : cout << "\n";
+void print(vector<int>& v, int lo, int hi, int& cnt) {
+    for (int i = lo; i < hi; i++) {
+        cout << v[i];
+        --cnt > 0 ? cout << " " : cout << "\n";
     }
-    return c;
 }
 
 int main(int argc, char const *argv[]) {
@@ -36,9 +35,9 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
-    int c = n;
-    c = print(a, n - m, n, c);
-    c = print(a, 0, n - m, c);
+    int cnt = n; // count of elements to be printed
+    print(a, n - m, n, cnt);
+    print(a, 0, n - m, cnt);
 
     return 0;
 }
