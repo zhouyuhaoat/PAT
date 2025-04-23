@@ -22,26 +22,23 @@ int main(int argc, char const *argv[]) {
 
     int m;
     cin >> m;
-    string firstid, lastid;
-    int firsts = 24 * 3600 + 1, lasts = -1;
-    for (int i = 0; i < m; ++i) {
+    pair<string, int> first = {"", 24 * 3600 + 1}, last = {"", -1}; // id, time
+    for (int i = 0; i < m; i++) {
         string id;
         cin >> id;
-        int h, m, s;
-        scanf("%d:%d:%d", &h, &m, &s);
-        int ins = h * 3600 + m * 60 + s;
-        scanf("%d:%d:%d", &h, &m, &s);
-        int outs = h * 3600 + m * 60 + s;
-        if (ins < firsts) {
-            firsts = ins;
-            firstid = id;
+        int hh, mm, ss;
+        scanf("%d:%d:%d", &hh, &mm, &ss);
+        int in = hh * 3600 + mm * 60 + ss;
+        scanf("%d:%d:%d", &hh, &mm, &ss);
+        int out = hh * 3600 + mm * 60 + ss;
+        if (in < first.second) {
+            first = {id, in};
         }
-        if (outs > lasts) {
-            lasts = outs;
-            lastid = id;
+        if (out > last.second) {
+            last = {id, out};
         }
     }
-    cout << firstid << " " << lastid << "\n";
+    cout << first.first << " " << last.first << "\n";
 
     return 0;
 }

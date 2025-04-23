@@ -21,21 +21,21 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    char ch[3] = {'W', 'T', 'L'};
+    string bet = "WTL";
     double res = 1;
     for (int i = 0; i < 3; i++) {
-        double odd = 0;
+        double maxOdd = 0;
         int id = 0;
         for (int j = 0; j < 3; j++) {
-            double o;
-            cin >> o;
-            if (odd < o) {
-                odd = o;
+            double odd;
+            cin >> odd;
+            if (odd > maxOdd) {
+                maxOdd = odd;
                 id = j;
             }
         }
-        res *= odd;
-        cout << ch[id] << " ";
+        res *= maxOdd;
+        cout << bet[id] << " ";
     }
     res = (res * 0.65 - 1) * 2;
     cout << fixed << setprecision(2) << res << "\n";

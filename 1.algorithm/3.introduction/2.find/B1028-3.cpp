@@ -22,24 +22,24 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    string dl = "1814/09/05", dr = "2014/09/07"; // compare string of date directly
-    pair<string, string> o = {"", dr}, y = {"", dl};
+    string lo = "1814/09/05", hi = "2014/09/07"; // compare string of date directly
+    pair<string, string> old = {"", hi}, young = {"", lo}; // name, date
     int cnt = 0;
     for (int i = 0; i < n; i++) {
-        pair<string, string> t;
-        cin >> t.first >> t.second;
-        if (t.second > dl && t.second < dr) {
+        pair<string, string> p;
+        cin >> p.first >> p.second;
+        if (p.second > lo && p.second < hi) {
             cnt++;
-            if (t.second > y.second) {
-                y = t;
+            if (p.second > young.second) {
+                young = p;
             }
-            if (t.second < o.second) {
-                o = t;
+            if (p.second < old.second) {
+                old = p;
             }
         }
     }
     if (cnt != 0) {
-        cout << cnt << " " << o.first << " " << y.first << "\n";
+        cout << cnt << " " << old.first << " " << young.first << "\n";
     } else {
         cout << cnt << "\n";
     }

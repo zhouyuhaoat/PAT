@@ -23,20 +23,19 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, int> list;
+    unordered_map<int, int> list; // id, score
     for (int i = 0; i < n; i++) {
         int id, score;
         cin >> id >> score;
         list[id] += score;
     }
-    int id = 0, score = -1;
+    pair<int, int> res = {0, -1};
     for (auto it : list) {
-        if (score < it.second) {
-            score = it.second;
-            id = it.first;
+        if (it.second > res.second) {
+            res = it;
         }
     }
-    cout << id << " " << score << "\n";
+    cout << res.first << " " << res.second << "\n";
 
     return 0;
 }

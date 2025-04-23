@@ -19,28 +19,27 @@
 using namespace std;
 
 struct stu {
-    string name, id;
     int grade;
+    string name, id;
 };
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    stu h, l;
-    h.grade = -1, l.grade = 101;
+    stu hi = {-1}, lo = {101}; // highest, lowest
     for (int i = 0; i < n; i++) {
-        stu temp;
-        cin >> temp.name >> temp.id >> temp.grade;
-        if (temp.grade > h.grade) {
-            h = temp;
+        stu s;
+        cin >> s.name >> s.id >> s.grade;
+        if (s.grade > hi.grade) {
+            hi = s;
         }
-        if (temp.grade < l.grade) {
-            l = temp;
+        if (s.grade < lo.grade) {
+            lo = s;
         }
     }
-    cout << h.name << " " << h.id << "\n";
-    cout << l.name << " " << l.id << "\n";
+    cout << hi.name << " " << hi.id << "\n";
+    cout << lo.name << " " << lo.id << "\n";
 
     return 0;
 }

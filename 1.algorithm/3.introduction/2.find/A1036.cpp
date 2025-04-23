@@ -18,30 +18,29 @@
 
 using namespace std;
 
+struct stu {
+    int grade;
+    string name, id;
+    char gender;
+};
+
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    string ml[2], fh[2];
-    int mlg = 101, fhg = -1;
-    bool fm = false, ff = false;
+    stu boyLo = {101}, girlHi = {-1}; // lowest of boys, highest of girls
     for (int i = 0; i < n; i++) {
-        string name, gender, id;
-        int grade;
-        cin >> name >> gender >> id >> grade;
-        if (gender == "M" && grade < mlg) {
-            mlg = grade;
-            ml[0] = name, ml[1] = id;
-            fm = true;
-        } else if (gender == "F" && grade > fhg) {
-            fhg = grade;
-            fh[0] = name, fh[1] = id;
-            ff = true;
+        stu s;
+        cin >> s.name >> s.gender >> s.id >> s.grade;
+        if (s.gender == 'M' && s.grade < boyLo.grade) {
+            boyLo = s;
+        } else if (s.gender == 'F' && s.grade > girlHi.grade) {
+            girlHi = s;
         }
     }
-    ff ? cout << fh[0] << " " << fh[1] << "\n" : cout << "Absent\n";
-    fm ? cout << ml[0] << " " << ml[1] << "\n" : cout << "Absent\n";
-    (ff && fm) ? cout << fhg - mlg << "\n" : cout << "NA\n";
+    girlHi.grade == -1 ? cout << "Absent\n" : cout << girlHi.name << " " << girlHi.id << "\n";
+    boyLo.grade == 101 ? cout << "Absent\n" : cout << boyLo.name << " " << boyLo.id << "\n";
+    boyLo.grade == 101 || girlHi.grade == -1 ? cout << "NA\n" : cout << girlHi.grade - boyLo.grade << "\n";
 
     return 0;
 }

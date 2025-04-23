@@ -23,19 +23,19 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, pair<string, int>> s;
+    unordered_map<int, pair<string, int>> seat; // seat1 -> id, seat2
     for (int i = 0; i < n; i++) {
         pair<string, int> temp;
         int id;
         cin >> temp.first >> id >> temp.second;
-        s.insert(make_pair(id, temp));
+        seat.emplace(id, temp);
     }
     int m;
     cin >> m;
     for (int i = 0; i < m; i++) {
-        int id;
-        cin >> id;
-        cout << s[id].first << " " << s[id].second << "\n";
+        int seat1;
+        cin >> seat1;
+        cout << seat[seat1].first << " " << seat[seat1].second << "\n";
     }
 
     return 0;

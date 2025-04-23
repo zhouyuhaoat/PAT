@@ -22,21 +22,19 @@ int main(int argc, char const *argv[]) {
 
     int m;
     cin >> m;
-    string ft = "24:00:01", lt = "00:00:00"; // compare string of time directly
-    string fid, lid;
-    for (int i = 0; i < m; ++i) {
+    pair<string, string> first, last; // id, time
+    first.second = "24:00:01", last.second = "00:00:00"; // compare string of time directly
+    for (int i = 0; i < m; i++) {
         string id, in, out;
         cin >> id >> in >> out;
-        if (in < ft) {
-            ft = in;
-            fid = id;
+        if (in < first.second) {
+            first = {id, in};
         }
-        if (out >= lt) {
-            lt = out;
-            lid = id;
+        if (out >= last.second) {
+            last = {id, out};
         }
     }
-    cout << fid << " " << lid << "\n";
+    cout << first.first << " " << last.first << "\n";
 
     return 0;
 }

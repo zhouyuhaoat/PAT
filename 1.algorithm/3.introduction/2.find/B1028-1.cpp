@@ -52,24 +52,24 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    peo o = {"", 2014, 9, 7}, y = {"", 1814, 9, 5};
+    peo old = {"", 2014, 9, 7}, young = {"", 1814, 9, 5}; // oldest, youngest
     int cnt = 0;
     for (int i = 0; i < n; i++) {
-        peo tmp;
-        cin >> tmp.name;
-        scanf("%d/%d/%d", &tmp.y, &tmp.m, &tmp.d);
-        if (valid(tmp)) {
+        peo p;
+        cin >> p.name;
+        scanf("%d/%d/%d", &p.y, &p.m, &p.d);
+        if (valid(p)) {
             cnt++;
-            if (younger(tmp, y)) {
-                y = tmp;
+            if (younger(p, young)) {
+                young = p;
             }
-            if (!younger(tmp, o)) { // !younger => older
-                o = tmp;
+            if (!younger(p, old)) { // !younger => older
+                old = p;
             }
         }
     }
     if (cnt != 0) {
-        cout << cnt << " " << o.name << " " << y.name << "\n";
+        cout << cnt << " " << old.name << " " << young.name << "\n";
     } else {
         cout << cnt << "\n";
     }
