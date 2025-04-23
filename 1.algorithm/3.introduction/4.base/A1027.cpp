@@ -20,7 +20,7 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    const string m = "0123456789ABC";
+    string m = "0123456789ABC";
     cout << "#";
     for (int i = 0; i < 3; i++) {
         int n;

@@ -24,11 +24,11 @@ int main(int argc, char const *argv[]) {
     scanf("%d.%d.%d", &a1, &a2, &a3);
     int b1, b2, b3;
     scanf("%d.%d.%d", &b1, &b2, &b3);
-    int c1, c2, c3;
-    c3 = a3 + b3;
-    c2 = a2 + b2 + c3 / 29, c3 %= 29;
-    c1 = a1 + b1 + c2 / 17, c2 %= 17;
-    cout << c1 << "." << c2 << "." << c3 << "\n";
+    int s1, s2, s3; // sum
+    s3 = a3 + b3;
+    s2 = a2 + b2 + s3 / 29, s3 %= 29;
+    s1 = a1 + b1 + s2 / 17, s2 %= 17;
+    cout << s1 << "." << s2 << "." << s3 << "\n";
 
     return 0;
 }

@@ -19,23 +19,23 @@
 
 using namespace std;
 
-vector<int> convert(int n, int d) {
-    vector<int> s;
+vector<int> convert(int n, int base) {
+    vector<int> stk;
     do {
-        s.emplace_back(n % d);
-        n /= d;
+        stk.emplace_back(n % base);
+        n /= base;
     } while (n != 0);
-    return s;
+    return stk;
 }
 
 int main(int argc, char const *argv[]) {
 
     int a, b, d;
     cin >> a >> b >> d;
-    int c = a + b;
-    vector<int> s = convert(c, d);
-    for (int i = s.size() - 1; i >= 0; i--) {
-        cout << s[i];
+    int sum = a + b;
+    vector<int> stk = convert(sum, d);
+    for (int i = stk.size() - 1; i >= 0; i--) {
+        cout << stk[i];
     }
     cout << "\n";
 

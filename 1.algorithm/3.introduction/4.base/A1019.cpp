@@ -19,13 +19,13 @@
 
 using namespace std;
 
-vector<int> convert(int n, int b) {
-    vector<int> s;
+vector<int> convert(int n, int base) {
+    vector<int> stk;
     do {
-        s.emplace_back(n % b);
-        n /= b;
+        stk.emplace_back(n % base);
+        n /= base;
     } while (n != 0);
-    return s;
+    return stk;
 }
 
 bool isPalindrome(vector<int> s) {
@@ -36,18 +36,16 @@ bool isPalindrome(vector<int> s) {
         }
     }
     return true;
-    // return s == vector<int>(s.rbegin(), s.rend());
-    // return equal(s.begin(), s.begin() + n / 2, s.rbegin());
 }
 
 int main(int argc, char const *argv[]) {
 
-    int n, b;
-    cin >> n >> b;
-    vector<int> s = convert(n, b);
-    isPalindrome(s) ? cout << "Yes\n" : cout << "No\n";
-    for (int i = s.size() - 1; i >= 0; i--) {
-        cout << s[i];
+    int n, base;
+    cin >> n >> base;
+    vector<int> stk = convert(n, base);
+    isPalindrome(stk) ? cout << "Yes\n" : cout << "No\n";
+    for (int i = stk.size() - 1; i >= 0; i--) {
+        cout << stk[i];
         i > 0 ? cout << " " : cout << "\n";
     }
 

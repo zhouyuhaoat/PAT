@@ -22,15 +22,15 @@ int main(int argc, char const *argv[]) {
 
     int a, b, c;
     scanf("%d.%d.%d", &a, &b, &c);
-    int pt = a * 17 * 29 + b * 29 + c;
+    int price = a * 17 * 29 + b * 29 + c;
     scanf("%d.%d.%d", &a, &b, &c);
-    int at = a * 17 * 29 + b * 29 + c;
-    if (pt > at) {
+    int amount = a * 17 * 29 + b * 29 + c;
+    if (price > amount) {
         cout << "-";
-        swap(pt, at);
+        swap(price, amount);
     }
-    int dif = at - pt;
-    cout << dif / 29 / 17 << "." << dif / 29 % 17 << "." << dif % 29 << "\n";
+    int change = amount - price;
+    cout << change / 29 / 17 << "." << change / 29 % 17 << "." << change % 29 << "\n";
 
     return 0;
 }
