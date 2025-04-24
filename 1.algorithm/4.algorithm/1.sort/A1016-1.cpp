@@ -23,79 +23,80 @@ using namespace std;
 
 struct per {
     string name;
-    int M, d, h, m, t;
+    int month, day, hh, mm, time;
     string line;
 };
 
 int toll[25];
-double calfare(per a, per b) { // calculate fare between two records
-    double fare = (b.d - a.d) * toll[24] * 60;
+double calFare(per a, per b) { // calculate fare between two records
+    double fare = (b.day - a.day) * toll[24] * 60;
     int symbol = 1;
-    if (a.h * 60 + a.m > b.h * 60 + b.m) {
+    if (a.hh * 60 + a.mm > b.hh * 60 + b.mm) {
         swap(a, b);
         symbol = -1;
     }
-    for (int i = a.h + 1; i < b.h; i++) {
+    for (int i = a.hh + 1; i < b.hh; i++) {
         fare += symbol * toll[i] * 60;
     }
-    if (a.h == b.h) {
-        fare += symbol * (b.m - a.m) * toll[a.h];
+    if (a.hh == b.hh) {
+        fare += symbol * (b.mm - a.mm) * toll[a.hh];
     } else { // cross the hour
-        fare += symbol * (60 - a.m) * toll[a.h];
-        fare += symbol * b.m * toll[b.h];
+        fare += symbol * (60 - a.mm) * toll[a.hh];
+        fare += symbol * b.mm * toll[b.hh];
     }
     return fare;
 }
 
 int main(int argc, char const *argv[]) {
 
-    for (int i = 0; i < 24; i++) {
+    for (int i = 0; i < 24; i++) { // rate structure
         cin >> toll[i];
         toll[24] += toll[i];
     }
     int n;
     cin >> n;
-    vector<per> p(n);
+    vector<per> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].name;
-        scanf("%d:%d:%d:%d", &p[i].M, &p[i].d, &p[i].h, &p[i].m);
-        p[i].t = p[i].d * 24 * 60 + p[i].h * 60 + p[i].m;
-        cin >> p[i].line;
+        cin >> data[i].name;
+        scanf("%d:%d:%d:%d", &data[i].month, &data[i].day, &data[i].hh, &data[i].mm);
+        data[i].time = data[i].day * 24 * 60 + data[i].hh * 60 + data[i].mm;
+        cin >> data[i].line;
     }
-    sort(p.begin(), p.end(), [](per a, per b) -> bool {
+    sort(data.begin(), data.end(), [](per a, per b) -> bool {
         if (a.name != b.name) {
             return a.name < b.name;
         } else {
-            return a.t < b.t;
+            return a.time < b.time;
         }
     });
-    vector<per> b;
+    vector<per> person;
     for (int i = 0; i < n - 1; i++) { // n - 1: avoid out of range
-        if (p[i].name == p[i + 1].name) { // pair after sort: on-line & off-line
-            if (p[i].line == "on-line" && p[i + 1].line == "off-line") {
-                b.emplace_back(p[i]), b.emplace_back(p[i + 1]);
+        if (data[i].name == data[i + 1].name) { // pair after sort: on-line & off-line
+            if (data[i].line == "on-line" && data[i + 1].line == "off-line") {
+                person.emplace_back(data[i]), person.emplace_back(data[i + 1]);
             }
         }
     }
-    double tf = 0;
-    for (int i = 0; i < (int)b.size(); i += 2) {
-        bool first = true, last = true; // whether the first or last record of the people
-        if (i - 2 >= 0 && b[i - 2].name == b[i].name) {
+    double total = 0; // total fare of each person
+    for (int i = 0; i < (int)person.size(); i += 2) {
+        bool first = true, last = true; // whether the first or last record of the person
+        if (i - 2 >= 0 && person[i - 2].name == person[i].name) {
             first = false;
         }
-        if (i + 2 < (int)b.size() && b[i + 2].name == b[i].name) {
+        if (i + 2 < (int)person.size() && person[i + 2].name == person[i].name) {
             last = false;
         }
         if (first) {
-            cout << b[i].name << " " << setfill('0') << setw(2) << b[i].M << "\n";
+            cout << person[i].name << " " << setfill('0') << setw(2) << person[i].month << "\n";
         }
-        printf("%02d:%02d:%02d %02d:%02d:%02d ", b[i].d, b[i].h, b[i].m, b[i + 1].d, b[i + 1].h, b[i + 1].m);
-        double f = calfare(b[i], b[i + 1]) / 100;
-        cout << b[i + 1].t - b[i].t << " $" << fixed << setprecision(2) << f << "\n";
-        tf += f;
+        printf("%02d:%02d:%02d", person[i].day, person[i].hh, person[i].mm);
+        printf(" %02d:%02d:%02d ", person[i + 1].day, person[i + 1].hh, person[i + 1].mm);
+        double fare = calFare(person[i], person[i + 1]) / 100;
+        cout << person[i + 1].time - person[i].time << " $" << fixed << setprecision(2) << fare << "\n";
+        total += fare;
         if (last) {
-            cout << "Total amount: $" << fixed << setprecision(2) << tf << "\n";
-            tf = 0;
+            cout << "Total amount: $" << fixed << setprecision(2) << total << "\n";
+            total = 0;
         }
     }
 

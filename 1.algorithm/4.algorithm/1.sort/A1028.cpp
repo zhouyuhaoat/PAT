@@ -29,11 +29,11 @@ int main(int argc, char const *argv[]) {
 
     int n, idx;
     cin >> n >> idx;
-    vector<stu> s(n);
+    vector<stu> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> s[i].id >> s[i].name >> s[i].score;
+        cin >> data[i].id >> data[i].name >> data[i].score;
     }
-    sort(s.begin(), s.end(), [idx](stu a, stu b) -> bool {
+    sort(data.begin(), data.end(), [idx](stu a, stu b) -> bool {
         switch (idx) {
             case 1:
                 return a.id < b.id;
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
                 break;
         }
     });
-    for (auto it : s) {
+    for (auto it : data) {
         cout << it.id << " " << it.name << " " << it.score << "\n";
     }
 

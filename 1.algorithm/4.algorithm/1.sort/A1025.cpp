@@ -22,7 +22,7 @@ using namespace std;
 
 struct stu {
     string id;
-    int score, fr, loc, lr;
+    int score, final, loc, local; // score, final rank, location, local rank
 };
 
 bool cmp(stu a, stu b) {
@@ -48,26 +48,26 @@ int main(int argc, char const *argv[]) {
             s.loc = i + 1;
             list.emplace_back(s);
         }
-        sort(list.begin() + cnt, list.begin() + cnt + k, cmp);
-        list[cnt].lr = 1;
+        sort(list.begin() + cnt, list.begin() + cnt + k, cmp); // sort in the local part
+        list[cnt].local = 1;
         for (int j = cnt + 1; j < cnt + k; j++) {
             if (list[j].score == list[j - 1].score) {
-                list[j].lr = list[j - 1].lr;
+                list[j].local = list[j - 1].local;
             } else {
-                list[j].lr = j - cnt + 1;
+                list[j].local = j - cnt + 1;
             }
         }
-        cnt += k;
+        cnt += k; // next part
     }
     sort(list.begin(), list.end(), cmp);
     cout << cnt << "\n";
     for (int i = 0; i < cnt; i++) {
         if (i > 0 && list[i].score == list[i - 1].score) {
-            list[i].fr = list[i - 1].fr;
+            list[i].final = list[i - 1].final;
         } else {
-            list[i].fr = i + 1;
+            list[i].final = i + 1;
         }
-        cout << list[i].id << " " << list[i].fr << " " << list[i].loc << " " << list[i].lr << "\n";
+        cout << list[i].id << " " << list[i].final << " " << list[i].loc << " " << list[i].local << "\n";
     }
 
     return 0;

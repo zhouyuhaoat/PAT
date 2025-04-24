@@ -22,54 +22,52 @@
 using namespace std;
 
 struct stu {
-    int id, s[4], r[4], rank;
-    char subject;
+    int id, score[4], rank[4]; // priorities: Average, C, Math, English
+    int best; // the best index
 };
 
 int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<stu> d(n);
+    vector<stu> data(n); // data of students
     for (int i = 0; i < n; i++) {
-        cin >> d[i].id;
-        double avg = 0;
+        cin >> data[i].id;
+        double sum = 0;
         for (int j = 0; j < 3; j++) {
-            cin >> d[i].s[j + 1];
-            avg += d[i].s[j + 1];
+            cin >> data[i].score[j + 1];
+            sum += data[i].score[j + 1];
         }
-        d[i].s[0] = avg / 3 + 0.5;
+        data[i].score[0] = sum / 3 + 0.5;
     }
     for (int i = 0; i < 4; i++) {
-        sort(d.begin(), d.end(), [i](stu a, stu b) -> bool {
-            return a.s[i] > b.s[i];
+        sort(data.begin(), data.end(), [i](stu a, stu b) -> bool {
+            return a.score[i] > b.score[i];
         });
-        d[0].r[i] = 1;
+        data[0].rank[i] = 1;
         for (int j = 1; j < n; j++) {
-            if (d[j].s[i] == d[j - 1].s[i]) {
-                d[j].r[i] = d[j - 1].r[i];
+            if (data[j].score[i] == data[j - 1].score[i]) {
+                data[j].rank[i] = data[j - 1].rank[i];
             } else {
-                d[j].r[i] = j + 1;
+                data[j].rank[i] = j + 1;
             }
         }
     }
-    const string subject = "ACME";
     for (int i = 0; i < n; i++) {
-        int j = min_element(d[i].r, d[i].r + 4) - d[i].r;
-        d[i].rank = d[i].r[j];
-        d[i].subject = subject[j];
+        data[i].best = min_element(data[i].rank, data[i].rank + 4) - data[i].rank;
     }
-    unordered_map<int, stu> q;
-    for (auto it : d) {
-        q.emplace(make_pair(it.id, it));
+    unordered_map<int, stu> query;
+    for (auto it : data) {
+        query.emplace(it.id, it);
     }
+    string subject = "ACME";
     for (int i = 0; i < m; i++) {
         int id;
         cin >> id;
-        if (q.find(id) == q.end()) {
+        if (query.find(id) == query.end()) {
             cout << "N/A\n";
         } else {
-            cout << q[id].rank << " " << q[id].subject << "\n";
+            cout << query[id].rank[query[id].best] << " " << subject[query[id].best] << "\n";
         }
     }
 

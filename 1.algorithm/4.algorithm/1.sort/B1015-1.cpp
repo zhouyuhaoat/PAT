@@ -20,48 +20,48 @@
 
 using namespace std;
 
-struct per {
+struct peo {
     int id;
-    int vir, tal, tot;
-    int flag;
+    int virtue, talent, total;
+    int type;
 };
 
 int main(int argc, char const *argv[]) {
 
-    int n, l, h;
-    cin >> n >> l >> h;
-    vector<per> p;
+    int n, lo, hi;
+    cin >> n >> lo >> hi;
+    vector<peo> people;
     for (int i = 0; i < n; i++) {
-        per t;
-        cin >> t.id >> t.vir >> t.tal;
-        t.tot = t.vir + t.tal;
-        if (t.vir < l || t.tal < l) {
+        peo p;
+        cin >> p.id >> p.virtue >> p.talent;
+        p.total = p.virtue + p.talent;
+        if (p.virtue < lo || p.talent < lo) {
             continue;
-        } else if (t.vir >= h && t.tal >= h) {
-            t.flag = 1;
-        } else if (t.vir >= h && t.tal < h) {
-            t.flag = 2;
-        } else if (t.vir < h && t.tal < h && t.vir >= t.tal) {
-            t.flag = 3;
+        } else if (p.virtue >= hi && p.talent >= hi) {
+            p.type = 1;
+        } else if (p.virtue >= hi && p.talent < hi) {
+            p.type = 2;
+        } else if (p.virtue < hi && p.talent < hi && p.virtue >= p.talent) {
+            p.type = 3;
         } else {
-            t.flag = 4;
+            p.type = 4;
         }
-        p.emplace_back(t);
+        people.emplace_back(p);
     }
-    sort(p.begin(), p.end(), [](per a, per b) -> bool {
-        if (a.flag != b.flag) {
-            return a.flag < b.flag;
-        } else if (a.tot != b.tot) {
-            return a.tot > b.tot;
-        } else if (a.vir != b.vir) {
-            return a.vir > b.vir;
+    sort(people.begin(), people.end(), [](peo a, peo b) -> bool {
+        if (a.type != b.type) {
+            return a.type < b.type;
+        } else if (a.total != b.total) {
+            return a.total > b.total;
+        } else if (a.virtue != b.virtue) {
+            return a.virtue > b.virtue;
         } else {
             return a.id < b.id;
         }
     });
-    cout << p.size() << "\n";
-    for (auto it : p) {
-        cout << it.id << " " << it.vir << " " << it.tal << "\n";
+    cout << people.size() << "\n";
+    for (auto it : people) {
+        cout << it.id << " " << it.virtue << " " << it.talent << "\n";
     }
 
     return 0;

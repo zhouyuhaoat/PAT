@@ -29,18 +29,18 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<stu> s(n);
+    vector<stu> list(n);
     for (int i = 0; i < n; i++) {
-        cin >> s[i].name >> s[i].id >> s[i].grade;
+        cin >> list[i].name >> list[i].id >> list[i].grade;
     }
-    int g1, g2;
-    cin >> g1 >> g2;
-    sort(s.begin(), s.end(), [](stu a, stu b) -> bool {
+    int lo, hi;
+    cin >> lo >> hi;
+    sort(list.begin(), list.end(), [](stu a, stu b) -> bool {
         return a.grade >= b.grade;
     });
     int cnt = 0;
-    for (auto it : s) {
-        if (it.grade >= g1 && it.grade <= g2) {
+    for (auto it : list) {
+        if (it.grade >= lo && it.grade <= hi) {
             cout << it.name << " " << it.id << "\n";
             cnt++;
         }

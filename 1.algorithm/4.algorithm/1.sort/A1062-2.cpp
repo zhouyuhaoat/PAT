@@ -20,47 +20,47 @@
 
 using namespace std;
 
-struct per {
+struct peo {
     int id;
-    int vir, tal, tot;
+    int virtue, talent, total;
 };
 
 int main(int argc, char const *argv[]) {
 
-    int n, l, h;
-    cin >> n >> l >> h;
-    vector<per> p[4]; // buckets
+    int n, lo, hi;
+    cin >> n >> lo >> hi;
+    vector<peo> people[4]; // buckets
     int cnt = n;
     for (int i = 0; i < n; i++) {
-        per t;
-        cin >> t.id >> t.vir >> t.tal;
-        t.tot = t.vir + t.tal;
-        if (t.vir < l || t.tal < l) {
+        peo p;
+        cin >> p.id >> p.virtue >> p.talent;
+        p.total = p.virtue + p.talent;
+        if (p.virtue < lo || p.talent < lo) {
             cnt--;
             continue;
-        } else if (t.vir >= h && t.tal >= h) {
-            p[0].emplace_back(t);
-        } else if (t.vir >= h && t.tal < h) {
-            p[1].emplace_back(t);
-        } else if (t.vir < h && t.tal < h && t.vir >= t.tal) {
-            p[2].emplace_back(t);
+        } else if (p.virtue >= hi && p.talent >= hi) {
+            people[0].emplace_back(p);
+        } else if (p.virtue >= hi && p.talent < hi) {
+            people[1].emplace_back(p);
+        } else if (p.virtue < hi && p.talent < hi && p.virtue >= p.talent) {
+            people[2].emplace_back(p);
         } else {
-            p[3].emplace_back(t);
+            people[3].emplace_back(p);
         }
     }
     cout << cnt << "\n";
     for (int i = 0; i < 4; i++) {
-        sort(p[i].begin(), p[i].end(), [](per a, per b) -> bool {
-            if (a.tot != b.tot) {
-                return a.tot > b.tot;
-            } else if (a.vir != b.vir) {
-                return a.vir > b.vir;
+        sort(people[i].begin(), people[i].end(), [](peo a, peo b) -> bool {
+            if (a.total != b.total) {
+                return a.total > b.total;
+            } else if (a.virtue != b.virtue) {
+                return a.virtue > b.virtue;
             } else {
                 return a.id < b.id;
             }
         });
-        for (auto it : p[i]) {
-            cout << it.id << " " << it.vir << " " << it.tal << "\n";
+        for (auto it : people[i]) {
+            cout << it.id << " " << it.virtue << " " << it.talent << "\n";
         }
     }
 

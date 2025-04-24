@@ -22,7 +22,7 @@
 using namespace std;
 
 struct car {
-    string id, time, status;
+    string plate, time, status;
 };
 
 int convert(string a) {
@@ -33,49 +33,49 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    vector<car> c(n);
+    vector<car> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> c[i].id >> c[i].time >> c[i].status;
+        cin >> data[i].plate >> data[i].time >> data[i].status;
     }
-    sort(c.begin(), c.end(), [](car a, car b) -> bool {
-        if (a.id != b.id) {
-            return a.id < b.id;
+    sort(data.begin(), data.end(), [](car a, car b) -> bool {
+        if (a.plate != b.plate) {
+            return a.plate < b.plate;
         } else {
             return a.time < b.time;
         }
     });
-    vector<car> cp;
-    map<string, int> during;
-    int maxduring = -1;
-    for (int i = 0; i < n - 1; i++) { // pair after sort: in & out; n - 1: avoid out of range
-        if (c[i].id == c[i + 1].id && c[i].status == "in" && c[i + 1].status == "out") {
-            cp.emplace_back(c[i]), cp.emplace_back(c[i + 1]);
-            during[c[i].id] += convert(c[i + 1].time) - convert(c[i].time);
-            maxduring = max(during[c[i].id], maxduring);
+    vector<car> cars;
+    map<string, int> parking;
+    int maxParking = -1;
+    for (int i = 0; i < n - 1; i++) {
+        if (data[i].plate == data[i + 1].plate && data[i].status == "in" && data[i + 1].status == "out") {
+            cars.emplace_back(data[i]), cars.emplace_back(data[i + 1]);
+            parking[data[i].plate] += convert(data[i + 1].time) - convert(data[i].time);
+            maxParking = max(parking[data[i].plate], maxParking);
         }
     }
-    sort(cp.begin(), cp.end(), [](car a, car b) -> bool {
+    sort(cars.begin(), cars.end(), [](car a, car b) -> bool {
         return a.time < b.time;
     });
     int cnt = 0, idx = 0;
     for (int q = 0; q < k; q++) {
         string time;
         cin >> time;
-        for (; idx < (int)cp.size(); idx++) {
-            if (cp[idx].time <= time) {
-                cp[idx].status == "in" ? cnt++ : cnt--;
+        for (; idx < (int)cars.size(); idx++) {
+            if (cars[idx].time <= time) {
+                cars[idx].status == "in" ? cnt++ : cnt--;
             } else {
                 break;
             }
         }
         cout << cnt << "\n";
     }
-    for (auto it : during) {
-        if (it.second == maxduring) {
-            cout << it.first << " ";
+    for (auto [plate, time] : parking) {
+        if (time == maxParking) {
+            cout << plate << " ";
         }
     }
-    printf("%02d:%02d:%02d\n", maxduring / 3600, maxduring / 60 % 60, maxduring % 60);
+    printf("%02d:%02d:%02d\n", maxParking / 3600, maxParking / 60 % 60, maxParking % 60);
 
     return 0;
 }

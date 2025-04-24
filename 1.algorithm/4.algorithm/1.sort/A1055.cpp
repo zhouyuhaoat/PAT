@@ -20,7 +20,7 @@
 
 using namespace std;
 
-struct per {
+struct peo {
     string name;
     int age, worth;
 };
@@ -29,11 +29,11 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    vector<per> p(n);
+    vector<peo> people(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].name >> p[i].age >> p[i].worth;
+        cin >> people[i].name >> people[i].age >> people[i].worth;
     }
-    sort(p.begin(), p.end(), [](per a, per b) -> bool {
+    sort(people.begin(), people.end(), [](peo a, peo b) -> bool {
         if (a.worth != b.worth) {
             return a.worth > b.worth;
         } else if (a.age != b.age) {
@@ -43,13 +43,13 @@ int main(int argc, char const *argv[]) {
         }
     });
     for (int i = 0; i < k; i++) {
-        int m, amin, amax;
-        cin >> m >> amin >> amax;
+        int m, lo, hi;
+        cin >> m >> lo >> hi;
         cout << "Case #" << i + 1 << ":\n";
         int cnt = 0;
         for (int j = 0; j < n; j++) {
-            if (p[j].age >= amin && p[j].age <= amax) {
-                cout << p[j].name << " " << p[j].age << " " << p[j].worth << "\n";
+            if (people[j].age >= lo && people[j].age <= hi) {
+                cout << people[j].name << " " << people[j].age << " " << people[j].worth << "\n";
                 if (++cnt == m) {
                     break;
                 }
