@@ -32,8 +32,8 @@ int main(int argc, char const *argv[]) {
     cin >> n >> ch;
     int row = (int)sqrt((n + 1) / 2);
     for (int i = 1; i <= 2 * row - 1; i++) { // 1-based index
-        int dis = abs(row - i); // distance from the middle row
-        int space = row - 1 - dis, star = 2 * dis + 1;
+        int dist = abs(row - i); // distance from the middle row
+        int space = row - 1 - dist, star = 2 * dist + 1;
         print(space, ' '), print(star, ch), cout << "\n";
     }
     cout << n - (2 * row * row - 1) << "\n";
