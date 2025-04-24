@@ -20,8 +20,8 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string v[10] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
-    string w[10] = {"", "", "Shi", "Bai", "Qian", "Wan", "Shi", "Bai", "Qian", "Yi"};
+    string value[10] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
+    string weight[10] = {"", "", "Shi", "Bai", "Qian", "Wan", "Shi", "Bai", "Qian", "Yi"};
     string s;
     cin >> s;
     if (s[0] == '-') { // sign
@@ -29,17 +29,17 @@ int main(int argc, char const *argv[]) {
         s.erase(0, 1);
     }
     if (s.size() == 1) { // the first digit: no leading zero
-        cout << v[s[0] - '0'];
+        cout << value[s[0] - '0'];
     } else {
-        cout << v[s[0] - '0'] << " " << w[s.size()];
+        cout << value[s[0] - '0'] << " " << weight[s.size()];
     }
-    bool flag = (stoi(s) / 10000 % 10000) == 0; // whether all zero in 'Wan' part
+    bool Wan = (stoi(s) / 10000 % 10000) != 0; // not all zero in 'Wan' part
     // not read 'Wan' if all zero in 'Wan' part: 100000000 => yi Yi; 800000008: ba yi ling ba
     for (int i = 1; i < (int)s.size() - 1; i++) { // the middle digits except the first and the last digit
         if (s[i] != '0') { // value + weight
-            cout << " " << v[s[i] - '0'] << " " << w[s.size() - i];
+            cout << " " << value[s[i] - '0'] << " " << weight[s.size() - i];
         } else { // ling
-            if (s.size() - i == 5 && !flag) { // zero in the 'Wan' digit: don't read
+            if (s.size() - i == 5 && Wan) { // zero in the 'Wan' digit: don't read
                 cout << " Wan"; // read 'Wan' if not all zero in 'Wan' part
             } else if (s[i + 1] != '0') { // continuous zero: read the last one
                 cout << " ling";
@@ -47,7 +47,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     if (s.size() > 1 && s[s.size() - 1] != '0') { // the last digit: no weight
-        cout << " " << v[s[s.size() - 1] - '0'];
+        cout << " " << value[s[s.size() - 1] - '0'];
     }
     cout << "\n";
 

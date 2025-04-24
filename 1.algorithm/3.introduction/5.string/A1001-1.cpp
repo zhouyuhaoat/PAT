@@ -25,15 +25,15 @@ int main(int argc, char const *argv[]) {
     cin >> a >> b;
     string c = to_string(a + b);
     reverse(c.begin(), c.end());
-    string d;
+    string res;
     for (int i = 0; i < (int)c.size(); i++) { // part or group by 3 digits
-        d = c[i] + d;
+        res = c[i] + res;
         if ((i + 1) % 3 == 0 && isdigit(c[i + 1])) { // new part or group
             // last part or group: the previous character is a sign or '\0', not a digit
-            d = ',' + d; // not the last part or group
+            res = ',' + res; // not the last part or group
         }
     }
-    cout << d << "\n";
+    cout << res << "\n";
 
     return 0;
 }

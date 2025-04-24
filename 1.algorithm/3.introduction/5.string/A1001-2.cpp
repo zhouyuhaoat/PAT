@@ -25,14 +25,14 @@ int main(int argc, char const *argv[]) {
     cin >> a >> b;
     string c = to_string(a + b);
     reverse(c.begin(), c.end());
-    string d;
+    string res;
     for (int i = 0; i < (int)c.size(); i++) {
-        if (i % 3 == 0 && i != 0 && c[i] != '-') {
-            d = ',' + d;
+        if (i % 3 == 0 && i != 0 && c[i] != '-') { // not the end, not the sign
+            res = ',' + res; // add comma after -> add comma before
         }
-        d = c[i] + d;
+        res = c[i] + res;
     }
-    cout << d << "\n";
+    cout << res << "\n";
 
     return 0;
 }

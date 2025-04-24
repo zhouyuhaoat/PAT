@@ -20,8 +20,8 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string v[10] = {" ling", " yi", " er", " san", " si", " wu", " liu", " qi", " ba", " jiu"};
-    string w[10] = {"", "", " Shi", " Bai", " Qian", " Wan", " Shi", " Bai", " Qian", " Yi"};
+    string value[10] = {" ling", " yi", " er", " san", " si", " wu", " liu", " qi", " ba", " jiu"};
+    string weight[10] = {"", "", " Shi", " Bai", " Qian", " Wan", " Shi", " Bai", " Qian", " Yi"};
     string s;
     cin >> s;
     string res;
@@ -33,15 +33,15 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < (int)s.size(); i++) {
         if (s[i] != '0') {
             if (leadingZero) res += " ling";
-            res += v[s[i] - '0'] + w[s.size() - i];
+            res += value[s[i] - '0'] + weight[s.size() - i];
             leadingZero = false, part = true;
         } else {
-            if (i == 0) res += "ling"; // leading zero at the beginning
+            if (i == 0) res += "ling"; // leading zero at the beginning, for special case of 0
             leadingZero = true;
         }
         if ((s.size() - i - 1) % 4 == 0) { // new part or group
             // size - i - 1: the number of digits after the current digit
-            if (s[i] == '0' && part) res += w[s.size() - i];
+            if (s[i] == '0' && part) res += weight[s.size() - i];
             leadingZero = false, part = false;
         }
     }

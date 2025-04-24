@@ -18,38 +18,35 @@
 
 using namespace std;
 
-int w[17] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
-int m[11] = {1, 0, -1, 9, 8, 7, 6, 5, 4, 3, 2};
+int weight[17] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}; // weight
+string check = "10X98765432"; // check digit
 
 bool valid(string s) {
-    int sum = 0;
+    int sum = 0; // check sum
     for (int i = 0; i < 17; i++) {
         if (!isdigit(s[i])) {
             return false;
         }
-        sum += (s[i] - '0') * w[i];
+        sum += (s[i] - '0') * weight[i];
     }
-    int id = s[17] - '0';
-    if (s[17] == 'X') {
-        id = -1;
-    }
-    return m[sum % 11] == id;
+    return s[17] == check[sum % 11];
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    bool flag = true;
+    bool allValid = true;
+
     for (int i = 0; i < n; i++) {
         string s;
         cin >> s;
         if (!valid(s)) {
             cout << s << "\n";
-            flag = false;
+            allValid = false;
         }
     }
-    if (flag) {
+    if (allValid) {
         cout << "All passed\n";
     }
 

@@ -15,7 +15,7 @@
 
 // @pintia code=start
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -24,38 +24,38 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<vector<string>> s(n);
-    vector<bool> f(n, false);
+    vector<pair<string, string>> account(n); // name, password
+    vector<bool> flag(n, false); // whether modified
     int cnt = 0;
-    map<char, char> m = {{'1', '@'}, {'0', '%'}, {'l', 'L'}, {'O', 'o'}};
+    unordered_map<char, char> convert = {{'1', '@'}, {'0', '%'}, {'l', 'L'}, {'O', 'o'}};
     for (int i = 0; i < n; i++) {
-        string a, b;
-        cin >> a >> b;
-        bool flag = false;
-        for (int j = 0; j < (int)b.size(); j++) {
-            if (m.find(b[j]) != m.end()) {
-                b[j] = m[b[j]];
-                flag = true;
+        string name, pwd;
+        cin >> name >> pwd;
+        bool modified = false;
+        for (int j = 0; j < (int)pwd.size(); j++) {
+            if (convert.find(pwd[j]) != convert.end()) {
+                pwd[j] = convert[pwd[j]];
+                modified = true;
             }
         }
-        s[i].emplace_back(a), s[i].emplace_back(b);
-        if (flag) {
-            f[i] = true;
+        account[i] = {name, pwd};
+        if (modified) {
+            flag[i] = true;
             cnt++;
         }
     }
     if (cnt != 0) {
         cout << cnt << "\n";
         for (int i = 0; i < n; i++) {
-            if (f[i]) {
-                cout << s[i][0] << " " << s[i][1] << "\n";
+            if (flag[i]) {
+                cout << account[i].first << " " << account[i].second << "\n";
             }
         }
     } else {
-        if (s.size() == 1) {
+        if (account.size() == 1) {
             cout << "There is 1 account and no account is modified\n";
         } else {
-            cout << "There are " << s.size() << " accounts and no account is modified\n";
+            cout << "There are " << account.size() << " accounts and no account is modified\n";
         }
     }
 

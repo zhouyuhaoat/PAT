@@ -21,20 +21,19 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string w[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+    string week[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
     string a, b, c, d;
     cin >> a >> b >> c >> d;
-    int n = min(a.size(), b.size());
-    int flag = 0;
+    int n = min(a.size(), b.size()), idx = 0; // the first two strings
     for (int i = 0; i < n; i++) {
-        if (a[i] == b[i] && a[i] >= 'A' && a[i] <= 'G') {
-            cout << w[a[i] - 'A'] << " ";
-            flag = i;
+        if (a[i] == b[i] && a[i] >= 'A' && a[i] <= 'G') { // the first common capital
+            cout << week[a[i] - 'A'] << " ";
+            idx = i;
             break;
         }
     }
-    for (int i = flag + 1; i < n; i++) {
-        if (a[i] == b[i]) {
+    for (int i = idx + 1; i < n; i++) {
+        if (a[i] == b[i]) { // the second common character
             if (isdigit(a[i])) {
                 cout << setfill('0') << setw(2) << a[i] << ":";
                 break;
@@ -44,9 +43,9 @@ int main(int argc, char const *argv[]) {
             }
         }
     }
-    int m = min(c.size(), d.size());
+    int m = min(c.size(), d.size()); // the last two strings
     for (int i = 0; i < m; i++) {
-        if (c[i] == d[i] && isalpha(c[i])) {
+        if (c[i] == d[i] && isalpha(c[i])) { // the English letter shared
             cout << setfill('0') << setw(2) << i << "\n";
             break;
         }

@@ -15,7 +15,6 @@
 
 // @pintia code=start
 #include <algorithm>
-#include <climits>
 #include <iostream>
 #include <vector>
 
@@ -27,29 +26,29 @@ int main(int argc, char const *argv[]) {
     cin >> n;
     getchar();
     vector<string> s(n);
-    int l = INT_MAX;
+    int len = 256;
     for (int i = 0; i < n; i++) {
         getline(cin, s[i]);
         reverse(s[i].begin(), s[i].end());
-        l = min(l, (int)s[i].size());
+        len = min(len, (int)s[i].size());
     }
-    string r;
-    for (int i = 0; i < l; i++) {
-        bool flag = true;
+    string res; // the longest common prefix
+    for (int i = 0; i < len; i++) {
+        bool common = true; // whether the i-th character is common
         for (int j = 1; j < n; j++) {
             if (s[j][i] != s[0][i]) {
-                flag = false;
+                common = false;
                 break;
             }
         }
-        if (flag) {
-            r += s[0][i];
+        if (common) {
+            res += s[0][i];
         } else {
             break;
         }
     }
-    reverse(r.begin(), r.end());
-    !r.empty() ? cout << r << "\n" : cout << "nai\n";
+    reverse(res.begin(), res.end()); // prefix -> suffix
+    !res.empty() ? cout << res << "\n" : cout << "nai\n";
 
     return 0;
 }

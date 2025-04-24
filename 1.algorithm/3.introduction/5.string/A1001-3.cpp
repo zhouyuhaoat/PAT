@@ -22,18 +22,18 @@ int main(int argc, char const *argv[]) {
 
     int a, b;
     cin >> a >> b;
-    string c = to_string(a + b), d;
+    string c = to_string(a + b), res;
     for (int i = 0; i < (int)c.size(); i++) {
-        d += c[i];
+        res += c[i];
         if (c[i] == '-') continue;
         if ((c.size() - i - 1) % 3 == 0) {
-            // size - i - 1: the number of digits after the current digit
+            // size - i - 1: the number of digits right, after the current digit
             if (i < (int)c.size() - 1) { // not the last digit, part or group
-                d += ",";
+                res += ",";
             }
         }
     }
-    cout << d << "\n";
+    cout << res << "\n";
 
     return 0;
 }

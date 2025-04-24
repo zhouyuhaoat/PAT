@@ -14,9 +14,7 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
-#include <map>
 
 using namespace std;
 
@@ -24,23 +22,22 @@ int main(int argc, char const *argv[]) {
 
     string a, b;
     cin >> a >> b;
-    reverse(a.begin(), a.end());
-    reverse(b.begin(), b.end());
-    if (a.size() > b.size()) {
-        b.append(a.size() - b.size(), '0');
+    if (a.size() < b.size()) {
+        a.insert(0, b.size() - a.size(), '0');
     } else {
-        a.append(b.size() - a.size(), '0');
+        b.insert(0, a.size() - b.size(), '0');
     }
-    const string m = "0123456789JQK";
-    for (int i = 0; i < (int)b.size(); i++) {
-        int ai = a[i] - '0', bi = b[i] - '0';
-        if (i % 2 == 0) {
-            b[i] = m[(ai + bi) % 13];
-        } else {
-            b[i] = m[(bi - ai + 10) % 10];
+    int n = b.size();
+    string encrypt = "0123456789JQK";
+    for (int i = 0; i < n; i++) {
+        int num1 = a[i] - '0', num2 = b[i] - '0';
+        // size - i: the number of digits right + the current digit
+        if ((n - i) % 2 == 1) { // odd
+            b[i] = encrypt[(num1 + num2) % 13];
+        } else { // even
+            b[i] = encrypt[(num2 - num1 + 10) % 10];
         }
     }
-    reverse(b.begin(), b.end());
     cout << b << "\n";
 
     return 0;

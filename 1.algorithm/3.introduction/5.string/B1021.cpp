@@ -24,11 +24,11 @@ int main(int argc, char const *argv[]) {
     string s;
     cin >> s;
     map<char, int> cnt;
-    for (char c : s) {
-        cnt[c]++;
+    for (char ch : s) {
+        cnt[ch]++;
     }
-    for (auto it : cnt) {
-        cout << it.first << ":" << it.second << "\n";
+    for (auto [ch, freq] : cnt) {
+        cout << ch << ":" << freq << "\n";
     }
 
     return 0;

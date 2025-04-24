@@ -23,8 +23,8 @@ int main(int argc, char const *argv[]) {
     string s;
     cin >> s;
     int sum = 0;
-    for (char c : s) {
-        sum += c - '0';
+    for (char ch : s) {
+        sum += ch - '0';
     }
     s = to_string(sum);
     string pinyin[10] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};

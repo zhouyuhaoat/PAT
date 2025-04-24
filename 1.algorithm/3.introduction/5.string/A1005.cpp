@@ -20,17 +20,17 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string n;
-    cin >> n;
-    int s = 0;
-    for (char i : n) {
-        s += i - '0';
+    string s;
+    cin >> s;
+    int sum = 0;
+    for (char ch : s) {
+        sum += ch - '0';
     }
-    string r = to_string(s);
-    string w[10] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-    for (int i = 0; i < (int)r.size(); i++) {
-        cout << w[(r[i] - '0')];
-        i < (int)r.size() - 1 ? cout << " " : cout << "\n";
+    s = to_string(sum);
+    string digit[10] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    for (int i = 0; i < (int)s.size(); i++) {
+        cout << digit[(s[i] - '0')];
+        i < (int)s.size() - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

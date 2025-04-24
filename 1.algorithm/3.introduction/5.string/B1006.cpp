@@ -18,9 +18,9 @@
 
 using namespace std;
 
-void print(int n, char c) {
+void print(int n, char ch) {
     for (int i = 0; i < n; i++) {
-        cout << c;
+        cout << ch;
     }
 }
 

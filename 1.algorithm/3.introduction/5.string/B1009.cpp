@@ -21,15 +21,15 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    stack<string> s;
-    string w;
-    while (cin >> w) {
-        s.emplace(w);
+    stack<string> stk;
+    string word;
+    while (cin >> word) {
+        stk.emplace(word);
     }
-    while (!s.empty()) {
-        cout << s.top();
-        s.pop();
-        !s.empty() ? cout << " " : cout << "\n";
+    while (!stk.empty()) {
+        cout << stk.top();
+        stk.pop();
+        !stk.empty() ? cout << " " : cout << "\n";
     }
 
     return 0;
