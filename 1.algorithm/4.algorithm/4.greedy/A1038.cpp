@@ -24,19 +24,21 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<string> s(n);
+    vector<string> seg(n);
     for (int i = 0; i < n; i++) {
-        cin >> s[i];
+        cin >> seg[i];
     }
-    sort(s.begin(), s.end(), [](string a, string b) {
-        return a + b < b + a; // each pair of strings is compared by their concatenation
+    // forming the smallest number from strings of digits
+    // sort the strings by each pair of strings' concatenation: a + b < b + a
+    sort(seg.begin(), seg.end(), [](string a, string b) {
+        return a + b < b + a;
     });
-    string r;
-    for (string it : s) {
-        r += it;
+    string res;
+    for (string it : seg) {
+        res += it;
     }
-    r.erase(0, r.find_first_not_of('0')); // leading zeros
-    r.empty() ? cout << "0\n" : cout << r << "\n"; // avoid all are zeros
+    res.erase(0, res.find_first_not_of('0')); // leading zeros
+    res.empty() ? cout << "0\n" : cout << res << "\n"; // avoid all are zeros
 
     return 0;
 }

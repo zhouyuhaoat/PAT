@@ -23,27 +23,30 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, int> l; // location
+    unordered_map<int, int> loc; // location
     for (int i = 0; i < n; i++) {
         int d;
         cin >> d;
-        l[d] = i;
+        loc[d] = i;
     }
-    int cnt = 0, mismatch = 0;
+    int cnt = 0, idx = 0;
     bool sorted = false;
     while (!sorted) {
-        while (l[0] != 0) {
-            swap(l[0], l[l[0]]); // sort with swap(0, i)
+        while (loc[0] != 0) { // permutation cycle that involves 0
+            swap(loc[0], loc[loc[0]]); // sort with swap(0, i)
             cnt++;
         }
-        // 0 is at the proper place
-        // but the rest of the elements are possibly not sorted
+        // 0 is at the proper place (index 0), but the rest of the elements are possibly not sorted
         sorted = true;
-        for (int i = mismatch; i < n; i++) { // find the first unsorted element
-            if (l[i] != i) {
-                swap(l[i], l[0]); // move 0 to the unsorted element
+        for (int i = idx; i < n; i++) {
+            if (loc[i] != i) { // the first out-of-place element
+                swap(loc[0], loc[i]); // swap 0 (index 0) with the first out-of-place element
+                // subsequent swaps must can move the out-of-place element to its proper place
+                // reverse thinking: since the out-of-place element i is at index 0,
+                // if we need to make 0 to index 0, we must previously make 0 to index i
+                // so we can swap 0 with i to make 0 at index 0, and i at index i
                 cnt++;
-                mismatch = i; // for the next round
+                idx = i;
                 sorted = false;
                 break;
             }

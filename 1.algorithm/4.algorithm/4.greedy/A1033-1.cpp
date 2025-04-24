@@ -22,39 +22,39 @@
 
 using namespace std;
 
-struct sta {
-    double p, d;
+struct station {
+    double price, dist;
 };
 
 int main(int argc, char const *argv[]) {
 
-    double cmax, d, davg;
+    double cap, dist, per; // capacity, distance, distance per unit
     int n;
-    cin >> cmax >> d >> davg >> n;
-    vector<sta> s(n + 1);
+    cin >> cap >> dist >> per >> n;
+    vector<station> sta(n + 1);
     for (int i = 0; i < n; i++) {
-        cin >> s[i].p >> s[i].d;
+        cin >> sta[i].price >> sta[i].dist;
     }
-    s[n].p = 0, s[n].d = d; // terminal
-    sort(s.begin(), s.end(), [](sta a, sta b) {
-        return a.d < b.d;
+    sta[n].price = 0, sta[n].dist = dist; // destination
+    sort(sta.begin(), sta.end(), [](station a, station b) {
+        return a.dist < b.dist;
     });
-    if (s[0].d != 0) { // no start
+    if (sta[0].dist != 0) { // no source
         cout << "The maximum travel distance = 0.00\n";
         return 0;
     }
-    double pri = 0, tank = 0, range = cmax * davg;
+    double price = 0, tank = 0, range = cap * per;
     int now = 0;
     while (now < n) {
-        if (now < n && s[now].d + range < s[now + 1].d) { // not reachable to next station
-            cout << "The maximum travel distance = " << fixed << setprecision(2) << s[now].d + range << "\n";
+        if (now < n && sta[now].dist + range < sta[now + 1].dist) { // not reachable to next station
+            cout << "The maximum travel distance = " << fixed << setprecision(2) << sta[now].dist + range << "\n";
             return 0;
         }
         int next = now;
         for (int i = now + 1; i <= n; i++) {
-            if (s[i].d - s[now].d <= range) { // reachable
+            if (sta[i].dist - sta[now].dist <= range) { // reachable
                 // greedy: no need to find the cheapest, just find the cheaper one
-                if (s[i].p < s[now].p) {
+                if (sta[i].price < sta[now].price) {
                     next = i;
                     break;
                 }
@@ -63,20 +63,20 @@ int main(int argc, char const *argv[]) {
             }
         }
         if (next != now) { // cheaper
-            double need = (s[next].d - s[now].d) / davg;
+            double need = (sta[next].dist - sta[now].dist) / per;
             if (tank < need) { // need to fill
-                pri += (need - tank) * s[now].p;
+                price += (need - tank) * sta[now].price;
                 tank = 0; // just fill up
             } else { // enough
                 tank -= need;
             }
         } else { // not cheaper
-            double minpri = INT_MAX; // min price
+            double minPrice = INT_MAX; // min price
             for (int i = now + 1; i <= n; i++) {
-                if (s[i].d - s[now].d <= range) {
+                if (sta[i].dist - sta[now].dist <= range) {
                     // greedy: if no cheaper one, then find the cheapest one
-                    if (minpri > s[i].p) {
-                        minpri = s[i].p;
+                    if (sta[i].price < minPrice) {
+                        minPrice = sta[i].price;
                         next = i;
                     }
                 } else {
@@ -84,12 +84,12 @@ int main(int argc, char const *argv[]) {
                 }
             }
             // greedy: current station is the cheapest one, so fill up
-            pri += (cmax - tank) * s[now].p;
-            tank = cmax - (s[next].d - s[now].d) / davg;
+            price += (cap - tank) * sta[now].price;
+            tank = cap - (sta[next].dist - sta[now].dist) / per;
         }
         now = next;
     }
-    cout << fixed << setprecision(2) << pri << "\n";
+    cout << fixed << setprecision(2) << price << "\n";
 
     return 0;
 }

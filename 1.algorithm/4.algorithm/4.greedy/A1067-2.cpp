@@ -23,21 +23,22 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, int> l;
+    unordered_map<int, int> loc;
     for (int i = 0; i < n; i++) {
         int d;
         cin >> d;
-        l[d] = i;
+        loc[d] = i;
     }
     int cnt = 0;
     for (int i = 0; i < n; i++) {
-        if (i != l[i]) {
-            while (l[0] != 0) {
-                swap(l[0], l[l[0]]);
+        if (loc[i] != i) { // out-of-place element
+            while (loc[0] != 0) {
+                swap(loc[0], loc[loc[0]]);
                 cnt++;
             }
-            if (i != l[i]) {
-                swap(l[0], l[i]);
+            if (loc[i] != i) { // still out-of-place after swap(0, i)
+                swap(loc[0], loc[i]); // swap 0 with the out-of-place element
+                // next swap(0, i) will make 0 at index 0, and i at index i
                 cnt++;
             }
         }

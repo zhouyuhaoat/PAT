@@ -24,18 +24,19 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> num[i];
     }
-    for (int i = 1; i < n; i++) {
+    string res;
+    for (int i = 1; i < n; i++) { // the first non-zero digit
         if (num[i]-- > 0) {
-            cout << i;
+            res.push_back(i + '0');
             break;
         }
     }
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < num[i]; j++) {
-            cout << i;
+            res.push_back(i + '0');
         }
     }
-    cout << "\n";
+    cout << res << "\n";
 
     return 0;
 }

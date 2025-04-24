@@ -21,38 +21,38 @@
 
 using namespace std;
 
-struct mc {
-    double st, ts;
-    double s;
+struct cake {
+    double stock, sale, price;
+    // price per unit = sale / stock
 };
 
 int main(int argc, char const *argv[]) {
 
     int n;
-    double d;
-    cin >> n >> d;
-    vector<mc> c(n);
+    double demand;
+    cin >> n >> demand;
+    vector<cake> list(n);
     for (int i = 0; i < n; i++) {
-        cin >> c[i].st;
+        cin >> list[i].stock;
     }
     for (int i = 0; i < n; i++) {
-        cin >> c[i].ts;
-        c[i].s = c[i].ts / c[i].st;
+        cin >> list[i].sale;
+        list[i].price = list[i].sale / list[i].stock;
     }
-    sort(c.begin(), c.end(), [](mc a, mc b) {
-        return a.s > b.s;
+    sort(list.begin(), list.end(), [](cake a, cake b) {
+        return a.price > b.price; // higher price per unit first
     });
-    double tr = 0;
+    double profit = 0;
     for (int i = 0; i < n; i++) {
-        if (d > c[i].st) {
-            tr += c[i].ts;
-            d -= c[i].st;
-        } else {
-            tr += d * c[i].s;
+        if (demand > list[i].stock) { // not enough stock
+            profit += list[i].sale;
+            demand -= list[i].stock;
+        } else { // enough stock
+            profit += demand * list[i].price;
             break;
         }
     }
-    cout << fixed << setprecision(2) << tr << "\n";
+    cout << fixed << setprecision(2) << profit << "\n";
 
     return 0;
 }
