@@ -20,22 +20,23 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string a, b;
-    getline(cin, a), getline(cin, b);
-    bool shift = a.find('+') != string::npos;
-    for (int i = 0; i < (int)b.size(); i++) {
-        if (isupper(b[i])) {
-            if (shift || a.find(b[i]) != string::npos) {
+    string broken, original;
+    getline(cin, broken), getline(cin, original);
+    bool shift = broken.find('+') != string::npos;
+    string res; // typed
+    for (int i = 0; i < (int)original.size(); i++) {
+        if (isupper(original[i])) {
+            if (shift || broken.find(original[i]) != string::npos) {
                 continue;
             }
         } else {
-            if (a.find(toupper(b[i])) != string::npos) {
+            if (broken.find(toupper(original[i])) != string::npos) {
                 continue;
             }
         }
-        cout << b[i];
+        res += original[i];
     }
-    cout << "\n";
+    cout << res << "\n";
 
     return 0;
 }

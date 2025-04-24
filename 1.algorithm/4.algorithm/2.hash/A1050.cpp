@@ -22,12 +22,13 @@ int main(int argc, char const *argv[]) {
 
     string a, b;
     getline(cin, a), getline(cin, b);
+    string res;
     for (int i = 0; i < (int)a.size(); i++) {
-        if (b.find(a[i]) == string::npos) {
-            cout << a[i];
+        if (b.find(a[i]) == string::npos) { // a - b
+            res += a[i];
         }
     }
-    cout << "\n";
+    cout << res << "\n";
 
     return 0;
 }

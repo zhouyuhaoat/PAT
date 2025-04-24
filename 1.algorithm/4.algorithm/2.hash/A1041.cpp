@@ -24,15 +24,15 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
-    unordered_map<int, int> cnt;
+    vector<int> data(n);
+    unordered_map<int, int> cnt; // num -> count
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
-        cnt[d[i]]++;
+        cin >> data[i];
+        cnt[data[i]]++;
     }
-    for (int it : d) {
-        if (cnt[it] == 1) {
-            cout << it << "\n";
+    for (int num : data) {
+        if (cnt[num] == 1) { // unique
+            cout << num << "\n";
             return 0;
         }
     }

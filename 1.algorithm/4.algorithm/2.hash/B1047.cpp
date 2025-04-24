@@ -23,18 +23,17 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, int> score;
-    int h = -1, id = -1;
+    unordered_map<int, int> list; // team id -> score
+    pair<int, int> res = {-1, -1};
     for (int i = 0; i < n; i++) {
-        int a, b, c;
-        scanf("%d-%d %d", &a, &b, &c);
-        score[a] += c;
-        if (h < score[a]) {
-            h = score[a];
-            id = a;
+        int team, member, score;
+        scanf("%d-%d %d", &team, &member, &score);
+        list[team] += score;
+        if (list[team] > res.second) {
+            res = {team, list[team]};
         }
     }
-    cout << id << " " << h << "\n";
+    cout << res.first << " " << res.second << "\n";
 
     return 0;
 }

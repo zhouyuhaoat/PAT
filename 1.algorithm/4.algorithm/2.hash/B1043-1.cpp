@@ -21,25 +21,25 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string a;
-    cin >> a;
-    unordered_map<char, int> cnt;
-    for (int i = 0; i < (int)a.size(); i++) {
-        cnt[a[i]]++;
+    string s;
+    cin >> s;
+    unordered_map<char, int> cnt; // char -> frequency
+    for (int i = 0; i < (int)s.size(); i++) {
+        cnt[s[i]]++;
     }
-    const string symbol = "PATest";
-    bool flag = true;
-    for (int i = 0; flag; i++) {
-        flag = false;
+    string symbol = "PATest", res;
+    bool done = true; // whether output all symbols
+    for (int i = 0; done; i++) {
+        done = false;
         for (int j = 0; j < 6; j++) {
             if (cnt[symbol[j]] != 0) {
-                cout << symbol[j];
+                res += symbol[j];
                 cnt[symbol[j]]--;
-                flag = true;
+                done = true;
             }
         }
     }
-    cout << "\n";
+    cout << res << "\n";
 
     return 0;
 }

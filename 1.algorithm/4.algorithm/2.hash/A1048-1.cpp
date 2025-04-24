@@ -25,22 +25,22 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    unordered_map<int, int> p;
-    vector<int> d(n);
+    vector<int> coin(n);
+    unordered_map<int, int> cnt; // coin -> count
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
-        p[d[i]]++;
+        cin >> coin[i];
+        cnt[coin[i]]++;
     }
-    set<int> s;
+    set<int> res;
     for (int i = 0; i < n; i++) {
-        if (p[m - d[i]] > 0 && !(d[i] == m / 2 && p[d[i]] == 1)) {
-            s.emplace(d[i]);
+        if (cnt[m - coin[i]] > 0 && !(coin[i] == m / 2 && cnt[coin[i]] == 1)) {
+            res.emplace(coin[i]);
         }
     }
-    if (s.empty()) {
+    if (res.empty()) {
         cout << "No Solution\n";
-    } else {
-        cout << *s.begin() << " " << m - *s.begin() << "\n";
+    } else { // smallest one first
+        cout << *res.begin() << " " << m - *res.begin() << "\n";
     }
 
     return 0;

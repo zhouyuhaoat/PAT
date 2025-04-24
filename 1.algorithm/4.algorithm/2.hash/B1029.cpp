@@ -20,14 +20,14 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string a, b;
-    cin >> a >> b;
-    string res;
-    for (int i = 0; i < (int)a.size(); i++) {
-        if (b.find(a[i]) == string::npos) {
-            a[i] = toupper(a[i]);
-            if (res.find(a[i]) == string::npos) { // print only once
-                res += a[i];
+    string original, typed;
+    cin >> original >> typed;
+    string res; // broken
+    for (int i = 0; i < (int)original.size(); i++) {
+        if (typed.find(original[i]) == string::npos) { // broken
+            original[i] = toupper(original[i]);
+            if (res.find(original[i]) == string::npos) { // print only once
+                res += original[i];
             }
         }
     }

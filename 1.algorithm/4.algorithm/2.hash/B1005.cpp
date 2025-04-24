@@ -25,32 +25,33 @@ int main(int argc, char const *argv[]) {
 
     int k;
     cin >> k;
-    vector<int> d(k);
+    vector<int> data(k);
     for (int i = 0; i < k; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
-    set<int, greater<int>> s;
-    unordered_map<int, bool> flag;
+    set<int, greater<int>> res;
+    unordered_map<int, bool> cover;
     for (int i = 0; i < k; i++) {
-        int n = d[i];
+        int n = data[i];
         while (n != 1) {
             if (n % 2 != 0) {
                 n = 3 * n + 1;
             }
             n /= 2;
-            if (flag[n]) break; // Collatz conjecture
-            flag[n] = true;
+            if (cover[n]) {
+                break;
+            }
+            cover[n] = true;
         }
     }
-    for (int it : d) {
-        if (!flag[it]) {
-            s.emplace(it);
+    for (int n : data) {
+        if (!cover[n]) {
+            res.emplace(n);
         }
     }
-    int cnt = s.size();
-    for (auto it : s) {
-        cout << it;
-        --cnt > 0 ? cout << " " : cout << "\n";
+    for (auto it = res.begin(); it != res.end(); it++) {
+        cout << *it;
+        next(it) != res.end() ? cout << " " : cout << "\n";
     }
 
     return 0;

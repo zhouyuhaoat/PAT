@@ -20,19 +20,19 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string a, b;
-    cin >> a >> b;
-    int cnt = 0, tot = a.size();
-    for (int i = 0; i < (int)b.size(); i++) {
-        size_t j = a.find(b[i]);
-        if (j != string::npos) {
-            a.erase(j, 1);
-        } else {
+    string have, need;
+    cin >> have >> need;
+    int cnt = 0, total = have.size();
+    for (int i = 0; i < (int)need.size(); i++) {
+        size_t j = have.find(need[i]);
+        if (j != string::npos) { // meet
+            have.erase(j, 1);
+        } else { // missing
             cnt++;
         }
     }
     if (cnt == 0) {
-        cout << "Yes " << tot - b.size() << "\n";
+        cout << "Yes " << total - need.size() << "\n";
     } else {
         cout << "No " << cnt << "\n";
     }

@@ -21,26 +21,27 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string a;
-    cin >> a;
+    string s;
+    cin >> s;
     unordered_map<char, int> cnt;
-    const string symbol = "PATest";
-    for (int i = 0; i < (int)a.size(); i++) {
-        if (symbol.find(a[i]) != string::npos) {
-            cnt[a[i]]++;
+    string symbol = "PATest";
+    for (int i = 0; i < (int)s.size(); i++) {
+        if (symbol.find(s[i]) != string::npos) { // only count PATest
+            cnt[s[i]]++;
         }
     }
+    string res;
     while (!cnt.empty()) {
         for (int j = 0; j < 6; j++) {
-            if (cnt.contains(symbol[j])) {
-                cout << symbol[j];
+            if (cnt.find(symbol[j]) != cnt.end()) {
+                res += symbol[j];
                 if (--cnt[symbol[j]] == 0) {
                     cnt.erase(symbol[j]);
                 }
             }
         }
     }
-    cout << "\n";
+    cout << res << "\n";
 
     return 0;
 }
