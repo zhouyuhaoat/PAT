@@ -21,22 +21,24 @@
 
 using namespace std;
 
-int hh = -1;
-vector<int> h;
+int maxLevel = 0;
 unordered_map<int, int> cnt;
-vector<vector<int>> t;
+vector<vector<int>> tree;
 
-void bfs(int r) { // dfs -> bfs
+void bfs(int root) { // dfs -> bfs
     queue<int> q;
-    q.emplace(r);
+    q.emplace(root);
     while (!q.empty()) {
-        int f = q.front();
-        q.pop();
-        hh = max(hh, h[f]);
-        if (t[f].empty()) cnt[h[f]]++;
-        for (int i = 0; i < (int)t[f].size(); i++) {
-            h[t[f][i]] = h[f] + 1;
-            q.emplace(t[f][i]);
+        maxLevel++;
+        for (int i = q.size() - 1; i >= 0; i--) {
+            int cur = q.front();
+            q.pop();
+            if (tree[cur].empty()) {
+                cnt[maxLevel]++;
+            }
+            for (int j = 0; j < (int)tree[cur].size(); j++) {
+                q.emplace(tree[cur][j]);
+            }
         }
     }
 }
@@ -45,25 +47,23 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 0; i < m; i++) {
         int id, k;
         cin >> id >> k;
         for (int j = 0; j < k; j++) {
-            int c;
-            cin >> c;
-            t[id].emplace_back(c);
-            isroot[c] = false;
+            int child;
+            cin >> child;
+            tree[id].emplace_back(child);
+            isRoot[child] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    h.resize(n + 1);
-    h[r] = 1;
-    bfs(r);
-    for (int i = 1; i <= hh; i++) {
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin() + 1;
+    bfs(root);
+    for (int i = 1; i <= maxLevel; i++) {
         cout << cnt[i];
-        i <= hh - 1 ? cout << " " : cout << "\n";
+        i <= maxLevel - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

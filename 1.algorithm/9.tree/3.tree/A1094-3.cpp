@@ -22,16 +22,16 @@
 using namespace std;
 
 unordered_map<int, int> cnt;
-vector<vector<int>> t;
+vector<vector<int>> tree;
 
-void bfs(int r, int l) {
+void bfs(int root, int level) {
     queue<pair<int, int>> q;
-    q.emplace(r, l);
+    q.emplace(root, level);
     while (!q.empty()) {
         auto [node, level] = q.front();
         q.pop();
         cnt[level]++;
-        for (int child : t[node]) {
+        for (int child : tree[node]) {
             q.emplace(child, level + 1);
         }
     }
@@ -41,20 +41,20 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 0; i < m; i++) {
         int id, k;
         cin >> id >> k;
         for (int j = 0; j < k; j++) {
-            int c;
-            cin >> c;
-            t[id].emplace_back(c);
-            isroot[c] = false;
+            int child;
+            cin >> child;
+            tree[id].emplace_back(child);
+            isRoot[child] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    bfs(r, 0);
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin() + 1;
+    bfs(root, 0);
     auto res = max_element(cnt.begin(), cnt.end(), [](pair<int, int> a, pair<int, int> b) {
         return a.second < b.second;
     });

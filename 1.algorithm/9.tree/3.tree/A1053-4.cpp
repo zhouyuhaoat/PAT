@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 13:18:41
- *	modified:	2023-03-29 16:43:01
+ *	created:	2023-03-29 16:09:30
+ *	modified:	2023-03-29 16:47:59
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -24,20 +24,21 @@ int target;
 vector<int> weight, temp;
 vector<vector<int>> tree, res;
 
-void dfs(int root, int sum, int level) {
-    temp.resize(level + 1); // ensure temp[level] is valid
-    temp[level] = weight[root];
-    sum += weight[root];
-    if (sum > target) return;
-    if (sum == target) {
-        if (tree[root].empty()) { // leaf node -> path
-            res.emplace_back(temp);
-        }
+void dfs(int root, int sum) {
+    if (sum + weight[root] > target) return; // check the next state whether it is valid
+    if (sum + weight[root] == target) {
+        if (!tree[root].empty()) return;
+        temp.emplace_back(weight[root]); // reach the state
+        res.emplace_back(temp);
+        temp.pop_back(); // restore the state
         return;
-    } // sum < target
+    } // sum + weight[root] < target
+    temp.emplace_back(weight[root]);
+    sum += weight[root];
     for (int i = 0; i < (int)tree[root].size(); i++) {
-        dfs(tree[root][i], sum, level + 1);
+        dfs(tree[root][i], sum);
     }
+    temp.pop_back();
 }
 
 int main(int argc, char const *argv[]) {
@@ -60,7 +61,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
-    dfs(root, 0, 0);
+    dfs(root, 0);
     sort(res.begin(), res.end(), greater<vector<int>>());
     for (auto path : res) {
         for (int i = 0; i < (int)path.size(); i++) {

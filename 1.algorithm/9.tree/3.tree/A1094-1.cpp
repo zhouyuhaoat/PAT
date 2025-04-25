@@ -21,13 +21,13 @@
 
 using namespace std;
 
-unordered_map<int, int> cnt;
-vector<vector<int>> t;
+unordered_map<int, int> cnt; // level -> number of people
+vector<vector<int>> tree;
 
-void dfs(int r, int l) {
-    cnt[l]++; // cnt: the number of people in the generation
-    for (int i = 0; i < (int)t[r].size(); i++) {
-        dfs(t[r][i], l + 1);
+void dfs(int root, int level) {
+    cnt[level]++;
+    for (int i = 0; i < (int)tree[root].size(); i++) {
+        dfs(tree[root][i], level + 1);
     }
 }
 
@@ -35,25 +35,25 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 0; i < m; i++) {
         int id, k;
         cin >> id >> k;
         for (int j = 0; j < k; j++) {
-            int c;
-            cin >> c;
-            t[id].emplace_back(c);
-            isroot[c] = false;
+            int child;
+            cin >> child;
+            tree[id].emplace_back(child);
+            isRoot[child] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    dfs(r, 0);
-    vector<pair<int, int>> ans(cnt.begin(), cnt.end());
-    sort(ans.begin(), ans.end(), [](pair<int, int> a, pair<int, int> b) -> bool {
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin() + 1;
+    dfs(root, 0);
+    vector<pair<int, int>> res(cnt.begin(), cnt.end());
+    sort(res.begin(), res.end(), [](pair<int, int> a, pair<int, int> b) -> bool {
         return a.second > b.second;
     });
-    cout << ans[0].second << " " << ans[0].first + 1 << "\n";
+    cout << res[0].second << " " << res[0].first + 1 << "\n";
 
     return 0;
 }

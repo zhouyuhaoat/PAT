@@ -21,19 +21,18 @@
 
 using namespace std;
 
-int h = -1;
-unordered_map<int, int> cnt;
-vector<vector<int>> t;
+int maxLevel = -1;
+unordered_map<int, int> cnt; // level -> leaf nodes
+vector<vector<int>> tree;
 
-void dfs(int r, int l) {
-    // l: length of the path from root to current node
-    h = max(h, l); // height
-    if (t[r].empty()) { // leaf node
-        cnt[l]++; // the number of leaf nodes at the level
+void dfs(int root, int level) {
+    maxLevel = max(maxLevel, level);
+    if (tree[root].empty()) { // leaf node
+        cnt[level]++;
         return;
     }
-    for (int i = 0; i < (int)t[r].size(); i++) {
-        dfs(t[r][i], l + 1);
+    for (int i = 0; i < (int)tree[root].size(); i++) {
+        dfs(tree[root][i], level + 1);
     }
 }
 
@@ -41,23 +40,23 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 0; i < m; i++) {
         int id, k;
         cin >> id >> k;
         for (int j = 0; j < k; j++) {
-            int c;
-            cin >> c;
-            t[id].emplace_back(c);
-            isroot[c] = false;
+            int child;
+            cin >> child;
+            tree[id].emplace_back(child);
+            isRoot[child] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    dfs(r, 1);
-    for (int i = 1; i <= h; i++) {
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin() + 1;
+    dfs(root, 1);
+    for (int i = 1; i <= maxLevel; i++) {
         cout << cnt[i];
-        i <= h - 1 ? cout << " " : cout << "\n";
+        i <= maxLevel - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

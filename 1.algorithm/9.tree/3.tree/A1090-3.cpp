@@ -22,27 +22,25 @@
 using namespace std;
 
 int cnt = 0;
-double p, r, ml = -1;
-vector<vector<int>> t;
+double price, rate, maxLayer = -1;
+vector<vector<int>> tree;
 
-void bfs(int rr, int l) {
+void bfs(int root, int layer) {
     queue<pair<int, int>> q;
-    q.emplace(rr, l);
-    ml = -1;
-    cnt = 0;
+    q.emplace(root, layer);
     while (!q.empty()) {
-        auto [node, level] = q.front();
+        auto [node, layer] = q.front();
         q.pop();
-        if (t[node].empty()) {
-            if (level > ml) {
-                ml = level;
+        if (tree[node].empty()) {
+            if (layer > maxLayer) {
+                maxLayer = layer;
                 cnt = 1;
-            } else if (level == ml) {
+            } else if (layer == maxLayer) {
                 cnt++;
             }
         } else {
-            for (int child : t[node]) {
-                q.emplace(child, level + 1);
+            for (int child : tree[node]) {
+                q.emplace(child, layer + 1);
             }
         }
     }
@@ -51,21 +49,21 @@ void bfs(int rr, int l) {
 int main(int argc, char const *argv[]) {
 
     int n;
-    cin >> n >> p >> r;
-    r = r / 100 + 1;
-    t.resize(n);
-    int rr = -1;
+    cin >> n >> price >> rate;
+    rate = rate / 100 + 1;
+    tree.resize(n);
+    int root = -1;
     for (int i = 0; i < n; i++) {
         int k;
         cin >> k;
         if (k == -1) {
-            rr = i;
+            root = i;
         } else {
-            t[k].emplace_back(i);
+            tree[k].emplace_back(i);
         }
     }
-    bfs(rr, 0);
-    cout << fixed << setprecision(2) << p * pow(r, ml) << " " << cnt << "\n";
+    bfs(root, 0);
+    cout << fixed << setprecision(2) << price * pow(rate, maxLayer) << " " << cnt << "\n";
 
     return 0;
 }

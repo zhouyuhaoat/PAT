@@ -22,12 +22,12 @@
 using namespace std;
 
 unordered_map<int, int> cnt;
-vector<vector<int>> t;
+vector<vector<int>> tree;
 
-void dfs(int r, int l) {
-    cnt[l]++;
-    for (int i = 0; i < (int)t[r].size(); i++) {
-        dfs(t[r][i], l + 1);
+void dfs(int root, int level) {
+    cnt[level]++;
+    for (int i = 0; i < (int)tree[root].size(); i++) {
+        dfs(tree[root][i], level + 1);
     }
 }
 
@@ -35,20 +35,20 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 0; i < m; i++) {
         int id, k;
         cin >> id >> k;
         for (int j = 0; j < k; j++) {
-            int c;
-            cin >> c;
-            t[id].emplace_back(c);
-            isroot[c] = false;
+            int child;
+            cin >> child;
+            tree[id].emplace_back(child);
+            isRoot[child] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin() + 1;
-    dfs(r, 0);
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin() + 1;
+    dfs(root, 0);
     auto res = max_element(cnt.begin(), cnt.end(), [](pair<int, int> a, pair<int, int> b) {
         return a.second < b.second;
     });

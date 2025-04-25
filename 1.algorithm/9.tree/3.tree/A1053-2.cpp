@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 16:09:30
- *	modified:	2023-03-29 16:47:59
- *	item:		Programming Ability Test
- *	site:		Yuting
+ *	created:	2024-05-06 11:44:41
+ *	modified:	2024-05-06 11:50:41
+ *	item:		Progrmming Ability Test
+ *	site:		226, Harbin
  */
 
 /*
@@ -20,52 +20,60 @@
 
 using namespace std;
 
-int s;
-vector<int> w, tmp;
-vector<vector<int>> t, ans;
+int target;
+vector<int> weight, temp;
+vector<vector<int>> tree, res;
 
-void dfs(int r, int sum) {
-    if (sum > s) return;
-    if (sum == s) {
-        if (!t[r].empty()) return;
-        ans.emplace_back(tmp);
+void dfs(int root, int sum, int level) {
+    temp.resize(level + 1);
+    temp[level] = weight[root];
+    sum += weight[root];
+    if (sum > target) return;
+    if (sum == target) {
+        if (tree[root].size() == 0) {
+            res.emplace_back(temp);
+        }
         return;
     }
-    for (int i = 0; i < (int)t[r].size(); i++) {
-        tmp.emplace_back(w[t[r][i]]); // add weight
-        dfs(t[r][i], sum + w[t[r][i]]);
-        tmp.pop_back(); // remove weight after backtrack
+    for (int i = 0; i < (int)tree[root].size(); i++) {
+        dfs(tree[root][i], sum, level + 1);
     }
 }
 
 int main(int argc, char const *argv[]) {
 
     int n, m;
-    cin >> n >> m >> s;
-    w.resize(n);
+    cin >> n >> m >> target;
+    weight.resize(n), tree.resize(n);
     for (int i = 0; i < n; i++) {
-        cin >> w[i];
+        cin >> weight[i];
     }
-    t.resize(n);
-    vector<bool> isroot(n, true);
+    vector<bool> isRoot(n, true);
     for (int i = 0; i < m; i++) {
         int id, k;
         cin >> id >> k;
         for (int j = 0; j < k; j++) {
-            int c;
-            cin >> c;
-            t[id].emplace_back(c);
-            isroot[c] = false;
+            int child;
+            cin >> child;
+            tree[id].emplace_back(child);
+            isRoot[child] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin();
-    tmp.emplace_back(w[r]);
-    dfs(r, w[r]);
-    sort(ans.begin(), ans.end(), greater<vector<int>>());
-    for (auto it : ans) {
-        for (int i = 0; i < (int)it.size(); i++) {
-            cout << it[i];
-            i < (int)it.size() - 1 ? cout << " " : cout << "\n";
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
+    dfs(root, 0, 0);
+    sort(res.begin(), res.end(), [](vector<int> a, vector<int> b) {
+        // lambda of greater<vector<int>>()
+        for (int i = 0; i < min((int)a.size(), (int)b.size()); i++) {
+            if (a[i] != b[i]) {
+                return a[i] > b[i];
+            }
+        }
+        return a.size() > b.size();
+    });
+    for (auto path : res) {
+        for (int i = 0; i < (int)path.size(); i++) {
+            cout << path[i];
+            i < (int)path.size() - 1 ? cout << " " : cout << "\n";
         }
     }
 

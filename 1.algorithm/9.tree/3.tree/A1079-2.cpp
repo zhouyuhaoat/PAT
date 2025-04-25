@@ -21,22 +21,21 @@
 
 using namespace std;
 
-double p, r, s = 0;
-vector<double> a;
-vector<vector<int>> t;
+double price, rate, sale = 0;
+vector<double> leaf;
+vector<vector<int>> tree;
 
-void bfs(int rr, int l) {
+void bfs(int root, int layer) {
     queue<pair<int, int>> q;
-    q.emplace(rr, l);
-    s = 0;
+    q.emplace(root, layer);
     while (!q.empty()) {
-        auto [node, level] = q.front();
+        auto [node, layer] = q.front();
         q.pop();
-        if (t[node].empty()) {
-            s += p * pow(r, level) * a[node];
+        if (tree[node].empty()) {
+            sale += price * pow(rate, layer) * leaf[node];
         } else {
-            for (int child : t[node]) {
-                q.emplace(child, level + 1);
+            for (int child : tree[node]) {
+                q.emplace(child, layer + 1);
             }
         }
     }
@@ -45,9 +44,9 @@ void bfs(int rr, int l) {
 int main(int argc, char const *argv[]) {
 
     int n;
-    cin >> n >> p >> r;
-    r = r / 100 + 1;
-    t.resize(n), a.resize(n);
+    cin >> n >> price >> rate;
+    rate = rate / 100 + 1;
+    tree.resize(n), leaf.resize(n);
     for (int i = 0; i < n; i++) {
         int k;
         cin >> k;
@@ -55,14 +54,14 @@ int main(int argc, char const *argv[]) {
             for (int j = 0; j < k; j++) {
                 int id;
                 cin >> id;
-                t[i].emplace_back(id);
+                tree[i].emplace_back(id);
             }
         } else {
-            cin >> a[i];
+            cin >> leaf[i];
         }
     }
     bfs(0, 0);
-    cout << fixed << setprecision(1) << s << "\n";
+    cout << fixed << setprecision(1) << sale << "\n";
 
     return 0;
 }

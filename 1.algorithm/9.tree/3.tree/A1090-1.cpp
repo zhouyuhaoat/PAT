@@ -21,45 +21,44 @@
 
 using namespace std;
 
-int cnt = 0;
-double p, r, ms = -1;
-vector<vector<int>> t;
+int cnt = 0; // number of highest price
+double price, rate, maxSale = -1;
+vector<vector<int>> tree;
 
-void dfs(int rr, int l) {
-    // l: length of the path from root to leaf node
-    if (t[rr].empty()) { // leaf node
-        double s = p * pow(r, l);
-        if (s > ms) {
-            ms = s;
+void dfs(int root, int layer) {
+    if (tree[root].empty()) { // leaf node
+        double sale = price * pow(rate, layer);
+        if (sale > maxSale) {
+            maxSale = sale;
             cnt = 1;
-        } else if (s == ms) {
+        } else if (sale == maxSale) {
             cnt++;
         }
         return;
     }
-    for (int i = 0; i < (int)t[rr].size(); i++) {
-        dfs(t[rr][i], l + 1);
+    for (int i = 0; i < (int)tree[root].size(); i++) {
+        dfs(tree[root][i], layer + 1);
     }
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
-    cin >> n >> p >> r;
-    r = r / 100 + 1;
-    t.resize(n);
-    int rr = -1;
+    cin >> n >> price >> rate;
+    rate = rate / 100 + 1;
+    tree.resize(n);
+    int root = -1;
     for (int i = 0; i < n; i++) {
         int k;
         cin >> k;
         if (k == -1) {
-            rr = i;
+            root = i;
         } else {
-            t[k].emplace_back(i);
+            tree[k].emplace_back(i);
         }
     }
-    dfs(rr, 0);
-    cout << fixed << setprecision(2) << ms << " " << cnt << "\n";
+    dfs(root, 0);
+    cout << fixed << setprecision(2) << maxSale << " " << cnt << "\n";
 
     return 0;
 }

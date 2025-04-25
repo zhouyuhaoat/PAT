@@ -23,47 +23,46 @@
 
 using namespace std;
 
-int cnt = 0;
-double p, r, ls = INT_MAX;
-vector<vector<int>> t;
+int cnt = 0; // number of lowest price
+double price, rate, lowSale = INT_MAX;
+vector<vector<int>> tree;
 
-void dfs(int rr, int l) {
-    // l: length of the path from root to leaf node
-    if (t[rr].empty()) { // leaf node
-        double s = p * pow(r, l);
-        if (s < ls) {
-            ls = s;
+void dfs(int root, int layer) {
+    if (tree[root].empty()) { // leaf node
+        double sale = price * pow(rate, layer);
+        if (sale < lowSale) {
+            lowSale = sale;
             cnt = 1;
-        } else if (s == ls) {
+        } else if (sale == lowSale) {
             cnt++;
         }
         return;
     }
-    for (int i = 0; i < (int)t[rr].size(); i++) {
-        dfs(t[rr][i], l + 1);
+    for (int i = 0; i < (int)tree[root].size(); i++) {
+        dfs(tree[root][i], layer + 1);
     }
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
-    cin >> n >> p >> r;
-    r = r / 100 + 1;
-    t.resize(n);
-    vector<bool> isroot(n, true);
+    cin >> n >> price >> rate;
+    rate = rate / 100 + 1;
+    tree.resize(n);
+    vector<bool> isRoot(n, true);
     for (int i = 0; i < n; i++) {
         int k;
         cin >> k;
         for (int j = 0; j < k; j++) {
             int id;
             cin >> id;
-            t[i].emplace_back(id);
-            isroot[id] = false;
+            tree[i].emplace_back(id);
+            isRoot[id] = false;
         }
     }
-    int rr = find(isroot.begin(), isroot.end(), true) - isroot.begin();
-    dfs(rr, 0);
-    cout << fixed << setprecision(4) << ls << " " << cnt << "\n";
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
+    dfs(root, 0);
+    cout << fixed << setprecision(4) << lowSale << " " << cnt << "\n";
 
     return 0;
 }
