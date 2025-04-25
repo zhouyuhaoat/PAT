@@ -20,44 +20,43 @@
 
 using namespace std;
 
-int isInsertionSort(vector<int>& d1, vector<int>& d2) {
-    int pos = 1;
-    while (pos < (int)d1.size() && d2[pos - 1] <= d2[pos]) { // sorted part
+int isInsertionSort(vector<int>& init, vector<int>& part) {
+    int n = (int)init.size(), pos = 1;
+    while (pos < n && part[pos - 1] <= part[pos]) { // sorted part
         pos++;
     }
     int unsorted = pos;
-    while (pos < (int)d1.size() && d1[pos] == d2[pos]) { // unsorted part
+    while (pos < n && init[pos] == part[pos]) { // unsorted part
         pos++;
     }
-    return pos == (int)d1.size() ? unsorted : -1;
+    return pos == n ? unsorted : -1;
 }
 
-void downAdjust(vector<int>& heap, int l, int h) {
-    int i = l, j = 2 * i + 1;
-    while (j <= h) {
-        if (j + 1 <= h && heap[j + 1] > heap[j]) {
+void downAdjust(vector<int>& heap, int lo, int hi) {
+    int i = lo, j = 2 * i + 1;
+    while (j <= hi) {
+        if (j + 1 <= hi && heap[j + 1] > heap[j]) {
             j++;
         }
         if (heap[j] > heap[i]) {
             swap(heap[i], heap[j]);
-            i = j;
-            j = 2 * i + 1;
+            i = j, j = 2 * i + 1;
         } else {
             break;
         }
     }
 }
 
-void heapSort(vector<int>& d) {
-    auto it = std::find_if(d.rbegin(), d.rend(), [&](int v) {
-        return v <= d[0];
+void heapSort(vector<int>& heap) {
+    auto it = find_if(heap.rbegin(), heap.rend(), [&](int v) { // reverse iterator
+        return v <= heap[0]; // find the first element that is less than or equal to the root of the heap
     });
-    int last = (int)d.size() - 1 - (it - d.rbegin());
-    swap(d[0], d[last]);
-    downAdjust(d, 0, last - 1);
+    int last = (int)heap.size() - 1 - (it - heap.rbegin());
+    swap(heap[0], heap[last]);
+    downAdjust(heap, 0, last - 1);
 }
 
-void print(vector<int> v) {
+void print(vector<int>& v) {
     for (int i = 0; i < (int)v.size(); i++) {
         cout << v[i];
         i < (int)v.size() - 1 ? cout << " " : cout << "\n";
@@ -68,22 +67,22 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d1(n), d2(n);
+    vector<int> init(n), part(n);
     for (int i = 0; i < n; i++) {
-        cin >> d1[i];
+        cin >> init[i];
     }
     for (int i = 0; i < n; i++) {
-        cin >> d2[i];
+        cin >> part[i];
     }
-    int unsorted = isInsertionSort(d1, d2); // insertion sort: sorted part + unsorted part
+    int unsorted = isInsertionSort(init, part); // insertion sort: sorted part + unsorted part
     if (unsorted != -1) {
         cout << "Insertion Sort\n";
-        sort(d1.begin(), d1.begin() + unsorted + 1);
-        print(d1);
+        sort(init.begin(), init.begin() + unsorted + 1);
+        print(init);
     } else {
         cout << "Heap Sort\n";
-        heapSort(d2);
-        print(d2);
+        heapSort(part);
+        print(part);
     }
 
     return 0;

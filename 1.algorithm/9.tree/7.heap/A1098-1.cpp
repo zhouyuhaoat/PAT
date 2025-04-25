@@ -20,40 +20,40 @@
 
 using namespace std;
 
-bool insertionSort(vector<int>& d1, vector<int>& d2) {
-    for (int i = 2; i < (int)d1.size(); i++) {
-        sort(d1.begin(), d1.begin() + i);
-        if (d1 == d2) {
-            sort(d1.begin(), d1.begin() + i + 1);
+bool insertionSort(vector<int>& init, vector<int>& part) {
+    for (int i = 2; i < (int)init.size(); i++) {
+        sort(init.begin(), init.begin() + i);
+        if (init == part) {
+            sort(init.begin(), init.begin() + i + 1);
             return true;
         }
     }
     return false;
 }
 
-void downAdjust(vector<int>& heap, int l, int h) {
-    int i = l, j = 2 * i + 1;
-    while (j <= h) {
-        if (j + 1 <= h && heap[j + 1] > heap[j]) { // max child
+void downAdjust(vector<int>& heap, int lo, int hi) { // of max heap
+    int i = lo, j = 2 * i + 1;
+    while (j <= hi) {
+        if (j + 1 <= hi && heap[j + 1] > heap[j]) { // max child
             j++;
         }
         if (heap[j] > heap[i]) {
             swap(heap[i], heap[j]);
-            i = j;
-            j = 2 * i + 1;
+            i = j, j = 2 * i + 1;
         } else {
             break;
         }
     }
 }
 
-void heapSort(vector<int>& d) {
-    int last = (int)d.size() - 1; // find the last element that is not in the right place
-    while (last > 0 && d[last] > d[0]) {
+void heapSort(vector<int>& heap) {
+    int last = (int)heap.size() - 1; // find the last element that is not in the right place
+    while (last > 0 && heap[last] > heap[0]) {
         last--;
     }
-    swap(d[0], d[last]);
-    downAdjust(d, 0, last - 1);
+    // [0, last]: max heap; [last + 1, n - 1]: sorted
+    swap(heap[0], heap[last]); // move the largest element to the sorted region
+    downAdjust(heap, 0, last - 1); // adjust the heap to maintain the max heap property
 }
 
 void print(vector<int>& v) {
@@ -67,21 +67,20 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d1(n), d2(n);
+    vector<int> init(n), part(n);
     for (int i = 0; i < n; i++) {
-        cin >> d1[i];
+        cin >> init[i];
     }
     for (int i = 0; i < n; i++) {
-        cin >> d2[i];
+        cin >> part[i];
     }
-    vector<int> d3(d1);
-    if (insertionSort(d3, d2)) {
+    if (insertionSort(init, part)) {
         cout << "Insertion Sort\n";
-        print(d3);
+        print(init);
     } else {
-        heapSort(d2);
+        heapSort(part);
         cout << "Heap Sort\n";
-        print(d2);
+        print(part);
     }
 
     return 0;
