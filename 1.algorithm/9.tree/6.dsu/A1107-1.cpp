@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 22:37:25
- *	modified:	2023-03-29 23:36:56
+ *	created:	2025-04-25 22:37:25
+ *	modified:	2025-04-25 23:36:56
  *	item:		Programming Ability Test
- *	site:		Yuting
+ *	site:		914, Harbin
  */
 
 /*
@@ -16,42 +16,44 @@
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <map>
 #include <numeric>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
 
-// Disjoint Set Union
-vector<int> f; // father
+class DisjointSetUnion {
+private:
+    vector<int> f; // father
 
-int find(int x) {
-    int a = x;
-    while (x != f[x]) {
-        x = f[x];
+public:
+    DisjointSetUnion(int n) {
+        f.resize(n);
+        iota(f.begin(), f.end(), 0);
     }
-    // path compression
-    while (a != f[a]) {
-        int z = a;
-        a = f[a], f[z] = x;
-    }
-    return x;
-}
 
-void joint(int a, int b) {
-    int fa = find(a), fb = find(b);
-    if (fa != fb) {
-        f[fa] = fb;
+    int find(int x) {
+        if (f[x] == x) {
+            return x;
+        }
+        return f[x] = find(f[x]); // path compression
     }
-}
+
+    void unite(int a, int b) {
+        int rootA = find(a), rootB = find(b);
+        if (rootA != rootB) {
+            f[rootA] = rootB;
+        }
+    }
+};
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    f.resize(n + 1);
-    iota(f.begin(), f.end(), 0);
-    map<int, int> h;
+    DisjointSetUnion dsu(n + 1);
+    unordered_map<int, int> hobby;
+    // hobby[id] = the first person who has this hobby => cluster id
     for (int i = 0; i < n; i++) {
         int k;
         cin >> k;
@@ -59,19 +61,18 @@ int main(int argc, char const *argv[]) {
         for (int j = 0; j < k; j++) {
             int id;
             cin >> id;
-            if (h[id] == 0) {
-                h[id] = i + 1;
+            if (hobby[id] == 0) {
+                hobby[id] = i + 1;
             }
-            joint(i + 1, h[id]);
+            dsu.unite(i + 1, hobby[id]);
         }
     }
-    map<int, int> c;
+    unordered_map<int, int> cnt; // cluster id -> count
     for (int i = 1; i <= n; i++) {
-        c[find(i)]++;
+        cnt[dsu.find(i)]++;
     }
-    // sort map by value
-    vector<int> clu(c.size());
-    transform(c.begin(), c.end(), clu.begin(), [](pair<int, int> p) -> int {
+    vector<int> clu(cnt.size()); // sort unordered_map by value
+    transform(cnt.begin(), cnt.end(), clu.begin(), [](pair<int, int> p) -> int {
         return p.second;
     });
     sort(clu.begin(), clu.end(), greater<int>());

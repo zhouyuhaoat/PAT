@@ -18,7 +18,6 @@
 #include <iostream>
 #include <queue>
 #include <unordered_map>
-#include <vector>
 
 using namespace std;
 
@@ -27,18 +26,18 @@ unordered_map<int, vector<int>> g; // use unordered_map to represent the graph
 unordered_map<int, bool> vis;
 
 int bfs(int id) { // Flood Fill for connected components
-    int cnt = 0;
     queue<int> q;
     q.emplace(id);
     vis[id] = true;
+    int cnt = 0;
     while (!q.empty()) {
         int cur = q.front();
         q.pop();
-        if (cur < OFFSET) {
+        if (cur < OFFSET) { // person
             cnt++;
         }
         if (g.count(cur) != 0) {
-            for (const auto& v : g[cur]) {
+            for (int v : g[cur]) {
                 if (!vis[v]) {
                     q.emplace(v);
                     vis[v] = true;
@@ -60,8 +59,8 @@ int main(int argc, char const *argv[]) {
         for (int j = 0; j < k; j++) {
             int id;
             cin >> id;
-            g[i].emplace_back(id + OFFSET);
-            g[id + OFFSET].emplace_back(i);
+            g[i].emplace_back(id + OFFSET); // person -> hobby
+            g[id + OFFSET].emplace_back(i); // hobby -> person
         }
     }
     vector<int> clu;
