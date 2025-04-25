@@ -21,43 +21,41 @@
 using namespace std;
 
 struct node {
-    int v, i;
-    node(int v, int i) : v(v), i(i) {
+    int val, id;
+    node(int val, int id) : val(val), id(id) {
     }
 };
 
 vector<int> post, in;
 vector<node> level;
 
-void pretra(int r, int s, int e, int i) {
+void preTra(int postR, int inL, int inH, int id) {
     // pre-order traversal for level order
-    // r: root index, s: start index, e: end index, i: level index
-    if (s > e) return;
-    level.emplace_back(post[r], i);
-    int j = find(in.begin(), in.end(), post[r]) - in.begin();
-    pretra(r - (e - j) - 1, s, j - 1, 2 * i);
-    pretra(r - 1, j + 1, e, 2 * i + 1);
+    if (inL > inH) return;
+    level.emplace_back(post[postR], id);
+    int inR = find(in.begin(), in.end(), post[postR]) - in.begin();
+    preTra(postR - (inH - inR) - 1, inL, inR - 1, 2 * id); // right subtree size: inH - inR
+    preTra(postR - 1, inR + 1, inH, 2 * id + 1);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    post.resize(n);
+    post.resize(n), in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> post[i];
     }
-    in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    pretra(n - 1, 0, n - 1, 1);
+    preTra(n - 1, 0, n - 1, 1);
     // level order traversal by sorting with index
     sort(level.begin(), level.end(), [](node a, node b) -> bool {
-        return a.i < b.i;
+        return a.id < b.id;
     });
     for (int i = 0; i < n; i++) {
-        cout << level[i].v;
+        cout << level[i].val;
         i < n - 1 ? cout << " " : cout << "\n";
     }
 

@@ -21,58 +21,55 @@
 using namespace std;
 
 struct node {
-    int v, id;
-    int lc, rc;
+    int val, id;
+    int left, right;
 };
 
-vector<node> d;
+vector<node> tree;
 vector<int> in;
 
-void intra(int r, int i) {
-    // r: root, i: index
-    // invert the left and right child
-    // also not the index of the node
-    if (d[r].rc != -1) {
-        intra(d[r].rc, 2 * i);
-    }
-    d[r].id = i;
-    in.emplace_back(r);
-    if (d[r].lc != -1) {
-        intra(d[r].lc, 2 * i + 1);
-    }
+void inTra(int root, int id) {
+    // invert the left and right child for inorder traversal
+    // invert the index of the left and right child for level order traversal
+    if (root == -1) return;
+    inTra(tree[root].right, 2 * id);
+    tree[root].id = id;
+    in.emplace_back(root);
+    inTra(tree[root].left, 2 * id + 1);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    d.resize(n);
-    vector<bool> isroot(n, true);
+    tree.resize(n);
+    vector<bool> isRoot(n, true);
     for (int i = 0; i < n; i++) {
-        d[i].v = i;
-        char c;
-        cin >> c;
-        if (isdigit(c)) {
-            d[i].lc = c - '0';
-            isroot[d[i].lc] = false;
+        tree[i].val = i;
+        char ch;
+        cin >> ch;
+        if (isdigit(ch)) {
+            tree[i].left = ch - '0';
+            isRoot[tree[i].left] = false;
         } else {
-            d[i].lc = -1;
+            tree[i].left = -1;
         }
-        cin >> c;
-        if (isdigit(c)) {
-            d[i].rc = c - '0';
-            isroot[d[i].rc] = false;
+        cin >> ch;
+        if (isdigit(ch)) {
+            tree[i].right = ch - '0';
+            isRoot[tree[i].right] = false;
         } else {
-            d[i].rc = -1;
+            tree[i].right = -1;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin();
-    intra(r, 1);
-    sort(d.begin(), d.end(), [](node a, node b) -> bool {
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
+    inTra(root, 1);
+    // level order traversal by sorting with index
+    sort(tree.begin(), tree.end(), [](node a, node b) -> bool {
         return a.id < b.id;
     });
     for (int i = 0; i < n; i++) {
-        cout << d[i].v;
+        cout << tree[i].val;
         i < n - 1 ? cout << " " : cout << "\n";
     }
     for (int i = 0; i < n; i++) {

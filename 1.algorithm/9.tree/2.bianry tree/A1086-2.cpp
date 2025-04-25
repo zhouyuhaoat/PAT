@@ -22,54 +22,51 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
-vector<int> pre, in, ans;
+vector<int> pre, in, res;
 
-node *create(int r, int s, int e) {
+node *create(int preR, int inL, int inH) {
     // create binary tree by preorder and inorder
-    // r: root index, s: start index, e: end index
-    if (s > e) return nullptr;
-    int i = find(in.begin(), in.end(), pre[r]) - in.begin();
-    node *root = new node;
-    root->lc = create(r + 1, s, i - 1);
-    root->rc = create(r + (i - s) + 1, i + 1, e);
-    root->v = pre[r];
+    if (inL > inH) return nullptr;
+    int inR = find(in.begin(), in.end(), pre[preR]) - in.begin();
+    node *root = new node{pre[preR]};
+    root->left = create(preR + 1, inL, inR - 1);
+    root->right = create(preR + (inR - inL) + 1, inR + 1, inH);
     return root;
 }
 
-void posttra(node *r) { // postorder traversal
-    if (r->lc != nullptr) posttra(r->lc);
-    if (r->rc != nullptr) posttra(r->rc);
-    ans.emplace_back(r->v);
+void postTra(node *root) { // postorder traversal
+    if (!root) return;
+    postTra(root->left);
+    postTra(root->right);
+    res.emplace_back(root->val);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    stack<int> s;
+    stack<int> stk;
     for (int i = 0; i < 2 * n; i++) {
-        string ss;
-        cin >> ss;
-        if (ss.size() == 4) {
-            int num;
-            cin >> num;
-            s.emplace(num);
-            pre.emplace_back(num);
-            // preorder: the order of push in stack
+        string s;
+        cin >> s;
+        if (s.size() == 4) {
+            int val;
+            cin >> val;
+            stk.emplace(val);
+            pre.emplace_back(val);
         } else {
-            in.emplace_back(s.top());
-            s.pop();
-            // inorder: the order of pop in stack
+            in.emplace_back(stk.top());
+            stk.pop();
         }
     }
-    node *r = create(0, 0, n - 1);
-    posttra(r);
+    node *root = create(0, 0, n - 1);
+    postTra(root);
     for (int i = 0; i < n; i++) {
-        cout << ans[i];
+        cout << res[i];
         i < n - 1 ? cout << " " : cout << "\n";
     }
 

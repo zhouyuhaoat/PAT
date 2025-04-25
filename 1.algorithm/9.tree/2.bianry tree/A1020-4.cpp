@@ -21,34 +21,32 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
 vector<int> post, in, level;
 
-node *create(int pl, int pr, int il, int ir) {
-    // create binary tree by post-order and in-order traversal
-    // pl: post-order left index, pr: post-order right index
-    // il: in-order left index, ir: in-order right index
-    if (pl > pr) return nullptr;
-    node *r = new node{post[pr]};
-    int i = find(in.begin(), in.end(), post[pr]) - in.begin();
-    // add left tree
-    r->lc = create(pl, pl + (i - il) - 1, il, i - 1);
-    r->rc = create(pl + (i - il), pr - 1, i + 1, ir);
-    return r;
+node *create(int postL, int postH, int inL, int inH) {
+    if (postL > postH) return nullptr;
+    node *root = new node{post[postH]};
+    int inR = find(in.begin(), in.end(), post[postH]) - in.begin();
+    // add left subtree; left subtree size: inR - inL
+    root->left = create(postL, postL + (inR - inL) - 1, inL, inR - 1);
+    root->right = create(postL + (inR - inL), postH - 1, inR + 1, inH);
+    return root;
 }
 
-void bfs(node *r) { // level order traversal by BFS
+void bfs(node *root) {
     queue<node *> q;
-    q.emplace(r);
+    q.emplace(root);
     while (!q.empty()) {
-        node *t = q.front();
+        node *cur = q.front();
         q.pop();
-        level.emplace_back(t->v);
-        if (t->lc != nullptr) q.emplace(t->lc);
-        if (t->rc != nullptr) q.emplace(t->rc);
+        if (!cur) continue;
+        level.emplace_back(cur->val);
+        q.emplace(cur->left);
+        q.emplace(cur->right);
     }
 }
 
@@ -56,16 +54,15 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    post.resize(n);
+    post.resize(n), in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> post[i];
     }
-    in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    node *r = create(0, n - 1, 0, n - 1);
-    bfs(r);
+    node *root = create(0, n - 1, 0, n - 1);
+    bfs(root);
     for (int i = 0; i < n; i++) {
         cout << level[i];
         i < n - 1 ? cout << " " : cout << "\n";

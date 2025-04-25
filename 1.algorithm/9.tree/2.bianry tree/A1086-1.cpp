@@ -21,41 +21,38 @@
 
 using namespace std;
 
-vector<int> pre, in, ans;
+vector<int> pre, in, res;
 
-void posttra(int r, int s, int e) {
+void postTra(int preR, int inL, int inH) {
     // preorder + inorder -> postorder
-    // r: root index, s: start index, e: end index
-    if (s > e) return;
-    int i = find(in.begin(), in.end(), pre[r]) - in.begin();
-    posttra(r + 1, s, i - 1);
-    posttra(r + (i - s) + 1, i + 1, e);
-    ans.emplace_back(pre[r]);
+    if (inL > inH) return;
+    int inR = find(in.begin(), in.end(), pre[preR]) - in.begin();
+    postTra(preR + 1, inL, inR - 1);
+    postTra(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
+    res.emplace_back(pre[preR]);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    stack<int> s;
+    stack<int> stk;
     for (int i = 0; i < 2 * n; i++) {
-        string ss;
-        cin >> ss;
-        if (ss.size() == 4) {
-            int num;
-            cin >> num;
-            s.emplace(num);
-            pre.emplace_back(num);
-            // preorder: the order of push in stack
+        string s;
+        cin >> s;
+        if (s.size() == 4) {
+            int val;
+            cin >> val;
+            stk.emplace(val);
+            pre.emplace_back(val); // preorder: the order of push in stack
         } else {
-            in.emplace_back(s.top());
-            s.pop();
-            // inorder: the order of pop in stack
+            in.emplace_back(stk.top()); // inorder: the order of pop in stack
+            stk.pop();
         }
     }
-    posttra(0, 0, n - 1);
+    postTra(0, 0, n - 1);
     for (int i = 0; i < n; i++) {
-        cout << ans[i];
+        cout << res[i];
         i < n - 1 ? cout << " " : cout << "\n";
     }
 

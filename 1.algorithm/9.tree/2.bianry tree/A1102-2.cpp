@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-28 22:52:29
- *	modified:	2023-03-28 23:22:01
+ *	created:	2023-03-28 23:24:10
+ *	modified:	2023-03-28 23:33:21
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -21,71 +21,61 @@
 using namespace std;
 
 struct node {
-    int id;
-    int lc, rc;
+    int val;
+    int left, right;
+    int level, id;
 };
 
-vector<node> d;
-vector<int> level, in;
+vector<node> tree, in;
 
-void invert(int r) { // recursion
-    if (r == -1) return;
-    invert(d[r].lc);
-    invert(d[r].rc);
-    swap(d[r].lc, d[r].rc);
-}
-
-void bfs(int r) {
-    queue<int> s;
-    s.emplace(r);
-    while (!s.empty()) {
-        int t = s.front();
-        s.pop();
-        level.emplace_back(t);
-        if (d[t].lc != -1) s.emplace(d[t].lc);
-        if (d[t].rc != -1) s.emplace(d[t].rc);
-    }
-}
-
-void intra(int r) {
-    if (d[r].lc != -1) intra(d[r].lc);
-    in.emplace_back(r);
-    if (d[r].rc != -1) intra(d[r].rc);
+void dfs(int root, int level, int id) {
+    // don't need to swap the index of the node
+    if (root == -1) return;
+    dfs(tree[root].right, level + 1, 2 * id + 1);
+    in.emplace_back(node{root, -1, -1, level, id});
+    dfs(tree[root].left, level + 1, 2 * id);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    d.resize(n);
-    vector<bool> isroot(n, true);
+    tree.resize(n);
+    vector<bool> isRoot(n, true);
     for (int i = 0; i < n; i++) {
-        char c;
-        cin >> c;
-        if (isdigit(c)) {
-            d[i].lc = c - '0';
-            isroot[d[i].lc] = false;
+        char ch;
+        cin >> ch;
+        if (isdigit(ch)) {
+            tree[i].left = ch - '0';
+            isRoot[tree[i].left] = false;
         } else {
-            d[i].lc = -1;
+            tree[i].left = -1;
         }
-        cin >> c;
-        if (isdigit(c)) {
-            d[i].rc = c - '0';
-            isroot[d[i].rc] = false;
+        cin >> ch;
+        if (isdigit(ch)) {
+            tree[i].right = ch - '0';
+            isRoot[tree[i].right] = false;
         } else {
-            d[i].rc = -1;
+            tree[i].right = -1;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin();
-    invert(r);
-    bfs(r);
-    intra(r);
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
+    dfs(root, 1, 1);
+    vector<node> level(in);
+    // level order traversal by sorting with level and index
+    sort(level.begin(), level.end(), [](node a, node b) -> bool {
+        if (a.level != b.level) {
+            return a.level < b.level;
+        } else {
+            return a.id > b.id; // reverse the order of the index
+        }
+    });
     for (int i = 0; i < n; i++) {
-        cout << level[i];
+        cout << level[i].val;
         i < n - 1 ? cout << " " : cout << "\n";
     }
     for (int i = 0; i < n; i++) {
-        cout << in[i];
+        cout << in[i].val;
         i < n - 1 ? cout << " " : cout << "\n";
     }
 
