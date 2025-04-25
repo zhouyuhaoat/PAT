@@ -20,7 +20,34 @@
 
 using namespace std;
 
-void print(vector<int> v) {
+bool insertionSort(vector<int>& init, vector<int>& part) {
+    for (int i = 2; i < (int)init.size(); i++) {
+        sort(init.begin(), init.begin() + i);
+        if (init == part) {
+            sort(init.begin(), init.begin() + i + 1);
+            return true;
+        }
+    }
+    return false;
+}
+
+void mergeSort(vector<int>& init, vector<int>& part) {
+    int n = init.size(), g = 2; // group size of merge sort
+    while (g <= n) {
+        for (int i = 0; i < n; i += g) {
+            sort(init.begin() + i, init.begin() + min(i + g, n));
+        }
+        g *= 2;
+        if (init == part) {
+            for (int i = 0; i < n; i += g) {
+                sort(init.begin() + i, init.begin() + min(i + g, n));
+            }
+            return;
+        }
+    }
+}
+
+void print(vector<int>& v) {
     for (int i = 0; i < (int)v.size(); i++) {
         cout << v[i];
         i < (int)v.size() - 1 ? cout << " " : cout << "\n";
@@ -39,31 +66,14 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> part[i];
     }
-    for (int i = 2; i <= n; i++) {
-        sort(init.begin(), init.begin() + i);
-        if (init == part) {
-            cout << "Insertion Sort\n";
-            sort(init.begin(), init.begin() + i + 1);
-            print(init);
-            return 0;
-        }
+    if (insertionSort(init, part)) {
+        cout << "Insertion Sort\n";
+    } else {
+        init = temp; // reset
+        cout << "Merge Sort\n";
+        mergeSort(init, part);
     }
-    init = temp; // reset
-    int g = 2; // group size of merge sort
-    while (g <= n) {
-        for (int i = 0; i <= n / g; i++) {
-            sort(init.begin() + i * g, init.begin() + min(n, (i + 1) * g));
-        }
-        g *= 2;
-        if (init == part) {
-            cout << "Merge Sort\n";
-            for (int i = 0; i <= n / g; i++) {
-                sort(init.begin() + i * g, init.begin() + min(n, (i + 1) * g));
-            }
-            print(init);
-            break;
-        }
-    }
+    print(init);
 
     return 0;
 }

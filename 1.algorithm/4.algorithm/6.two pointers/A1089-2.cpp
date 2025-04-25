@@ -32,6 +32,29 @@ int isInsertionSort(vector<int>& init, vector<int>& part) {
     return pos == n ? unsorted : -1;
 }
 
+void mergeSort(vector<int>& init, vector<int>& part) {
+    int n = init.size(), g = 2;
+    while (g <= n) {
+        for (int i = 0; i < n; i += g) {
+            sort(init.begin() + i, init.begin() + min(i + g, n));
+        }
+        g *= 2;
+        if (init == part) {
+            for (int i = 0; i < n; i += g) {
+                sort(init.begin() + i, init.begin() + min(i + g, n));
+            }
+            return;
+        }
+    }
+}
+
+void print(vector<int>& v) {
+    for (int i = 0; i < (int)v.size(); i++) {
+        cout << v[i];
+        i < (int)v.size() - 1 ? cout << " " : cout << "\n";
+    }
+}
+
 int main(int argc, char const *argv[]) {
 
     int n;
@@ -48,25 +71,10 @@ int main(int argc, char const *argv[]) {
         cout << "Insertion Sort\n";
         sort(init.begin(), init.begin() + unsorted + 1);
     } else {
-        int g = 2;
-        while (g <= n) {
-            for (int i = 0; i <= n / g; i++) {
-                sort(init.begin() + i * g, init.begin() + min(n, (i + 1) * g));
-            }
-            g *= 2;
-            if (init == part) {
-                cout << "Merge Sort\n";
-                for (int i = 0; i <= n / g; i++) {
-                    sort(init.begin() + i * g, init.begin() + min(n, (i + 1) * g));
-                }
-                break;
-            }
-        }
+        cout << "Merge Sort\n";
+        mergeSort(init, part);
     }
-    for (int i = 0; i < (int)init.size(); i++) {
-        cout << init[i];
-        i < (int)init.size() - 1 ? cout << " " : cout << "\n";
-    }
+    print(init);
 
     return 0;
 }
