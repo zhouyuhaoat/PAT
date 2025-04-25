@@ -24,19 +24,18 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n);
+    vector<int> coin(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> coin[i];
     }
-    sort(d.begin(), d.end());
-    int i = 0, j = n - 1;
-    while (i < j) {
-        if (d[i] + d[j] < m) {
-            i++;
-        } else if (d[i] + d[j] > m) {
-            j--;
-        } else if (d[i] + d[j] == m) {
-            cout << d[i] << " " << d[j] << "\n";
+    sort(coin.begin(), coin.end());
+    for (int lo = 0, hi = n - 1; lo < hi;) {
+        if (coin[lo] + coin[hi] < m) {
+            lo++;
+        } else if (coin[lo] + coin[hi] > m) {
+            hi--;
+        } else { // exactly two coins
+            cout << coin[lo] << " " << coin[hi] << "\n";
             return 0;
         }
     }

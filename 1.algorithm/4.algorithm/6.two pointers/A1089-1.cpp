@@ -20,10 +20,10 @@
 
 using namespace std;
 
-void print(vector<int> d) {
-    for (int i = 0; i < (int)d.size(); i++) {
-        cout << d[i];
-        i < (int)d.size() - 1 ? cout << " " : cout << "\n";
+void print(vector<int> v) {
+    for (int i = 0; i < (int)v.size(); i++) {
+        cout << v[i];
+        i < (int)v.size() - 1 ? cout << " " : cout << "\n";
     }
 }
 
@@ -31,35 +31,36 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d1(n), d2(n);
+    vector<int> init(n), part(n), temp(n);
     for (int i = 0; i < n; i++) {
-        cin >> d1[i];
+        cin >> init[i];
+        temp[i] = init[i];
     }
     for (int i = 0; i < n; i++) {
-        cin >> d2[i];
+        cin >> part[i];
     }
-    vector<int> d3 = d1;
     for (int i = 2; i <= n; i++) {
-        sort(d1.begin(), d1.begin() + i);
-        if (d1 == d2) {
+        sort(init.begin(), init.begin() + i);
+        if (init == part) {
             cout << "Insertion Sort\n";
-            sort(d1.begin(), d1.begin() + i + 1);
-            print(d1);
+            sort(init.begin(), init.begin() + i + 1);
+            print(init);
             return 0;
         }
     }
+    init = temp; // reset
     int g = 2; // group size of merge sort
-    while (true) {
+    while (g <= n) {
         for (int i = 0; i <= n / g; i++) {
-            sort(d3.begin() + i * g, d3.begin() + min(n, (i + 1) * g));
+            sort(init.begin() + i * g, init.begin() + min(n, (i + 1) * g));
         }
         g *= 2;
-        if (d3 == d2) {
+        if (init == part) {
             cout << "Merge Sort\n";
             for (int i = 0; i <= n / g; i++) {
-                sort(d3.begin() + i * g, d3.begin() + min(n, (i + 1) * g));
+                sort(init.begin() + i * g, init.begin() + min(n, (i + 1) * g));
             }
-            print(d3);
+            print(init);
             break;
         }
     }

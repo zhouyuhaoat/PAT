@@ -24,20 +24,19 @@ int main(int argc, char const *argv[]) {
 
     int n, p;
     cin >> n >> p;
-    vector<long long> d(n);
+    vector<long long> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
-    sort(d.begin(), d.end());
-    int ans = 1, i = 0, j = 0;
-    while (i < n && j < n) {
-        while (j < n && d[j] <= d[i] * p) {
-            j++;
+    sort(data.begin(), data.end());
+    int res = 1;
+    for (int lo = 0, hi = 0; lo < n; lo++) { // perfect sequence if max <= min * p
+        while (hi < n && data[hi] <= data[lo] * p) {
+            hi++;
         }
-        ans = max(ans, j - i);
-        i++;
+        res = max(res, hi - lo); // [lo, hi)
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

@@ -24,22 +24,22 @@ int main(int argc, char const *argv[]) {
 
     int n1;
     cin >> n1;
-    vector<long> s1(n1 + 1);
+    vector<long long> seq1(n1 + 1);
     for (int i = 0; i < n1; i++) {
-        cin >> s1[i];
+        cin >> seq1[i];
     }
     int n2;
     cin >> n2;
-    vector<long> s2(n2 + 1);
+    vector<long long> seq2(n2 + 1);
     for (int i = 0; i < n2; i++) {
-        cin >> s2[i];
+        cin >> seq2[i];
     }
-    s1[n1] = s2[n2] = INT_MAX; // sentinel
-    int ans = 0, median = (n1 + n2 - 1) / 2;
+    seq1[n1] = seq2[n2] = INT_MAX; // sentinel
+    int res = 0, median = (n1 + n2 + 1) / 2 - 1;
     for (int i = 0, j = 0; i + j <= median;) {
-        ans = s1[i] <= s2[j] ? s1[i++] : s2[j++];
+        res = seq1[i] <= seq2[j] ? seq1[i++] : seq2[j++];
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

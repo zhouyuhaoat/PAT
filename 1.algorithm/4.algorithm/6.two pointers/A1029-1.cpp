@@ -23,31 +23,31 @@ int main(int argc, char const *argv[]) {
 
     int n1;
     cin >> n1;
-    vector<long> s1(n1);
+    vector<long long> seq1(n1);
     for (int i = 0; i < n1; i++) {
-        cin >> s1[i];
+        cin >> seq1[i];
     }
     int n2;
     cin >> n2;
-    vector<long> s2(n2);
+    vector<long long> seq2(n2);
     for (int i = 0; i < n2; i++) {
-        cin >> s2[i];
+        cin >> seq2[i];
     }
-    int ans = 0, i = 0, j = 0, median = (n1 + n2 - 1) / 2;
+    int res = 0, i = 0, j = 0, median = (n1 + n2 + 1) / 2 - 1; // -1 for 0-based index
     while (i < n1 && j < n2 && i + j <= median) {
-        if (s1[i] < s2[j]) {
-            ans = s1[i++];
+        if (seq1[i] < seq2[j]) {
+            res = seq1[i++];
         } else {
-            ans = s2[j++];
+            res = seq2[j++];
         }
     }
-    while (i < n1 && i + j <= median) {
-        ans = s1[i++];
+    while (i < n1 && i + j <= median) { // remaining elements in seq1
+        res = seq1[i++];
     }
-    while (j < n2 && i + j <= median) {
-        ans = s2[j++];
+    while (j < n2 && i + j <= median) { // remaining elements in seq2
+        res = seq2[j++];
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }
