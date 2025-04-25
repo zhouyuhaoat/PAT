@@ -31,15 +31,17 @@ int main(int argc, char const *argv[]) {
             cin >> num;
             q.emplace(num);
         }
-        stack<int> s;
+        stack<int> stk;
+        // stack permutation, stack sequence, pop sequence
+        // push n numbers in the order of 1, 2, 3, ..., n and pop randomly
         for (int i = 0; i < n; i++) {
-            s.emplace(i + 1);
-            if ((int)s.size() > m) break;
-            while (!s.empty() && s.top() == q.front()) {
-                s.pop(), q.pop();
+            stk.emplace(i + 1); // push orderly
+            if ((int)stk.size() > m) break;
+            while (!stk.empty() && stk.top() == q.front()) { // pop as much as possible
+                stk.pop(), q.pop();
             }
         }
-        s.empty() ? cout << "YES\n" : cout << "NO\n";
+        stk.empty() ? cout << "YES\n" : cout << "NO\n";
     }
 
     return 0;
