@@ -20,61 +20,64 @@
 
 using namespace std;
 
-vector<bool> vis;
-vector<int> f;
-vector<vector<int>> g;
+class DisjointSetUnion {
+private:
+    vector<int> f; // father
 
-int find(int x) {
-    int a = x;
-    while (x != f[x]) {
-        x = f[x];
+public:
+    DisjointSetUnion(int n) {
+        f.resize(n);
+        iota(f.begin(), f.end(), 0);
     }
-    while (a != f[a]) {
-        int z = a;
-        a = f[a], f[z] = x;
-    }
-    return x;
-}
 
-void joint(int a, int b) {
-    int fa = find(a), fb = find(b);
-    if (fa != fb) {
-        f[fa] = fb;
+    int find(int x) {
+        if (f[x] == x) {
+            return x;
+        }
+        return f[x] = find(f[x]); // path compression
     }
-}
+
+    void unite(int a, int b) {
+        int rootA = find(a), rootB = find(b);
+        if (rootA != rootB) {
+            f[rootA] = rootB;
+        }
+    }
+};
 
 int main(int argc, char const *argv[]) {
 
     int n, m, k;
     cin >> n >> m >> k;
-    g.resize(n + 1);
+    vector<bool> vis(n + 1);
+    vector<vector<int>> g(n + 1);
     for (int i = 0; i < m; i++) {
-        int s, e;
-        cin >> s >> e;
-        g[s].emplace_back(e);
-        g[e].emplace_back(s);
+        int c1, c2;
+        cin >> c1 >> c2;
+        g[c1].emplace_back(c2);
+        g[c2].emplace_back(c1);
     }
-    f.resize(n + 1), vis.resize(n + 1);
     for (int q = 0; q < k; q++) {
         int id;
         cin >> id;
-        iota(f.begin(), f.end(), 0);
+        DisjointSetUnion dsu(n + 1);
         fill(vis.begin(), vis.end(), false);
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < (int)g[i].size(); j++) {
                 int u = i, v = g[i][j];
                 if (u != id && v != id) { // remove the city
-                    joint(u, v);
+                    dsu.unite(u, v);
                 }
             }
         }
-        // connected components by dsu
-        int cnt = 0;
+        int cnt = 0; // connected components by dsu
         for (int i = 1; i <= n; i++) {
-            int fi = find(i);
-            if (i != id && !vis[fi]) {
-                cnt++;
-                vis[fi] = true;
+            if (i != id) {
+                int root = dsu.find(i);
+                if (!vis[root]) {
+                    cnt++;
+                    vis[root] = true;
+                }
             }
         }
         cout << cnt - 1 << "\n";

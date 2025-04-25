@@ -20,25 +20,25 @@
 using namespace std;
 
 struct user {
-    int id, layer;
+    int id, level;
 };
 
 vector<bool> vis;
 vector<vector<int>> g;
 
-int bfs(int s, int l) {
+int bfs(int src, int maxLevel) {
     queue<user> q;
-    q.emplace(s, 0);
-    vis[s] = true;
+    q.emplace(src, 0);
+    vis[src] = true;
     int cnt = 0;
     while (!q.empty()) {
-        user t = q.front();
+        auto [u, level] = q.front();
         q.pop();
-        for (int i = 0; i < (int)g[t.id].size(); i++) {
-            int next = g[t.id][i];
-            if (!vis[next] && t.layer < l) {
-                vis[next] = true;
-                q.emplace(next, t.layer + 1);
+        for (int i = 0; i < (int)g[u].size(); i++) {
+            int v = g[u][i];
+            if (!vis[v] && level < maxLevel) {
+                vis[v] = true;
+                q.emplace(v, level + 1);
                 cnt++;
             }
         }
@@ -48,26 +48,25 @@ int bfs(int s, int l) {
 
 int main(int argc, char const *argv[]) {
 
-    int n, l;
-    cin >> n >> l;
-    g.resize(n + 1);
+    int n, maxLevel;
+    cin >> n >> maxLevel;
+    g.resize(n + 1), vis.resize(n + 1);
     for (int i = 1; i <= n; i++) {
         int m;
         cin >> m;
         for (int j = 0; j < m; j++) {
-            int follower;
-            cin >> follower;
-            g[follower].emplace_back(i);
+            int id;
+            cin >> id;
+            g[id].emplace_back(i);
         }
     }
     int k;
     cin >> k;
-    vis.resize(n + 1);
     for (int q = 0; q < k; q++) {
         int id;
         cin >> id;
         fill(vis.begin(), vis.end(), false);
-        cout << bfs(id, l) << "\n";
+        cout << bfs(id, maxLevel) << "\n";
     }
 
     return 0;

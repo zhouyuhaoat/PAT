@@ -22,11 +22,12 @@ using namespace std;
 vector<bool> vis;
 vector<vector<int>> g;
 
-void dfs(int s) {
-    vis[s] = true;
-    for (int i = 0; i < (int)g[s].size(); i++) {
-        if (!vis[g[s][i]]) {
-            dfs(g[s][i]);
+void dfs(int u) {
+    vis[u] = true;
+    for (int i = 0; i < (int)g[u].size(); i++) {
+        int v = g[u][i];
+        if (!vis[v]) {
+            dfs(v);
         }
     }
 }
@@ -35,27 +36,26 @@ int main(int argc, char const *argv[]) {
 
     int n, m, k;
     cin >> n >> m >> k;
-    g.resize(n + 1);
+    vis.resize(n + 1), g.resize(n + 1);
     for (int i = 0; i < m; i++) {
-        int s, e;
-        cin >> s >> e;
-        g[s].emplace_back(e);
-        g[e].emplace_back(s);
+        int c1, c2;
+        cin >> c1 >> c2;
+        g[c1].emplace_back(c2);
+        g[c2].emplace_back(c1);
     }
-    vis.resize(n + 1);
     for (int q = 0; q < k; q++) {
         int id;
         cin >> id;
         fill(vis.begin(), vis.end(), false);
         vis[id] = true; // remove the city
-        // connected components by dfs
-        int cnt = 0;
+        int cnt = 0; // connected components by dfs
         for (int i = 1; i <= n; i++) {
             if (!vis[i]) {
                 cnt++;
                 dfs(i);
             }
         }
+        // edges to keep the graph connected = connected components - 1
         cout << cnt - 1 << "\n";
     }
 

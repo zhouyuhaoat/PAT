@@ -20,24 +20,24 @@
 
 using namespace std;
 
-int maxl = -1;
+int maxDepth = -1;
 vector<bool> vis;
-vector<int> tmp;
-set<int> ans;
+vector<int> temp;
 vector<vector<int>> g;
 
-void dfs(int s, int l) {
-    vis[s] = true;
-    if (maxl < l) {
-        maxl = l;
-        tmp.clear();
-        tmp.emplace_back(s);
-    } else if (maxl == l) {
-        tmp.emplace_back(s);
+void dfs(int u, int depth) {
+    vis[u] = true;
+    if (depth > maxDepth) {
+        maxDepth = depth;
+        temp.clear();
+        temp.emplace_back(u);
+    } else if (depth == maxDepth) {
+        temp.emplace_back(u);
     }
-    for (int i = 0; i < (int)g[s].size(); i++) {
-        if (!vis[g[s][i]]) {
-            dfs(g[s][i], l + 1);
+    for (int i = 0; i < (int)g[u].size(); i++) {
+        int v = g[u][i];
+        if (!vis[v]) {
+            dfs(v, depth + 1);
         }
     }
 }
@@ -46,16 +46,14 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    g.resize(n + 1);
+    vis.resize(n + 1), g.resize(n + 1);
     for (int i = 0; i < n - 1; i++) {
-        int s, e;
-        cin >> s >> e;
-        g[s].emplace_back(e);
-        g[e].emplace_back(s);
+        int u, v;
+        cin >> u >> v;
+        g[u].emplace_back(v);
+        g[v].emplace_back(u);
     }
-    vis.resize(n + 1, false);
-    // connected components by dfs
-    int cnt = 0;
+    int cnt = 0; // connected components by dfs
     for (int i = 1; i <= n; i++) {
         if (!vis[i]) {
             cnt++;
@@ -63,15 +61,14 @@ int main(int argc, char const *argv[]) {
         }
     }
     if (cnt == 1) {
-        // find the deepest roots of the tree by 2 dfs
         fill(vis.begin(), vis.end(), false);
         dfs(1, 1);
-        set<int> ans(tmp.begin(), tmp.end());
+        set<int> res(temp.begin(), temp.end());
         fill(vis.begin(), vis.end(), false);
-        dfs(tmp[0], 1);
-        ans.insert(tmp.begin(), tmp.end());
-        for (int it : ans) {
-            cout << it << "\n";
+        dfs(temp[0], 1);
+        res.insert(temp.begin(), temp.end());
+        for (int root : res) {
+            cout << root << "\n";
         }
     } else {
         cout << "Error: " << cnt << " components\n";

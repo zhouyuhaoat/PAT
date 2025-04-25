@@ -25,16 +25,16 @@ using namespace std;
 
 unordered_map<string, bool> vis;
 unordered_map<string, vector<string>> g;
-unordered_set<string> ps; // persons
-unordered_map<string, int> pw; // person weight
-unordered_map<string, unordered_map<string, int>> w; // weight between two persons
+unordered_set<string> persons;
+unordered_map<string, int> weights; // weight of each person
+unordered_map<string, unordered_map<string, int>> weight; // weight between two persons
 vector<vector<string>> comps; // components
 
 void dfs(string u, vector<string>& comp) {
     vis[u] = true;
     comp.emplace_back(u);
     if (g.count(u) != 0) {
-        for (const string& v : g[u]) {
+        for (string& v : g[u]) {
             if (!vis[v]) {
                 dfs(v, comp);
             }
@@ -48,36 +48,36 @@ int main(int argc, char const *argv[]) {
     cin >> n >> k;
     for (int i = 0; i < n; i++) {
         string n1, n2;
-        int t;
-        cin >> n1 >> n2 >> t;
-        ps.emplace(n1), ps.emplace(n2);
+        int time;
+        cin >> n1 >> n2 >> time;
+        persons.emplace(n1), persons.emplace(n2);
         g[n1].emplace_back(n2), g[n2].emplace_back(n1);
-        pw[n1] += t, pw[n2] += t;
-        w[n1][n2] += t, w[n2][n1] += t;
+        weights[n1] += time, weights[n2] += time;
+        weight[n1][n2] += time, weight[n2][n1] += time;
     }
-    for (const string& p : ps) {
-        if (!vis[p]) {
-            vector<string> comp; // connected component
-            dfs(p, comp);
+    for (const string& person : persons) { // const since unordered_set
+        if (!vis[person]) {
+            vector<string> comp; // connected component by dfs
+            dfs(person, comp);
             comps.emplace_back(comp);
         }
     }
     map<string, int> gang;
-    for (auto& comp : comps) {
+    for (auto comp : comps) {
         if (comp.size() > 2) {
-            int total = 0; // each pair of people in the component
+            int totalWeight = 0; // each pair of people in the component
             for (size_t i = 0; i < comp.size(); i++) {
                 for (size_t j = i + 1; j < comp.size(); j++) {
                     string u = comp[i], v = comp[j];
-                    if (w.count(u) != 0 && w[u].count(v) != 0) {
-                        total += w[u][v];
+                    if (weight.count(u) != 0 && weight[u].count(v) != 0) {
+                        totalWeight += weight[u][v];
                     }
                 }
             }
-            if (total > k) { // head of gang
-                sort(comp.begin(), comp.end(), [](const string& a, const string& b) {
-                    if (pw[a] != pw[b]) {
-                        return pw[a] > pw[b];
+            if (totalWeight > k) { // head of gang
+                sort(comp.begin(), comp.end(), [](string a, string b) {
+                    if (weights[a] != weights[b]) {
+                        return weights[a] > weights[b];
                     } else {
                         return a < b;
                     }
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     cout << gang.size() << "\n";
-    for (auto const& [head, size] : gang) {
+    for (auto [head, size] : gang) {
         cout << head << " " << size << "\n";
     }
 

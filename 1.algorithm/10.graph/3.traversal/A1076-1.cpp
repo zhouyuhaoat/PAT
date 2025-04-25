@@ -23,21 +23,22 @@ vector<bool> vis;
 vector<int> level;
 vector<vector<int>> g;
 
-int bfs(int s, int l) {
+int bfs(int src, int maxLevel) {
     queue<int> q;
-    q.emplace(s);
-    vis[s] = true;
+    q.emplace(src);
+    vis[src] = true;
     int cnt = 0;
     while (!q.empty()) {
-        int t = q.front();
+        int u = q.front();
         q.pop();
-        for (int i = 0; i < (int)g[t].size(); i++) {
-            if (level[g[t][i]] == 0) { // unvisited
-                level[g[t][i]] = level[t] + 1;
+        for (int i = 0; i < (int)g[u].size(); i++) {
+            int v = g[u][i];
+            if (level[v] == 0) { // unvisited
+                level[v] = level[u] + 1;
             }
-            if (!vis[g[t][i]] && level[g[t][i]] <= l) {
-                q.emplace(g[t][i]);
-                vis[g[t][i]] = true;
+            if (!vis[v] && level[v] <= maxLevel) {
+                q.emplace(v);
+                vis[v] = true;
                 cnt++;
             }
         }
@@ -47,9 +48,9 @@ int bfs(int s, int l) {
 
 int main(int argc, char const *argv[]) {
 
-    int n, l;
-    cin >> n >> l;
-    g.resize(n + 1);
+    int n, maxLevel;
+    cin >> n >> maxLevel;
+    g.resize(n + 1), vis.resize(n + 1), level.resize(n + 1);
     for (int i = 0; i < n; i++) {
         int m;
         cin >> m;
@@ -61,14 +62,13 @@ int main(int argc, char const *argv[]) {
     }
     int k;
     cin >> k;
-    vis.resize(n + 1), level.resize(n + 1);
     for (int q = 0; q < k; q++) {
         int id;
         cin >> id;
         fill(vis.begin(), vis.end(), false);
         fill(level.begin(), level.end(), 0);
         level[id] = 0;
-        cout << bfs(id, l) << "\n";
+        cout << bfs(id, maxLevel) << "\n";
     }
 
     return 0;
