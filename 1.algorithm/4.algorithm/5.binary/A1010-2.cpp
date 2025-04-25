@@ -21,32 +21,33 @@ using namespace std;
 
 using ll = long long;
 
-ll convert(string s, ll b) {
-    ll sum = 0, w = 1;
+ll convert(string s, ll base) {
+    ll sum = 0, weight = 1;
     for (ll i = s.size() - 1; i >= 0; i--) {
         if (isdigit(s[i])) {
-            sum += (s[i] - '0') * w;
+            sum += (s[i] - '0') * weight;
         } else {
-            sum += (s[i] - 'a' + 10) * w;
+            sum += (s[i] - 'a' + 10) * weight;
         }
-        w *= b;
+        weight *= base;
     }
     return sum;
 }
 
-ll lower_bound(string s, ll num) {
+ll lower_bound(string s, ll num) { // find the radix of s that equals and greater than num
     char ch = *max_element(s.begin(), s.end());
-    ll low = (isdigit(ch) ? ch - '0' : ch - 'a' + 10) + 1, high = max(low, num) + 1;
-    while (low < high) {
-        ll mid = (low + high) >> 1;
-        ll temp = convert(s, mid);
+    ll lo = (isdigit(ch) ? ch - '0' : ch - 'a' + 10) + 1;
+    ll hi = max(lo, num) + 1;
+    while (lo < hi) { // boundary of radix: [lo, hi)
+        ll mi = (lo + hi) >> 1;
+        ll temp = convert(s, mi);
         if (temp >= num || temp < 0) {
-            high = mid;
+            hi = mi;
         } else {
-            low = mid + 1;
+            lo = mi + 1;
         }
     }
-    return low;
+    return lo;
 }
 
 int main(int argc, char const *argv[]) {
@@ -58,9 +59,9 @@ int main(int argc, char const *argv[]) {
         swap(n1, n2);
     }
     ll num = convert(n1, radix);
-    ll ans = lower_bound(n2, num);
-    if (num == convert(n2, ans)) {
-        cout << ans << "\n";
+    ll res = lower_bound(n2, num);
+    if (convert(n2, res) == num) { // first convert(n2, res) >= num
+        cout << res << "\n";
     } else {
         cout << "Impossible\n";
     }

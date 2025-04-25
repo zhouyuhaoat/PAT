@@ -24,21 +24,21 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n + 1);
-    for (int i = 0; i < n; i++) {
-        cin >> d[i + 1];
-        d[i + 1] += d[i]; // prefix sum
+    vector<int> value(n + 1);
+    for (int i = 1; i <= n; i++) {
+        cin >> value[i];
+        value[i] += value[i - 1]; // prefix sum: no itself
     }
-    bool flag = false;
-    while (!flag) {
-        for (int i = 0; i <= n; i++) {
-            int j = lower_bound(d.begin() + i, d.end(), m + d[i]) - d.begin();
-            if (d[j] - d[i] == m) {
-                cout << i + 1 << "-" << j << "\n";
-                flag = true;
+    bool found = false;
+    while (!found) {
+        for (int i = 0; i < n; i++) { // prefix(j) - prefix(i) = i -> j - 1
+            int j = lower_bound(value.begin() + i, value.end(), value[i] + m) - value.begin();
+            if (j <= n && value[j] - value[i] == m) { // first >= value[i] + m
+                cout << i + 1 << "-" << j << "\n"; // 0-based index to 1-based index
+                found = true;
             }
         }
-        m++;
+        m++; // increase the target value if not found the exact match
     }
 
     return 0;

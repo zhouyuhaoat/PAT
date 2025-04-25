@@ -24,15 +24,15 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n);
+    vector<int> coin(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> coin[i];
     }
-    sort(d.begin(), d.end());
-    for (int i = 0; i < n; i++) {
-        int j = lower_bound(d.begin(), d.end(), m - d[i]) - d.begin();
-        if (d[i] + d[j] == m && i != j) {
-            cout << d[i] << " " << d[j] << "\n";
+    sort(coin.begin(), coin.end());
+    for (int i = 0; i < n - 1; i++) { // exactly two coins: i < n - 1, begin() + i + 1
+        int j = lower_bound(coin.begin() + i + 1, coin.end(), m - coin[i]) - coin.begin();
+        if (j < n && coin[i] + coin[j] == m) { // first >= m - coin[i] after i
+            cout << coin[i] << " " << coin[j] << "\n";
             return 0;
         }
     }

@@ -21,35 +21,35 @@ using namespace std;
 
 using ll = long long;
 
-ll convert(string s, ll b) {
-    ll sum = 0, w = 1;
+ll convert(string s, ll base) { // convert s to decimal with base radix
+    ll res = 0, weight = 1;
     for (ll i = s.size() - 1; i >= 0; i--) {
         if (isdigit(s[i])) {
-            sum += (s[i] - '0') * w;
+            res += (s[i] - '0') * weight;
         } else {
-            sum += (s[i] - 'a' + 10) * w;
+            res += (s[i] - 'a' + 10) * weight;
         }
-        w *= b;
+        weight *= base;
     }
-    return sum;
+    return res;
 }
 
-ll binary(string s, ll num) {
+ll binary_search(string s, ll num) { // find the radix of s that equals to num
     char ch = *max_element(s.begin(), s.end());
-    ll low = (isdigit(ch) ? ch - '0' : ch - 'a' + 10) + 1, high = max(low, num);
-    ll ans = -1;
-    while (low <= high) {
-        ll mid = (low + high) >> 1;
-        ll temp = convert(s, mid);
-        if (temp > num || temp < 0) {
-            high = mid - 1;
+    ll lo = (isdigit(ch) ? ch - '0' : ch - 'a' + 10) + 1; // minimum radix: max(s) + 1
+    ll hi = max(lo, num); // maximum radix: max(s) or num
+    while (lo <= hi) { // boundary of radix: [lo, hi]
+        ll mi = (lo + hi) >> 1;
+        ll temp = convert(s, mi);
+        if (temp > num || temp < 0) { // overflow
+            hi = mi - 1;
         } else if (temp < num) {
-            low = mid + 1;
+            lo = mi + 1;
         } else {
-            return mid;
+            return mi;
         }
     }
-    return ans;
+    return -1;
 }
 
 int main(int argc, char const *argv[]) {
@@ -60,9 +60,10 @@ int main(int argc, char const *argv[]) {
     if (tag == 2) {
         swap(n1, n2);
     }
-    ll ans = binary(n2, convert(n1, radix));
-    if (ans != -1) {
-        cout << ans << "\n";
+    ll num = convert(n1, radix);
+    ll res = binary_search(n2, num);
+    if (res != -1) {
+        cout << res << "\n";
     } else {
         cout << "Impossible\n";
     }

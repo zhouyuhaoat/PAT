@@ -24,27 +24,27 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n + 1);
-    for (int i = 0; i < n; i++) {
-        cin >> d[i + 1];
-        d[i + 1] += d[i];
+    vector<int> value(n + 1);
+    for (int i = 1; i <= n; i++) {
+        cin >> value[i];
+        value[i] += value[i - 1];
     }
-    int minsum = d[n];
-    vector<pair<int, int>> ans;
-    for (int i = 0; i <= n; i++) {
-        int j = lower_bound(d.begin() + i, d.end(), m + d[i]) - d.begin();
-        if (j > n) break; // minimum lost
-        if (d[j] - d[i] > minsum) continue;
-        if (d[j] - d[i] >= m) {
-            if (minsum > d[j] - d[i]) {
-                minsum = d[j] - d[i];
-                ans.clear();
+    int target = value[n] + 1; // the exact match at last
+    vector<pair<int, int>> res; // index pair
+    for (int i = 0; i < n; i++) {
+        int j = lower_bound(value.begin() + i, value.end(), value[i] + m) - value.begin();
+        if (j > n) break; // done
+        int temp = value[j] - value[i];
+        if (temp <= target) {
+            if (temp < target) { // a better match
+                target = temp;
+                res.clear();
             }
-            ans.emplace_back(i + 1, j);
+            res.emplace_back(i + 1, j);
         }
     }
-    for (auto& it : ans) {
-        cout << it.first << "-" << it.second << "\n";
+    for (auto [i, j] : res) {
+        cout << i << "-" << j << "\n";
     }
 
     return 0;
