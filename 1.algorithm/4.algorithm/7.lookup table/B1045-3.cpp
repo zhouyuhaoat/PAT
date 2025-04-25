@@ -24,19 +24,21 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> a(n), b(n);
+    vector<int> original(n), sorted(n);
     for (int i = 0; i < n; i++) {
-        cin >> a[i];
-        b[i] = a[i];
+        cin >> original[i];
+        sorted[i] = original[i];
     }
-    sort(a.begin(), a.end());
+    sort(sorted.begin(), sorted.end());
     vector<int> res;
-    int lm = 0; // left max
+    int leftMax = 0; // max value in the left part of the original array
     for (int i = 0; i < n; i++) {
-        if (a[i] == b[i] && b[i] > lm) {
-            res.emplace_back(b[i]);
+        if (original[i] == sorted[i]) { // sorted: candidate of pivot
+            if (original[i] > leftMax) { // data > left => sorted => data < right
+                res.emplace_back(original[i]);
+            }
         }
-        lm = max(lm, b[i]);
+        leftMax = max(leftMax, original[i]);
     }
     cout << res.size() << "\n";
     for (int i = 0; i < (int)res.size(); i++) {

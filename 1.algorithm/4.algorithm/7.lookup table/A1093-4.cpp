@@ -26,13 +26,13 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < (int)s.size(); i++) {
         switch (s[i]) {
             case 'P':
-                cntP++;
+                cntP++; // Count P's
                 break;
             case 'A':
                 cntPA += cntP; // Count PA's
                 break;
             case 'T':
-                res += cntPA;
+                res += cntPA; // Count PAT's
                 res %= 1000000007;
                 break;
         }

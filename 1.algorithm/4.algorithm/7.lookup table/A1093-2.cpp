@@ -23,18 +23,19 @@ int main(int argc, char const *argv[]) {
 
     string s;
     cin >> s;
-    vector<int> cp(s.size()); // inherited from neighbor
+    // inherited from neighbor
+    vector<int> cntP(s.size()); // count of 'P' before index i
     for (int i = 1; i < (int)s.size(); i++) {
-        cp[i] = cp[i - 1] + (s[i - 1] == 'P');
+        cntP[i] = cntP[i - 1] + (s[i - 1] == 'P');
     }
-    vector<int> ct(s.size());
+    vector<int> cntT(s.size()); // count of 'T' after index i
     for (int i = (int)s.size() - 2; i >= 0; i--) {
-        ct[i] = ct[i + 1] + (s[i + 1] == 'T');
+        cntT[i] = cntT[i + 1] + (s[i + 1] == 'T');
     }
     long long res = 0;
     for (int i = 0; i < (int)s.size(); i++) {
-        if (s[i] == 'A') {
-            res += cp[i] * ct[i];
+        if (s[i] == 'A') { // index i is 'A'
+            res += cntP[i] * cntT[i];
         }
     }
     cout << res % 1000000007 << "\n";

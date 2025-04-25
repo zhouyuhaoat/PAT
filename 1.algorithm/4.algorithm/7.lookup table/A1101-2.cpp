@@ -24,19 +24,19 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
-    vector<int> leftmax(n, INT_MIN), rightmin(n, INT_MAX);
+    vector<int> leftMax(n, INT_MIN), rightMin(n, INT_MAX);
     for (int i = 1; i < n; i++) { // two pass -> one pass
-        leftmax[i] = max(leftmax[i - 1], d[i - 1]);
-        rightmin[n - i - 1] = min(rightmin[n - i], d[n - i]);
+        leftMax[i] = max(leftMax[i - 1], data[i - 1]);
+        rightMin[n - i - 1] = min(rightMin[n - i], data[n - i]);
     }
     vector<int> res;
     for (int i = 0; i < n; i++) {
-        if (d[i] > leftmax[i] && d[i] < rightmin[i]) {
-            res.emplace_back(d[i]);
+        if (data[i] > leftMax[i] && data[i] < rightMin[i]) {
+            res.emplace_back(data[i]);
         }
     }
     cout << res.size() << "\n";

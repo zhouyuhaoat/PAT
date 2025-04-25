@@ -24,20 +24,20 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
-    cin >> d[0];
-    vector<int> leftmax(n, INT_MIN), rightmin(n, INT_MAX);
+    vector<int> data(n);
+    cin >> data[0];
+    vector<int> leftMax(n, INT_MIN), rightMin(n, INT_MAX);
     for (int i = 1; i < n; i++) {
-        cin >> d[i];
-        leftmax[i] = max(leftmax[i - 1], d[i - 1]);
+        cin >> data[i];
+        leftMax[i] = max(leftMax[i - 1], data[i - 1]);
     }
     for (int i = n - 2; i >= 0; i--) {
-        rightmin[i] = min(rightmin[i + 1], d[i + 1]);
+        rightMin[i] = min(rightMin[i + 1], data[i + 1]);
     }
     vector<int> res;
     for (int i = 0; i < n; i++) {
-        if (d[i] > leftmax[i] && d[i] < rightmin[i]) {
-            res.emplace_back(d[i]); // increasing sequence since leftmax is asecending
+        if (data[i] > leftMax[i] && data[i] < rightMin[i]) { // pivot: left < data < right
+            res.emplace_back(data[i]); // increasing sequence since leftmax is asecending
         }
     }
     cout << res.size() << "\n";

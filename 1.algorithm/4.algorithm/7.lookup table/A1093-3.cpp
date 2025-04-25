@@ -32,14 +32,14 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < (int)s.size(); i++) { // online
         switch (s[i]) {
             case 'P':
-                cntP++;
+                cntP++; // count of P before index i
                 break;
             case 'A':
                 res += cntP * cntT;
                 res %= 1000000007;
                 break;
             case 'T':
-                cntT--;
+                cntT--; // count of T after index i
                 break;
         }
     }

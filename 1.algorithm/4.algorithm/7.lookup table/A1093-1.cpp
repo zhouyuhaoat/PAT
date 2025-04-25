@@ -23,27 +23,27 @@ int main(int argc, char const *argv[]) {
 
     string s;
     cin >> s;
-    vector<int> cp(s.size());
-    int cntP = 0; // counter
+    vector<int> cntP(s.size()); // count of 'P' before 'A'
+    int P = 0; // counter
     for (int i = 0; i < (int)s.size(); i++) {
         if (s[i] == 'A') {
-            cp[i] = cntP;
+            cntP[i] = P;
         } else if (s[i] == 'P') {
-            cntP++;
+            P++;
         }
     }
-    vector<int> ct(s.size());
-    int cntT = 0;
+    vector<int> cntT(s.size()); // count of 'T' after 'A'
+    int T = 0;
     for (int i = s.size() - 1; i >= 0; i--) {
         if (s[i] == 'A') {
-            ct[i] = cntT;
+            cntT[i] = T;
         } else if (s[i] == 'T') {
-            cntT++;
+            T++;
         }
     }
     long long res = 0;
     for (int i = 0; i < (int)s.size(); i++) {
-        res += cp[i] * ct[i];
+        res += cntP[i] * cntT[i]; // before * after
     }
     cout << res % 1000000007 << "\n";
 
