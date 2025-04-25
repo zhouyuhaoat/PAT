@@ -21,37 +21,37 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    int np, ng;
-    cin >> np >> ng;
-    vector<int> w(np);
-    for (int i = 0; i < np; i++) {
-        cin >> w[i];
+    int n, group; // group size
+    cin >> n >> group;
+    vector<int> weight(n);
+    for (int i = 0; i < n; i++) {
+        cin >> weight[i];
     }
-    queue<int> q;
-    for (int i = 0; i < np; i++) {
+    queue<int> q; // the initial playing order
+    for (int i = 0; i < n; i++) {
         int id;
         cin >> id;
         q.emplace(id);
     }
-    vector<int> r(np);
+    vector<int> rank(n);
     while (q.size() > 1) {
-        int size = q.size(), g = size / ng + (size % ng != 0);
+        int size = q.size(), g = size / group + (size % group != 0); // number of groups
         for (int i = 0; i < g; i++) {
-            int k = q.front();
-            for (int j = 0; j < ng && i * ng + j < size; j++) {
-                if (w[k] < w[q.front()]) {
-                    k = q.front();
+            int fat = q.front();
+            for (int j = 0; j < group && i * group + j < size; j++) { // current group
+                if (weight[fat] < weight[q.front()]) {
+                    fat = q.front();
                 }
-                r[q.front()] = g + 1;
+                rank[q.front()] = g + 1;
                 q.pop();
             }
-            q.emplace(k);
+            q.emplace(fat); // next round
         }
     }
-    r[q.front()] = 1;
-    for (int i = 0; i < np; i++) {
-        cout << r[i];
-        i < np - 1 ? cout << " " : cout << "\n";
+    rank[q.front()] = 1;
+    for (int i = 0; i < n; i++) {
+        cout << rank[i];
+        i < n - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;
