@@ -20,35 +20,34 @@
 
 using namespace std;
 
-int n, k, p;
-int mfs = -1;
-vector<int> fp, temp, ans;
+int n, k, p; // K-P factorization: sum(x1^p + x2^p + ... + xk^p) = N
+int maxFactorSum = -1;
+vector<int> factorPrime, temp, res;
 
 void init() {
-    int e = 0;
-    while (pow(e, p) <= n) {
-        fp.emplace_back(pow(e, p));
-        e++;
+    int base = 0, exp = p;
+    while (pow(base, exp) <= n) {
+        factorPrime.emplace_back(pow(base, exp));
+        base++;
     }
     temp.resize(k);
 }
 
-void dfs(int f, int i, int fs, int sum) {
-    // f: factor; i: item/index; fs: factor sum; sum: sum of power
-    if (i == k) { // base
-        if (sum == n && mfs < fs) {
-            mfs = fs;
-            ans = temp;
+void dfs(int factor, int idx, int factorSum, int sum) {
+    if (idx == k) { // base case
+        if (sum == n && maxFactorSum < factorSum) {
+            maxFactorSum = factorSum;
+            res = temp;
         }
         return;
     }
-    while (f >= 1) {
-        if (sum + fp[f] <= n) {
-            temp[i] = f;
-            dfs(f, i + 1, fs + f, sum + fp[f]); // recursion
+    while (factor >= 1) {
+        if (sum + factorPrime[factor] <= n) {
+            temp[idx] = factor;
+            dfs(factor, idx + 1, factorSum + factor, sum + factorPrime[factor]); // recursion
             // factor can be used repeatedly
         }
-        f--;
+        factor--;
     }
 }
 
@@ -56,11 +55,11 @@ int main(int argc, char const *argv[]) {
 
     cin >> n >> k >> p;
     init();
-    dfs(fp.size() - 1, 0, 0, 0);
-    if (mfs != -1) {
-        cout << n << " = " << ans[0] << "^" << p;
-        for (int i = 1; i < (int)ans.size(); i++) {
-            cout << " + " << ans[i] << "^" << p;
+    dfs(factorPrime.size() - 1, 0, 0, 0);
+    if (maxFactorSum != -1) {
+        cout << n << " = " << res[0] << "^" << p;
+        for (int i = 1; i < (int)res.size(); i++) {
+            cout << " + " << res[i] << "^" << p;
         }
         cout << "\n";
     } else {

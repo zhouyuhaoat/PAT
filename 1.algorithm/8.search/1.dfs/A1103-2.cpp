@@ -21,33 +21,33 @@
 using namespace std;
 
 int n, k, p;
-int mfs = -1;
-vector<int> fp, temp, ans;
+int maxFactorSum = -1;
+vector<int> factorPrime, temp, res;
 
 void init() {
-    int e = 0;
-    while (pow(e, p) <= n) {
-        fp.emplace_back(pow(e, p));
-        e++;
+    int base = 0, exp = p;
+    while (pow(base, exp) <= n) {
+        factorPrime.emplace_back(pow(base, exp));
+        base++;
     }
 }
 
-void dfs(int f, int i, int fs, int sum) {
-    if (i == k && sum == n) { // base1
-        if (mfs < fs) {
-            mfs = fs;
-            ans = temp;
+void dfs(int factor, int idx, int factorSum, int sum) {
+    if (idx == k && sum == n) { // base1
+        if (maxFactorSum < factorSum) {
+            maxFactorSum = factorSum;
+            res = temp;
         }
         return;
     }
-    if (sum > n || i > k) { // base2
+    if (sum > n || idx > k) { // base2
         return;
     }
-    if (f >= 1) {
-        temp.emplace_back(f);
-        dfs(f, i + 1, fs + f, sum + fp[f]); // choose
+    if (factor >= 1) {
+        temp.emplace_back(factor);
+        dfs(factor, idx + 1, factorSum + factor, sum + factorPrime[factor]); // choose
         temp.pop_back();
-        dfs(f - 1, i, fs, sum); // not choose
+        dfs(factor - 1, idx, factorSum, sum); // not choose
     }
 }
 
@@ -55,11 +55,11 @@ int main(int argc, char const *argv[]) {
 
     cin >> n >> k >> p;
     init();
-    dfs(fp.size() - 1, 0, 0, 0);
-    if (mfs != -1) {
-        cout << n << " = " << ans[0] << "^" << p;
-        for (int i = 1; i < (int)ans.size(); i++) {
-            cout << " + " << ans[i] << "^" << p;
+    dfs(factorPrime.size() - 1, 0, 0, 0);
+    if (maxFactorSum != -1) {
+        cout << n << " = " << res[0] << "^" << p;
+        for (int i = 1; i < (int)res.size(); i++) {
+            cout << " + " << res[i] << "^" << p;
         }
         cout << "\n";
     } else {
