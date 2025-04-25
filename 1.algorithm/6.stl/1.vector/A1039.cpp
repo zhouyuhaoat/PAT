@@ -25,25 +25,25 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    unordered_map<string, vector<int>> c;
+    unordered_map<string, vector<int>> course; // student name -> course id
     for (int i = 0; i < k; i++) {
-        int no, ns;
-        cin >> no >> ns;
-        for (int j = 0; j < ns; j++) {
+        int id, num;
+        cin >> id >> num;
+        for (int j = 0; j < num; j++) {
             string name;
             cin >> name;
-            c[name].emplace_back(no);
+            course[name].emplace_back(id);
         }
     }
-    for (auto& [_, no] : c) {
-        sort(no.begin(), no.end());
+    for (auto& [_, id] : course) {
+        sort(id.begin(), id.end());
     }
     for (int i = 0; i < n; i++) {
         string name;
         cin >> name;
-        cout << name << " " << c[name].size();
-        for (auto it : c[name]) {
-            cout << " " << it;
+        cout << name << " " << course[name].size();
+        for (int id : course[name]) {
+            cout << " " << id;
         }
         cout << "\n";
     }
