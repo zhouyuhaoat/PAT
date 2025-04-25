@@ -21,7 +21,6 @@
 using namespace std;
 
 struct node {
-    char data;
     int next;
 };
 
@@ -46,7 +45,7 @@ int main(int argc, char *argv[]) {
         char data;
         int addr, next;
         cin >> addr >> data >> next;
-        nodes[addr] = {data, next};
+        nodes[addr] = {next};
     }
     int share = getIntersectionNode(head1, head2, nodes);
     if (share != -1) {

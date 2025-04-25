@@ -39,12 +39,12 @@ int main(int argc, char const *argv[]) {
         cin >> addr >> data >> next;
         nodes[addr] = {addr, data, next};
     }
-    vector<int> addrs;
+    vector<int> list;
     for (int p = head; p != -1; p = nodes[p].next) {
-        addrs.emplace_back(p);
+        list.emplace_back(p);
     }
     head = -1; // Insertion Sort on Linked List
-    for (int addr : addrs) {
+    for (int addr : list) {
         if (head == -1 || nodes[addr].data < nodes[head].data) {
             nodes[addr].next = head;
             head = addr;
@@ -58,7 +58,7 @@ int main(int argc, char const *argv[]) {
             nodes[pre].next = addr;
         }
     }
-    cout << addrs.size() << " " << setfill('0') << setw(5) << (head == -1 ? -1 : head) << "\n";
+    cout << list.size() << " " << setfill('0') << setw(5) << (head == -1 ? -1 : head) << "\n";
     for (int p = head; p != -1; p = nodes[p].next) {
         cout << setfill('0') << setw(5) << p << " " << nodes[p].data << " ";
         if (nodes[p].next != -1) {

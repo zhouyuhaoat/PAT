@@ -35,22 +35,22 @@ int main(int argc, char const *argv[]) {
         cin >> addr >> data >> next;
         nodes[addr] = {data, next};
     }
-    vector<vector<int>> l(2);
+    vector<vector<int>> list(2);
     unordered_map<int, bool> vis;
     for (int p = head; p != -1; p = nodes[p].next) {
         int val = abs(nodes[p].data);
         if (!vis[val]) {
-            l[0].emplace_back(p);
+            list[0].emplace_back(p);
             vis[val] = true;
         } else {
-            l[1].emplace_back(p);
+            list[1].emplace_back(p);
         }
     }
     for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < (int)l[i].size(); j++) {
-            cout << setfill('0') << setw(5) << l[i][j] << " " << nodes[l[i][j]].data << " ";
-            if (j < (int)l[i].size() - 1) {
-                cout << setfill('0') << setw(5) << l[i][j + 1] << "\n";
+        for (int j = 0; j < (int)list[i].size(); j++) {
+            cout << setfill('0') << setw(5) << list[i][j] << " " << nodes[list[i][j]].data << " ";
+            if (j < (int)list[i].size() - 1) {
+                cout << setfill('0') << setw(5) << list[i][j + 1] << "\n";
             } else {
                 cout << "-1\n";
             }

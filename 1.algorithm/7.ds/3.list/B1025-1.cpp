@@ -36,17 +36,17 @@ int main(int argc, char const *argv[]) {
         cin >> addr >> data >> next;
         nodes[addr] = {data, next};
     }
-    vector<int> l;
+    vector<int> list;
     for (int p = head; p != -1; p = nodes[p].next) {
-        l.emplace_back(p);
+        list.emplace_back(p);
     }
-    for (int i = 0; i < (int)l.size() / k; i++) {
-        reverse(l.begin() + i * k, l.begin() + (i + 1) * k);
+    for (int i = 0; i < (int)list.size() / k; i++) { // k: group size
+        reverse(list.begin() + i * k, list.begin() + (i + 1) * k);
     }
-    for (int i = 0; i < (int)l.size(); i++) {
-        cout << setfill('0') << setw(5) << l[i] << " " << nodes[l[i]].data << " ";
-        if (i < (int)l.size() - 1) {
-            cout << setfill('0') << setw(5) << l[i + 1] << "\n";
+    for (int i = 0; i < (int)list.size(); i++) {
+        cout << setfill('0') << setw(5) << list[i] << " " << nodes[list[i]].data << " ";
+        if (i < (int)list.size() - 1) {
+            cout << setfill('0') << setw(5) << list[i + 1] << "\n";
         } else {
             cout << "-1\n";
         }

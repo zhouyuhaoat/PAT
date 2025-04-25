@@ -40,18 +40,18 @@ int main(int argc, char const *argv[]) {
         cin >> addr >> data >> next;
         nodes[addr] = {addr, data, next};
     }
-    vector<node> l;
+    vector<node> list;
     for (int p = head; p != -1; p = nodes[p].next) {
-        l.emplace_back(nodes[p]);
+        list.emplace_back(nodes[p]);
     }
-    sort(l.begin(), l.end(), [](node a, node b) {
+    sort(list.begin(), list.end(), [](node a, node b) {
         return a.data < b.data;
     });
-    cout << l.size() << " " << setfill('0') << setw(5) << l[0].addr << "\n";
-    for (int i = 0; i < (int)l.size(); i++) {
-        cout << setfill('0') << setw(5) << l[i].addr << " " << l[i].data << " ";
-        if (i < (int)l.size() - 1) {
-            cout << setfill('0') << setw(5) << l[i + 1].addr << "\n";
+    cout << list.size() << " " << setfill('0') << setw(5) << list[0].addr << "\n";
+    for (int i = 0; i < (int)list.size(); i++) {
+        cout << setfill('0') << setw(5) << list[i].addr << " " << list[i].data << " ";
+        if (i < (int)list.size() - 1) {
+            cout << setfill('0') << setw(5) << list[i + 1].addr << "\n";
         } else {
             cout << "-1\n";
         }
