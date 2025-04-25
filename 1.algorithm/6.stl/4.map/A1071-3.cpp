@@ -26,9 +26,9 @@ int main(int argc, char const *argv[]) {
     unordered_map<string, int> cnt;
     while (cin >> s) {
         string t;
-        for (char c : s) {
-            if (isalnum(c)) {
-                t += tolower(c);
+        for (char ch : s) {
+            if (isalnum(ch)) {
+                t += tolower(ch);
             } else {
                 if (!t.empty()) {
                     cnt[t]++;
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
     auto it = max_element(cnt.begin(), cnt.end(), [](pair<string, int> a, pair<string, int> b) {
         return a.second < b.second;
     });
-    cout << it->first << " " << it->second << "\n";
+    cout << it->first << " " << it->second << "\n"; // pattern, count
 
     return 0;
 }

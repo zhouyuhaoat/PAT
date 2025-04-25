@@ -21,15 +21,13 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    int b = 13;
-    string s1[b] = {"tret", "jan", "feb", "mar", "apr", "may", "jun", "jly", "aug", "sep", "oct", "nov", "dec"};
-    string s2[b] = {"", "tam", "hel", "maa", "huh", "tou", "kes", "hei", "elo", "syy", "lok", "mer", "jou"};
-    unordered_map<string, int> m1, m2;
-    for (int i = 0; i < b; i++) {
-        m1[s1[i]] = i;
-    }
-    for (int i = 0; i < b; i++) {
-        m2[s2[i]] = i;
+    int base = 13;
+    string mars1[base] = {"tret", "jan", "feb", "mar", "apr", "may", "jun", "jly", "aug", "sep", "oct", "nov", "dec"};
+    string mars2[base] = {"", "tam", "hel", "maa", "huh", "tou", "kes", "hei", "elo", "syy", "lok", "mer", "jou"};
+    unordered_map<string, int> earth1, earth2; // mars -> earth
+    for (int i = 0; i < base; i++) {
+        earth1[mars1[i]] = i;
+        earth2[mars2[i]] = i;
     }
     int n;
     cin >> n;
@@ -37,23 +35,23 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         string s;
         getline(cin, s);
-        if (isdigit(s[0])) {
+        if (isdigit(s[0])) { // earth -> mars
             int num = stoi(s);
             if (num < 13) {
-                cout << s1[num] << "\n";
+                cout << mars1[num] << "\n";
             } else if (num % 13 == 0) {
-                cout << s2[num / b] << "\n";
+                cout << mars2[num / base] << "\n";
             } else {
-                cout << s2[num / b] << " " << s1[num % b] << "\n";
+                cout << mars2[num / base] << " " << mars1[num % base] << "\n";
             }
-        } else {
+        } else { // mars -> earth
             if (s.size() > 3) {
-                cout << m2[s.substr(0, 3)] * b + m1[s.substr(4, 3)] << "\n";
+                cout << earth2[s.substr(0, 3)] * base + earth1[s.substr(4, 3)] << "\n";
             } else {
-                if (m1[s] != 0) {
-                    cout << m1[s] << "\n";
-                } else {
-                    cout << m2[s] * 13 << "\n";
+                if (earth1[s] != 0) { // earth1[s] exists
+                    cout << earth1[s] << "\n";
+                } else { // earth2[s] exists
+                    cout << earth2[s] * 13 << "\n";
                 }
             }
         }

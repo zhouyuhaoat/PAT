@@ -15,7 +15,6 @@
 
 // @pintia code=start
 #include <algorithm>
-#include <cctype>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -31,7 +30,7 @@ vector<string> splitWords(string s) { // split words by alphanumeric
             while (j < (int)s.size() && isalnum(s[j])) {
                 j++;
             }
-            words.push_back(s.substr(i, j - i));
+            words.emplace_back(s.substr(i, j - i));
             i = j;
         } else {
             i++;
@@ -45,17 +44,17 @@ int main(int argc, char const *argv[]) {
     string s;
     getline(cin, s);
     transform(s.begin(), s.end(), s.begin(), ::tolower);
-    unordered_map<string, int> cnt;
-    int maxcnt = -1;
+    unordered_map<string, int> cnt; // count words
+    int maxCnt = -1;
     vector<string> words = splitWords(s);
     for (string w : words) {
-        if (++cnt[w] > maxcnt) {
-            maxcnt = cnt[w];
+        if (++cnt[w] > maxCnt) {
+            maxCnt = cnt[w];
         }
     }
-    for (auto it : cnt) {
-        if (it.second == maxcnt) {
-            cout << it.first << " " << it.second << "\n";
+    for (auto [pattern, count] : cnt) { // lexicographically smallest one
+        if (count == maxCnt) {
+            cout << pattern << " " << count << "\n";
             break;
         }
     }

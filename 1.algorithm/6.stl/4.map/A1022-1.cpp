@@ -41,22 +41,23 @@ vector<string> splitWords(string s) { // split words by space manually
 
 int main(int argc, char const *argv[]) {
 
-    vector<unordered_map<string, set<string>>> m(6);
+    vector<unordered_map<string, set<string>>> library(6); // type -> information -> id
     int n;
     cin >> n;
     getchar();
     for (int i = 0; i < n; i++) {
         string id;
         getline(cin, id);
-        for (int j = 1; j < 6; j++) {
+        // 1: title, 2: author, 3: key words, 4: publisher, 5: published year
+        for (int type = 1; type < 6; type++) {
             string s;
             getline(cin, s);
-            if (j != 3) {
-                m[j][s].emplace(id);
+            if (type != 3) {
+                library[type][s].emplace(id);
             } else {
                 vector<string> words = splitWords(s);
-                for (string w : words) {
-                    m[j][w].emplace(id);
+                for (string word : words) {
+                    library[type][word].emplace(id);
                 }
             }
         }
@@ -64,16 +65,17 @@ int main(int argc, char const *argv[]) {
     int q;
     cin >> q;
     for (int i = 0; i < q; i++) {
-        int l;
-        scanf("%d: ", &l);
+        int type;
+        scanf("%d: ", &type);
+        // 1: title, 2: author, 3: key word, 4: publisher, 5: published year
         string s;
         getline(cin, s);
-        cout << l << ": " << s << "\n";
-        if (m[l][s].empty()) {
+        cout << type << ": " << s << "\n";
+        if (library[type][s].empty()) {
             cout << "Not Found\n";
         } else {
-            for (auto it : m[l][s]) {
-                cout << it << "\n";
+            for (string id : library[type][s]) {
+                cout << id << "\n";
             }
         }
     }

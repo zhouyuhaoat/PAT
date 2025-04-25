@@ -25,6 +25,7 @@ int main(int argc, char const *argv[]) {
     cin >> m >> n;
     unordered_map<int, int> cnt;
     int threshold = m * n / 2;
+    // dominant: more than half of the total pixels
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             int num;

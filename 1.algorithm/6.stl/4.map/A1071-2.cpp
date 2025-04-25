@@ -24,22 +24,22 @@ int main(int argc, char const *argv[]) {
     string s;
     getline(cin, s);
     unordered_map<string, int> cnt;
+    int maxCnt = -1;
     string t;
-    int maxcnt = -1;
     for (int i = 0; i < (int)s.size(); i++) {
         if (isalnum(s[i])) {
             t += tolower(s[i]);
         }
-        if (!isalnum(s[i]) || i == (int)s.size() - 1) {
-            if (!t.empty() && ++cnt[t] > maxcnt) {
-                maxcnt = cnt[t];
+        if (!isalnum(s[i]) || i == (int)s.size() - 1) { // end of a word
+            if (!t.empty() && ++cnt[t] > maxCnt) {
+                maxCnt = cnt[t];
             }
             t.clear();
         }
     }
-    for (auto it : cnt) {
-        if (it.second == maxcnt) {
-            cout << it.first << " " << it.second << "\n";
+    for (auto [pattern, count] : cnt) {
+        if (count == maxCnt) {
+            cout << pattern << " " << count << "\n";
             break;
         }
     }

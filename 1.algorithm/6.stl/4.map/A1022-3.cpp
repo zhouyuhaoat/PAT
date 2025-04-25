@@ -24,24 +24,24 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    vector<unordered_map<string, set<string>>> m(6);
+    vector<unordered_map<string, set<string>>> library(6);
     int n;
     cin >> n;
     getchar();
     for (int i = 0; i < n; i++) {
         string id;
         getline(cin, id);
-        for (int j = 1; j < 6; j++) {
+        for (int type = 1; type < 6; type++) {
             string s;
             getline(cin, s);
-            if (j != 3) {
-                m[j][s].emplace(id);
+            if (type != 3) {
+                library[type][s].emplace(id);
             } else {
                 // split words by stringstream & stream extraction operator
                 istringstream ss(s);
-                string w;
-                while (ss >> w) {
-                    m[j][w].emplace(id);
+                string word;
+                while (ss >> word) {
+                    library[type][word].emplace(id);
                 }
             }
         }
@@ -49,16 +49,16 @@ int main(int argc, char const *argv[]) {
     int q;
     cin >> q;
     for (int i = 0; i < q; i++) {
-        int l;
-        scanf("%d: ", &l);
+        int type;
+        scanf("%d: ", &type);
         string s;
         getline(cin, s);
-        cout << l << ": " << s << "\n";
-        if (m[l][s].empty()) {
+        cout << type << ": " << s << "\n";
+        if (library[type][s].empty()) {
             cout << "Not Found\n";
         } else {
-            for (auto it : m[l][s]) {
-                cout << it << "\n";
+            for (string id : library[type][s]) {
+                cout << id << "\n";
             }
         }
     }
