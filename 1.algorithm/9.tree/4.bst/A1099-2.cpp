@@ -21,53 +21,52 @@
 using namespace std;
 
 struct node {
-    int v, l, i; // value, level, index
-    int lc, rc; // index of left child, right child
+    int val, level, id;
+    int left, right;
 };
 
-vector<node> t;
+vector<node> tree;
 vector<int> in;
-int n, front = 0;
+int n, idx = 0;
 
-void intra(int r, int l, int i) {
-    if (r == -1 || r >= n) return;
-    intra(t[r].lc, l + 1, 2 * i + 1);
-    t[r].v = in[front++], t[r].l = l, t[r].i = i;
-    intra(t[r].rc, l + 1, 2 * i + 2);
+void inTra(int root, int level, int id) {
+    if (root == -1) return;
+    inTra(tree[root].left, level + 1, 2 * id + 1);
+    tree[root].val = in[idx++], tree[root].level = level, tree[root].id = id;
+    inTra(tree[root].right, level + 1, 2 * id + 2);
 }
 
 int main(int argc, char const *argv[]) {
 
     cin >> n;
-    t.resize(n);
-    vector<bool> isroot(n, true);
+    tree.resize(n);
+    vector<bool> isRoot(n, true);
     for (int i = 0; i < n; i++) {
-        cin >> t[i].lc >> t[i].rc;
-        if (t[i].lc != -1) {
-            isroot[t[i].lc] = false;
+        cin >> tree[i].left >> tree[i].right;
+        if (tree[i].left != -1) {
+            isRoot[tree[i].left] = false;
         }
-        if (t[i].rc != -1) {
-            isroot[t[i].rc] = false;
+        if (tree[i].right != -1) {
+            isRoot[tree[i].right] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin();
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
     in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    // in order of BST: sorted
     sort(in.begin(), in.end());
-    intra(r, 1, 0);
+    inTra(root, 1, 0);
     // level order traversal by sorting with level and index
-    sort(t.begin(), t.end(), [](node a, node b) -> bool {
-        if (a.l != b.l) {
-            return a.l < b.l;
+    sort(tree.begin(), tree.end(), [](node a, node b) -> bool {
+        if (a.level != b.level) {
+            return a.level < b.level;
         } else {
-            return a.i < b.i;
+            return a.id < b.id;
         }
     });
     for (int i = 0; i < n; i++) {
-        cout << t[i].v;
+        cout << tree[i].val;
         i < n - 1 ? cout << " " : cout << "\n";
     }
 

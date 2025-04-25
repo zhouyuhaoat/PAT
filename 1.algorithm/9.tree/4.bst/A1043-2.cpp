@@ -19,31 +19,31 @@
 
 using namespace std;
 
-bool isMirror = false;
+bool mirror = false;
 vector<int> pre, post;
 
-void posttra(int r, int e) {
-    if (r > e) return;
-    int i = r + 1, j = e;
-    if (!isMirror) { // normal
-        while (i <= e && pre[i] < pre[r]) { // left subtree
-            i++;
+void postTra(int preL, int preH) { // preL = preR
+    if (preL > preH) return;
+    int lo = preL + 1, hi = preH, root = pre[preL];
+    if (!mirror) { // normal
+        while (lo <= preH && pre[lo] < root) { // left subtree < root
+            lo++;
         }
-        while (j > r && pre[j] >= pre[r]) { // right subtree
-            j--;
+        while (hi > preL && pre[hi] >= root) { // right subtree >= root
+            hi--;
         }
     } else { // mirror
-        while (i <= e && pre[i] >= pre[r]) { // left subtree
-            i++;
+        while (lo <= preH && pre[lo] >= root) { // left subtree >= root
+            lo++;
         }
-        while (j > r && pre[j] < pre[r]) { // right subtree
-            j--;
+        while (hi > preL && pre[hi] < root) { // right subtree < root
+            hi--;
         }
     }
-    if (i - j != 1) return; // not a BST
-    posttra(r + 1, j);
-    posttra(i, e);
-    post.emplace_back(pre[r]);
+    if (lo - hi != 1) return; // not a BST
+    postTra(preL + 1, hi);
+    postTra(lo, preH);
+    post.emplace_back(pre[preL]);
 }
 
 int main(int argc, char const *argv[]) {
@@ -54,11 +54,11 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
     }
-    posttra(0, n - 1);
+    postTra(0, n - 1);
     if ((int)post.size() != n) { // possible mirror
-        isMirror = true;
+        mirror = true;
         post.clear();
-        posttra(0, n - 1);
+        postTra(0, n - 1);
     }
     if ((int)post.size() == n) { // a BST or mirror
         cout << "YES\n";

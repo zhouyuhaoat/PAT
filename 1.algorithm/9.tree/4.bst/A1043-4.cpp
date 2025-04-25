@@ -29,16 +29,17 @@ auto makePred(int root, bool mirror) {
     };
 }
 
-void posttra(int r, int e, vector<int>& post, bool mirror) {
-    if (r > e) return;
-    auto pred = makePred(pre[r], mirror);
-    int i = find_if(pre.begin() + r + 1, pre.begin() + e + 1, pred) - pre.begin();
-    int j = find_if(pre.begin() + i, pre.begin() + e + 1, not_fn(pred)) - pre.begin();
-    // backward search: j, i -> forward search: e, j
-    if (j != e + 1) return; // not a BST
-    posttra(r + 1, i - 1, post, mirror);
-    posttra(i, e, post, mirror);
-    post.emplace_back(pre[r]);
+void postTra(int preL, int preH, vector<int>& post, bool mirror) {
+    if (preL > preH) return;
+    int root = pre[preL];
+    auto pred = makePred(root, mirror);
+    int rightR = find_if(pre.begin() + preL + 1, pre.begin() + preH + 1, pred) - pre.begin();
+    // backward search -> forward search
+    int rightH = find_if(pre.begin() + rightR, pre.begin() + preH + 1, not_fn(pred)) - pre.begin();
+    if (rightH != preH + 1) return; // not a BST
+    postTra(preL + 1, rightR - 1, post, mirror);
+    postTra(rightR, preH, post, mirror);
+    post.emplace_back(root);
 }
 
 int main(int argc, char const *argv[]) {
@@ -49,8 +50,8 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
     }
-    posttra(0, n - 1, post1, true);
-    posttra(0, n - 1, post2, false);
+    postTra(0, n - 1, post1, true);
+    postTra(0, n - 1, post2, false);
     if ((int)post1.size() == n || (int)post2.size() == n) {
         cout << "YES\n";
         auto& post = (int)post1.size() == n ? post1 : post2;

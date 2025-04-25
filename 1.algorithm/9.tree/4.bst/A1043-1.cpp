@@ -20,58 +20,58 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
-vector<int> d, dpre, dpreMirror, dpost, dpostMirror;
+vector<int> tree, pre, preMirror, post, postMirror;
 
-void insert(node *& r, int v) {
-    if (r == nullptr) {
-        r = new node{v, nullptr, nullptr};
+void insert(node *& root, int val) {
+    if (!root) {
+        root = new node{val, nullptr, nullptr};
         return;
     }
-    if (v < r->v) {
-        insert(r->lc, v);
+    if (val < root->val) {
+        insert(root->left, val);
     } else {
-        insert(r->rc, v);
+        insert(root->right, val);
     }
 }
 
-void pre(node *r, vector<int>& d) {
-    if (r == nullptr) return;
-    d.emplace_back(r->v);
-    pre(r->lc, d);
-    pre(r->rc, d);
+void preTra(node *root, vector<int>& tree) {
+    if (!root) return;
+    tree.emplace_back(root->val);
+    preTra(root->left, tree);
+    preTra(root->right, tree);
 }
 
-void preMirror(node *r, vector<int>& d) {
-    if (r == nullptr) return;
+void preTraMirror(node *root, vector<int>& tree) {
+    if (!root) return;
     // Mirror: right child first, then left child
-    d.emplace_back(r->v);
-    preMirror(r->rc, d);
-    preMirror(r->lc, d);
+    tree.emplace_back(root->val);
+    preTraMirror(root->right, tree);
+    preTraMirror(root->left, tree);
 }
 
-void post(node *r, vector<int>& d) {
-    if (r == nullptr) return;
-    post(r->lc, d);
-    post(r->rc, d);
-    d.emplace_back(r->v);
+void postTra(node *root, vector<int>& tree) {
+    if (!root) return;
+    postTra(root->left, tree);
+    postTra(root->right, tree);
+    tree.emplace_back(root->val);
 }
 
-void postMirror(node *r, vector<int>& d) {
-    if (r == nullptr) return;
+void postTraMirror(node *root, vector<int>& tree) {
+    if (!root) return;
     // Mirror: right child first, then left child
-    postMirror(r->rc, d);
-    postMirror(r->lc, d);
-    d.emplace_back(r->v);
+    postTraMirror(root->right, tree);
+    postTraMirror(root->left, tree);
+    tree.emplace_back(root->val);
 }
 
-void print(vector<int> d) {
-    for (int i = 0; i < (int)d.size(); i++) {
-        cout << d[i];
-        i < (int)d.size() - 1 ? cout << " " : cout << "\n";
+void print(vector<int>& v) {
+    for (int i = 0; i < (int)v.size(); i++) {
+        cout << v[i];
+        i < (int)v.size() - 1 ? cout << " " : cout << "\n";
     }
 }
 
@@ -79,20 +79,20 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    node *r = nullptr;
-    d.resize(n);
+    node *root = nullptr;
+    tree.resize(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
-        insert(r, d[i]);
+        cin >> tree[i];
+        insert(root, tree[i]);
     }
-    pre(r, dpre), preMirror(r, dpreMirror);
-    post(r, dpost), postMirror(r, dpostMirror);
-    if (d == dpre) {
+    preTra(root, pre), preTraMirror(root, preMirror);
+    postTra(root, post), postTraMirror(root, postMirror);
+    if (tree == pre) {
         cout << "YES\n";
-        print(dpost);
-    } else if (d == dpreMirror) {
+        print(post);
+    } else if (tree == preMirror) {
         cout << "YES\n";
-        print(dpostMirror);
+        print(postMirror);
     } else {
         cout << "NO\n";
     }

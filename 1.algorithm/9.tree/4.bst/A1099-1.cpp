@@ -21,62 +21,58 @@
 using namespace std;
 
 struct node {
-    int v;
-    int lc, rc;
+    int val;
+    int left, right;
 };
 
-vector<node> t;
-vector<int> in, ans;
-int n, front = 0;
+vector<node> tree;
+vector<int> in, res;
+int n, idx = 0;
 
-void intra(int r) {
-    if (r == -1 || r >= n) return;
-    intra(t[r].lc);
-    t[r].v = in[front++];
-    intra(t[r].rc);
+void inTra(int root) {
+    if (root == -1) return;
+    inTra(tree[root].left);
+    tree[root].val = in[idx++];
+    inTra(tree[root].right);
 }
 
-void bfs(int r) {
+void bfs(int root) {
     queue<int> q;
-    q.emplace(r);
+    q.emplace(root);
     while (!q.empty()) {
-        int now = q.front();
+        int cur = q.front();
         q.pop();
-        ans.emplace_back(t[now].v);
-        if (t[now].lc != -1) {
-            q.emplace(t[now].lc);
-        }
-        if (t[now].rc != -1) {
-            q.emplace(t[now].rc);
-        }
+        if (cur == -1) continue;
+        res.emplace_back(tree[cur].val);
+        q.emplace(tree[cur].left);
+        q.emplace(tree[cur].right);
     }
 }
 
 int main(int argc, char const *argv[]) {
 
     cin >> n;
-    t.resize(n);
-    vector<bool> isroot(n, true);
+    tree.resize(n);
+    vector<bool> isRoot(n, true);
     for (int i = 0; i < n; i++) {
-        cin >> t[i].lc >> t[i].rc;
-        if (t[i].lc != -1) {
-            isroot[t[i].lc] = false;
+        cin >> tree[i].left >> tree[i].right;
+        if (tree[i].left != -1) {
+            isRoot[tree[i].left] = false;
         }
-        if (t[i].rc != -1) {
-            isroot[t[i].rc] = false;
+        if (tree[i].right != -1) {
+            isRoot[tree[i].right] = false;
         }
     }
-    int r = find(isroot.begin(), isroot.end(), true) - isroot.begin();
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
     in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    // in order of BST: sorted
-    sort(in.begin(), in.end());
-    intra(r);
-    bfs(r);
+    sort(in.begin(), in.end()); // in order of BST: sorted
+    inTra(root);
+    bfs(root);
     for (int i = 0; i < n; i++) {
-        cout << ans[i];
+        cout << res[i];
         i < n - 1 ? cout << " " : cout << "\n";
     }
 

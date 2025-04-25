@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 20:18:41
- *	modified:	2023-03-29 20:38:03
+ *	created:	2023-03-29 20:38:11
+ *	modified:	2023-03-29 20:38:50
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -20,14 +20,14 @@
 
 using namespace std;
 
-int n, front = 0;
+int n, idx = 0;
 vector<int> in, cbt;
 
-void intra(int r) {
-    if (r >= n) return;
-    intra(2 * r + 1);
-    cbt[r] = in[front++];
-    intra(2 * r + 2);
+void inTra(int root) {
+    if (root > n) return;
+    inTra(2 * root);
+    cbt[root] = in[idx++];
+    inTra(2 * root + 1);
 }
 
 int main(int argc, char const *argv[]) {
@@ -37,13 +37,12 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    // in order of BST: sorted
     sort(in.begin(), in.end());
-    cbt.resize(n);
-    intra(0); // 0-based index
-    for (int i = 0; i < n; i++) {
+    cbt.resize(n + 1);
+    inTra(1); // 1-based index
+    for (int i = 1; i <= n; i++) {
         cout << cbt[i];
-        i < n - 1 ? cout << " " : cout << "\n";
+        i < n ? cout << " " : cout << "\n";
     }
 
     return 0;

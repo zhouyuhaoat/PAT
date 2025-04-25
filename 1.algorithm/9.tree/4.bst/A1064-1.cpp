@@ -1,7 +1,7 @@
 /*
  *	author:		zhouyuhao
- *	created:	2023-03-29 19:17:01
- *	modified:	2023-03-29 20:17:54
+ *	created:	2023-03-29 20:18:41
+ *	modified:	2023-03-29 20:38:03
  *	item:		Programming Ability Test
  *	site:		Yuting
  */
@@ -15,40 +15,33 @@
 
 // @pintia code=start
 #include <algorithm>
-#include <cmath>
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-vector<int> in, level;
+int n, idx = 0;
+vector<int> in, cbt;
 
-void leveltra(int s, int e, int i) {
-    if (s > e) return;
-    int n = e - s + 1;
-    int h = log(n + 1) / log(2);
-    int l = n - pow(2, h) + 1;
-    int r = s + pow(2, h - 1) - 1;
-    r += min(l, (int)pow(2, h - 1));
-    level[i] = in[r];
-    leveltra(s, r - 1, 2 * i + 1);
-    leveltra(r + 1, e, 2 * i + 2);
+void inTra(int root) {
+    if (root >= n) return;
+    inTra(2 * root + 1);
+    cbt[root] = in[idx++];
+    inTra(2 * root + 2);
 }
 
 int main(int argc, char const *argv[]) {
 
-    int n;
     cin >> n;
     in.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> in[i];
     }
-    // in order of BST: sorted
-    sort(in.begin(), in.end());
-    level.resize(n);
-    leveltra(0, n - 1, 0);
+    sort(in.begin(), in.end()); // in order of BST: sorted
+    cbt.resize(n);
+    inTra(0); // 0-based index
     for (int i = 0; i < n; i++) {
-        cout << level[i];
+        cout << cbt[i];
         i < n - 1 ? cout << " " : cout << "\n";
     }
 
