@@ -19,42 +19,40 @@
 
 using namespace std;
 
-struct p {
-    int x, y, z; // slices
+struct pixel {
+    int x, y, z; // slice, row, column
 };
 
-int m, n, l, t;
-vector<vector<vector<int>>> b;
-vector<vector<vector<bool>>> v;
+int m, n, l, t; // size (row, column) of matrix, slices of matrix, threshold
+vector<vector<vector<int>>> MRI; // Magnetic Resonance Imaging
+vector<vector<vector<bool>>> vis;
 
+// 6 directions: up, down, left, right, front, back
 int X[6] = {-1, 1, 0, 0, 0, 0};
 int Y[6] = {0, 0, -1, 1, 0, 0};
 int Z[6] = {0, 0, 0, 0, -1, 1};
 
-bool valid(int x, int y, int z) {
-    if (x < 0 || x >= l || y < 0 || y >= m || z < 0 || z >= n) {
-        return false;
-    }
-    if (b[x][y][z] == 0 || v[x][y][z]) {
+bool valid(pixel p) {
+    if (p.x < 0 || p.x >= l || p.y < 0 || p.y >= m || p.z < 0 || p.z >= n) {
         return false;
     }
     return true;
 }
 
 int bfs(int x, int y, int z) { // Flood Fill
-    queue<p> q;
-    q.emplace(p{x, y, z});
-    v[x][y][z] = true;
+    queue<pixel> q;
+    q.emplace(pixel{x, y, z});
+    vis[x][y][z] = true;
     int cnt = 0;
     while (!q.empty()) {
-        p f = q.front();
+        pixel u = q.front();
         q.pop();
         cnt++;
         for (int i = 0; i < 6; i++) {
-            int vx = f.x + X[i], vy = f.y + Y[i], vz = f.z + Z[i];
-            if (valid(vx, vy, vz)) {
-                q.emplace(p{vx, vy, vz});
-                v[vx][vy][vz] = true;
+            pixel v = {u.x + X[i], u.y + Y[i], u.z + Z[i]};
+            if (valid(v) && MRI[v.x][v.y][v.z] == 1 && !vis[v.x][v.y][v.z]) {
+                q.emplace(v);
+                vis[v.x][v.y][v.z] = true;
             }
         }
     }
@@ -64,14 +62,13 @@ int bfs(int x, int y, int z) { // Flood Fill
 int main(int argc, char const *argv[]) {
 
     cin >> m >> n >> l >> t;
-    b.resize(l), v.resize(l);
+    MRI.resize(l), vis.resize(l);
     for (int i = 0; i < l; i++) {
-        b[i].resize(m), v[i].resize(m);
+        MRI[i].resize(m), vis[i].resize(m);
         for (int j = 0; j < m; j++) {
-            b[i][j].resize(n), v[i][j].resize(n);
+            MRI[i][j].resize(n), vis[i][j].resize(n);
             for (int k = 0; k < n; k++) {
-                cin >> b[i][j][k];
-                v[i][j][k] = false;
+                cin >> MRI[i][j][k];
             }
         }
     }
@@ -79,7 +76,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < l; i++) {
         for (int j = 0; j < m; j++) {
             for (int k = 0; k < n; k++) {
-                if (b[i][j][k] == 1 && !v[i][j][k]) {
+                if (MRI[i][j][k] == 1 && !vis[i][j][k]) {
                     cnt += bfs(i, j, k);
                 }
             }
