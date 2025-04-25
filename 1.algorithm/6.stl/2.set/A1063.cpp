@@ -25,29 +25,29 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<unordered_set<int>> s(n + 1);
+    vector<unordered_set<int>> sets(n + 1);
     for (int i = 0; i < n; i++) {
         int m;
         cin >> m;
         for (int j = 0; j < m; j++) {
-            int num;
-            cin >> num;
-            s[i + 1].emplace(num);
+            int v;
+            cin >> v;
+            sets[i + 1].emplace(v);
         }
     }
     int k;
     cin >> k;
     for (int i = 0; i < k; i++) {
-        int a, b;
-        cin >> a >> b;
-        int cnt = 0;
-        for (auto it : s[a]) {
-            if (s[b].find(it) != s[b].end()) {
+        int set1, set2;
+        cin >> set1 >> set2;
+        int cnt = 0; // count the number of common elements
+        for (auto it : sets[set1]) {
+            if (sets[set2].find(it) != sets[set2].end()) {
                 cnt++;
             }
         }
-        double r = (double)cnt / (s[a].size() + s[b].size() - cnt) * 100;
-        cout << fixed << setprecision(1) << r << "%\n";
+        double rate = (double)cnt / (sets[set1].size() + sets[set2].size() - cnt) * 100; // similarity rate
+        cout << fixed << setprecision(1) << rate << "%\n";
     }
 
     return 0;
