@@ -38,10 +38,10 @@ string convert(string s, int n) {
     }
     num.append(n - num.size(), '0'); // trailing zeros
     if (dot == -1) dot = s.size(); // dummy dot
-    int e = dot - nonZero > 0 ? dot - nonZero : dot - nonZero + 1; // exponent
+    int exp = dot - nonZero > 0 ? dot - nonZero : dot - nonZero + 1; // exponent
     // dot - nonZero > 0: nonZero ... dot => 0 dot nonZero ...
     // dot - nonZero < 0: dot 0s nonZero ... => 0 dot nonZero ...
-    return "0." + num + "*10^" + to_string(e);
+    return "0." + num + "*10^" + to_string(exp);
 }
 
 int main(int argc, char const *argv[]) {
@@ -49,11 +49,11 @@ int main(int argc, char const *argv[]) {
     int n;
     string a, b;
     cin >> n >> a >> b;
-    string sa = convert(a, n), sb = convert(b, n);
-    if (sa == sb) {
-        cout << "YES " << sa << "\n";
+    a = convert(a, n), b = convert(b, n);
+    if (a == b) {
+        cout << "YES " << a << "\n";
     } else {
-        cout << "NO " << sa << " " << sb << "\n";
+        cout << "NO " << a << " " << b << "\n";
     }
 
     return 0;

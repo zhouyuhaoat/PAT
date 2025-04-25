@@ -21,13 +21,13 @@
 
 using namespace std;
 
-string trans(string s, int n) {
-    int e = stoi(s.substr(n + 3)); // exponent
+string convert(string s, int n) {
+    int exp = stoi(s.substr(n + 3)); // exponent
     string num = s.substr(0, n + 1).erase(1, 1);
-    if (e != 0 || stoi(num) != 0) {
-        e++; // format for 1.234e+03 => 0.123e+04
+    if (exp != 0 || stoi(num) != 0) {
+        exp++; // format for 1.234e+03 => 0.123e+04
     }
-    return "0." + num + "*10^" + to_string(e);
+    return "0." + num + "*10^" + to_string(exp);
 }
 
 int main(int argc, char const *argv[]) {
@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < 2; i++) {
         s[i] << scientific << setprecision(n) << a[i];
         // i.e., 1.234e+03, not 0.123e+04
-        b[i] = trans(s[i].str(), n);
+        b[i] = convert(s[i].str(), n);
     }
     if (b[0] == b[1]) {
         cout << "YES " << b[0] << "\n";
