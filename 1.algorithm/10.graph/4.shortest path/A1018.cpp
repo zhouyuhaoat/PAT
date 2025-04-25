@@ -21,40 +21,40 @@
 using namespace std;
 
 struct sta {
-    int v, dis;
-    sta(int v, int dis) : v(v), dis(dis) {
+    int val, dist;
+    sta(int val, int dist) : val(val), dist(dist) {
     }
     friend bool operator<(sta a, sta b) {
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
 vector<bool> vis;
-vector<int> d, b; // bike
+vector<int> dist, bike;
 vector<vector<sta>> g;
 vector<vector<int>> pre;
 
-void dijkstra(int s) {
-    d[s] = 0;
+void dijkstra(int src) {
+    dist[src] = 0;
     priority_queue<sta> q;
-    q.emplace(s, 0);
+    q.emplace(src, 0);
     while (!q.empty()) {
-        sta t = q.top();
+        sta top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
+            int v = g[u][i].val;
             if (!vis[v]) {
-                if (d[u] + g[u][i].dis < d[v]) {
-                    d[v] = d[u] + g[u][i].dis;
+                if (dist[u] + g[u][i].dist < dist[v]) {
+                    dist[v] = dist[u] + g[u][i].dist;
                     pre[v].clear();
                     pre[v].emplace_back(u);
-                    q.emplace(v, d[v]);
-                } else if (d[u] + g[u][i].dis == d[v]) {
+                    q.emplace(v, dist[v]);
+                } else if (dist[u] + g[u][i].dist == dist[v]) {
                     pre[v].emplace_back(u);
                 }
             }
@@ -63,63 +63,63 @@ void dijkstra(int s) {
 }
 
 int minSend = INT_MAX, minBack = INT_MAX;
-vector<int> ans, tmp;
-void dfs(int s, int v) {
-    if (v == s) {
-        tmp.emplace_back(v);
+vector<int> res, temp;
+void dfs(int u, int src) {
+    if (u == src) {
+        temp.emplace_back(u);
         int send = 0, back = 0;
-        for (int i = tmp.size() - 2; i >= 0; i--) { // simulate the process step by step
-            int net = b[tmp[i]]; // net bike
-            if (net < 0) { // not enough
-                if (back >= abs(net)) { // enough in hand at the moment
-                    back += net; // take back less
+        for (int i = temp.size() - 2; i >= 0; i--) { // simulate the process step by step
+            int netBike = bike[temp[i]];
+            if (netBike < 0) { // not enough
+                if (back >= abs(netBike)) { // enough in hand at the moment
+                    back += netBike; // take back less
                 } else { // not enough in hand at the moment
-                    send += abs(net) - back; // send more in the beginning
+                    send += abs(netBike) - back; // send more in the beginning
                     back = 0; // more: just enough, empty in hand at the moment
                 }
             } else { // enough: take back
-                back += net;
+                back += netBike;
             }
         }
-        if (minSend > send) {
+        if (send < minSend) {
             minSend = send;
             minBack = back;
-            ans = tmp;
+            res = temp;
         } else if (send == minSend && back < minBack) {
             minBack = back;
-            ans = tmp;
+            res = temp;
         }
-        tmp.pop_back();
+        temp.pop_back();
         return;
     }
-    tmp.emplace_back(v);
-    for (int i = 0; i < (int)pre[v].size(); i++) {
-        dfs(s, pre[v][i]);
+    temp.emplace_back(u);
+    for (int i = 0; i < (int)pre[u].size(); i++) {
+        dfs(pre[u][i], src);
     }
-    tmp.pop_back();
+    temp.pop_back();
 }
 
 int main(int argc, char const *argv[]) {
 
-    int cmax, n, sp, m;
-    cin >> cmax >> n >> sp >> m;
-    d.resize(n + 1, INT_MAX), vis.resize(n + 1, false);
-    b.resize(n + 1), g.resize(n + 1), pre.resize(n + 1);
+    int cap, n, dst, m;
+    cin >> cap >> n >> dst >> m;
+    dist.resize(n + 1, INT_MAX), vis.resize(n + 1);
+    bike.resize(n + 1), pre.resize(n + 1), g.resize(n + 1);
     for (int i = 1; i <= n; i++) {
-        cin >> b[i];
-        b[i] -= cmax / 2; // perfect: halt full
+        cin >> bike[i];
+        bike[i] -= cap / 2; // perfect: halt full
     }
     for (int i = 0; i < m; i++) {
-        int id1, id2, dist;
-        cin >> id1 >> id2 >> dist;
-        g[id1].emplace_back(id2, dist);
-        g[id2].emplace_back(id1, dist);
+        int u, v, dist;
+        cin >> u >> v >> dist;
+        g[u].emplace_back(v, dist);
+        g[v].emplace_back(u, dist);
     }
     dijkstra(0);
-    dfs(0, sp);
+    dfs(dst, 0);
     cout << minSend << " ";
-    for (int i = ans.size() - 1; i >= 0; i--) {
-        cout << ans[i];
+    for (int i = res.size() - 1; i >= 0; i--) {
+        cout << res[i];
         i > 0 ? cout << "->" : cout << " " << minBack << "\n";
     }
 

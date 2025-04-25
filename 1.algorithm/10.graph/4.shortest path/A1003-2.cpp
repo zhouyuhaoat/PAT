@@ -22,41 +22,40 @@
 using namespace std;
 
 struct node {
-    int v, dis;
-    node(int v, int dis) : v(v), dis(dis) {
+    int val, dist;
+    node(int val, int dist) : val(val), dist(dist) {
     }
     friend bool operator<(node a, node b) {
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
 vector<bool> vis;
-vector<int> d, t;
+vector<int> dist, team;
 vector<vector<int>> pre; // predecessor
 vector<vector<node>> g;
 
-void dijkstra(int s) {
-    d[s] = 0;
+void dijkstra(int src) {
+    dist[src] = 0;
     priority_queue<node> q;
-    q.emplace(s, 0);
+    q.emplace(src, 0);
     while (!q.empty()) {
-        node t = q.top();
+        node top = q.top();
         q.pop();
-        int u = t.v;
-        if (vis[u]) { // skip if visited
+        int u = top.val;
+        if (vis[u]) {
             continue;
         }
         vis[u] = true;
-        // relax & predecessor
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
+            int v = g[u][i].val;
             if (!vis[v]) {
-                if (d[u] + g[u][i].dis < d[v]) {
-                    d[v] = d[u] + g[u][i].dis;
+                if (dist[u] + g[u][i].dist < dist[v]) {
+                    dist[v] = dist[u] + g[u][i].dist;
                     pre[v].clear();
                     pre[v].emplace_back(u);
-                    q.emplace(v, d[v]);
-                } else if (d[u] + g[u][i].dis == d[v]) {
+                    q.emplace(v, dist[v]);
+                } else if (dist[u] + g[u][i].dist == dist[v]) {
                     pre[v].emplace_back(u);
                 }
             }
@@ -65,46 +64,46 @@ void dijkstra(int s) {
 }
 
 // predecessor + dfs: backtracking to find all paths
-int p = 0, maxt = -1;
-vector<int> tmp;
-void dfs(int s, int v) {
-    if (v == s) {
-        p++;
-        tmp.emplace_back(v);
-        int sumt = accumulate(tmp.begin(), tmp.end(), 0, [](int acc, int idx) -> int {
-            return acc + t[idx];
+int path = 0, maxTeam = -1;
+vector<int> temp;
+void dfs(int u, int src) {
+    if (u == src) {
+        path++;
+        temp.emplace_back(u);
+        int sum = accumulate(temp.begin(), temp.end(), 0, [](int acc, int idx) -> int {
+            return acc + team[idx];
         });
-        if (maxt < sumt) {
-            maxt = sumt;
+        if (sum > maxTeam) {
+            maxTeam = sum;
         }
-        tmp.pop_back();
+        temp.pop_back();
         return;
     }
-    tmp.emplace_back(v);
-    for (int i = 0; i < (int)pre[v].size(); i++) {
-        dfs(s, pre[v][i]);
+    temp.emplace_back(u);
+    for (int i = 0; i < (int)pre[u].size(); i++) {
+        dfs(pre[u][i], src);
     }
-    tmp.pop_back(); // backtracking
+    temp.pop_back(); // backtracking
 }
 
 int main(int argc, char const *argv[]) {
 
-    int n, m, c1, c2;
-    cin >> n >> m >> c1 >> c2;
-    d.resize(n, INT_MAX), vis.resize(n, false);
-    t.resize(n), pre.resize(n), g.resize(n);
+    int n, m, src, dst;
+    cin >> n >> m >> src >> dst;
+    dist.resize(n, INT_MAX), vis.resize(n);
+    team.resize(n), pre.resize(n), g.resize(n);
     for (int i = 0; i < n; i++) {
-        cin >> t[i];
+        cin >> team[i];
     }
     for (int i = 0; i < m; i++) {
-        int id1, id2, l;
-        cin >> id1 >> id2 >> l;
-        g[id1].emplace_back(id2, l);
-        g[id2].emplace_back(id1, l);
+        int c1, c2, length;
+        cin >> c1 >> c2 >> length;
+        g[c1].emplace_back(c2, length);
+        g[c2].emplace_back(c1, length);
     }
-    dijkstra(c1);
-    dfs(c1, c2);
-    cout << p << " " << maxt << "\n";
+    dijkstra(src);
+    dfs(dst, src);
+    cout << path << " " << maxTeam << "\n";
 
     return 0;
 }

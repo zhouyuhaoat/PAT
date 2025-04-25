@@ -23,38 +23,38 @@
 using namespace std;
 
 struct sta {
-    int v, dis;
-    sta(int v, int dis) : v(v), dis(dis) {
+    int val, dist;
+    sta(int val, int dist) : val(val), dist(dist) {
     }
     friend bool operator<(sta a, sta b) {
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
 vector<bool> vis;
-vector<int> d;
+vector<int> dist;
 vector<vector<sta>> g;
 
-void dijkstra(int s) {
-    fill(d.begin(), d.end(), INT_MAX);
+void dijkstra(int src) {
+    fill(dist.begin(), dist.end(), INT_MAX);
     fill(vis.begin(), vis.end(), false);
-    d[s] = 0;
+    dist[src] = 0;
     priority_queue<sta> q;
-    q.emplace(s, 0);
+    q.emplace(src, 0);
     while (!q.empty()) {
-        sta t = q.top();
+        sta top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
+            int v = g[u][i].val;
             if (!vis[v]) {
-                if (d[u] + g[u][i].dis < d[v]) {
-                    d[v] = d[u] + g[u][i].dis;
-                    q.emplace(v, d[v]);
+                if (dist[u] + g[u][i].dist < dist[v]) {
+                    dist[v] = dist[u] + g[u][i].dist;
+                    q.emplace(v, dist[v]);
                 }
             }
         }
@@ -72,44 +72,45 @@ int getID(string s, int n) {
 
 int main(int argc, char const *argv[]) {
 
-    int n, m, k, ds;
-    cin >> n >> m >> k >> ds;
-    vis.resize(n + m + 1), d.resize(n + m + 1), g.resize(n + m + 1);
+    int n, m, k, range;
+    cin >> n >> m >> k >> range;
+    vis.resize(n + m + 1), dist.resize(n + m + 1), g.resize(n + m + 1);
     for (int i = 0; i < k; i++) {
         string p1, p2;
         int dist;
         cin >> p1 >> p2 >> dist;
         int id1 = getID(p1, n), id2 = getID(p2, n);
-        g[id1].emplace_back(id2, dist), g[id2].emplace_back(id1, dist);
+        g[id1].emplace_back(id2, dist);
+        g[id2].emplace_back(id1, dist);
     }
-    int maxdis = -1, can = -1; // candidate
-    double avgdis = -1;
-    for (int s = n + 1; s <= n + m; s++) { // traverse all gas stations
-        dijkstra(s);
-        int dis = INT_MAX, sumdis = 0;
+    int maxMinDist = -1, candidate = -1;
+    double avgDist = -1;
+    for (int id = n + 1; id <= n + m; id++) { // traverse all gas stations
+        dijkstra(id);
+        int minDist = INT_MAX, sumDist = 0;
         bool valid = true;
         for (int i = 1; i <= n; i++) {
-            dis = min(dis, d[i]);
-            sumdis += d[i];
-            if (d[i] > ds) { // out of range
+            minDist = min(minDist, dist[i]);
+            sumDist += dist[i];
+            if (dist[i] > range) { // out of range
                 valid = false;
                 break;
             }
         }
         if (!valid) continue;
-        if (maxdis < dis) {
-            maxdis = dis;
-            avgdis = (double)sumdis / n;
-            can = s;
-        } else if (maxdis == dis && (double)sumdis / n < avgdis) {
-            avgdis = (double)sumdis / n;
-            can = s;
+        if (minDist > maxMinDist) {
+            maxMinDist = minDist;
+            avgDist = (double)sumDist / n;
+            candidate = id;
+        } else if (minDist == maxMinDist && (double)sumDist / n < avgDist) {
+            avgDist = (double)sumDist / n;
+            candidate = id;
         }
     }
-    if (can != -1) {
-        cout << "G" << can - n << "\n";
-        cout << fixed << setprecision(1) << (double)maxdis << " ";
-        cout << fixed << setprecision(1) << round(avgdis * 10) / 10 << "\n";
+    if (candidate != -1) {
+        cout << "G" << candidate - n << "\n";
+        cout << fixed << setprecision(1) << (double)maxMinDist << " ";
+        cout << fixed << setprecision(1) << round(avgDist * 10) / 10 << "\n";
     } else {
         cout << "No Solution\n";
     }

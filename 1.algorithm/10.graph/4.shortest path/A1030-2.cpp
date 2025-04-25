@@ -21,40 +21,40 @@
 using namespace std;
 
 struct node {
-    int v, dis;
-    node(int v, int dis) : v(v), dis(dis) {
+    int val, dist;
+    node(int val, int dist) : val(val), dist(dist) {
     }
     friend bool operator<(node a, node b) {
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
 vector<bool> vis;
-vector<int> d;
-vector<vector<int>> c, pre;
+vector<int> dist;
+vector<vector<int>> cost, pre;
 vector<vector<node>> g;
 
-void dijkstra(int s) {
-    d[s] = 0;
+void dijkstra(int src) {
+    dist[src] = 0;
     priority_queue<node> q;
-    q.emplace(s, 0);
+    q.emplace(src, 0);
     while (!q.empty()) {
-        node t = q.top();
+        node top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
+            int v = g[u][i].val;
             if (!vis[v]) {
-                if (d[u] + g[u][i].dis < d[v]) {
-                    d[v] = d[u] + g[u][i].dis;
+                if (dist[u] + g[u][i].dist < dist[v]) {
+                    dist[v] = dist[u] + g[u][i].dist;
                     pre[v].clear();
                     pre[v].emplace_back(u);
-                    q.emplace(v, d[v]);
-                } else if (d[u] + g[u][i].dis == d[v]) {
+                    q.emplace(v, dist[v]);
+                } else if (dist[u] + g[u][i].dist == dist[v]) {
                     pre[v].emplace_back(u);
                 }
             }
@@ -62,48 +62,48 @@ void dijkstra(int s) {
     }
 }
 
-int minc = INT_MAX;
-vector<int> tmp, ans;
-void dfs(int s, int v) { // reversed path
-    if (v == s) {
-        tmp.emplace_back(v);
-        int sumc = 0; // from the start to the end
-        for (int i = tmp.size() - 1; i > 0; i--) {
-            sumc += c[tmp[i]][tmp[i - 1]];
+int minCost = INT_MAX;
+vector<int> temp, res;
+void dfs(int u, int src) {
+    if (u == src) {
+        temp.emplace_back(u);
+        int sum = 0; // from source to destination
+        for (int i = temp.size() - 1; i > 0; i--) {
+            sum += cost[temp[i]][temp[i - 1]];
         }
-        if (minc > sumc) {
-            minc = sumc;
-            ans = tmp;
+        if (sum < minCost) {
+            minCost = sum;
+            res = temp;
         }
-        tmp.pop_back();
+        temp.pop_back();
         return;
     }
-    tmp.emplace_back(v);
-    for (int i = 0; i < (int)pre[v].size(); i++) {
-        dfs(s, pre[v][i]);
+    temp.emplace_back(u);
+    for (int i = 0; i < (int)pre[u].size(); i++) {
+        dfs(pre[u][i], src);
     }
-    tmp.pop_back();
+    temp.pop_back();
 }
 
 int main(int argc, char const *argv[]) {
 
-    int n, m, s, e;
-    cin >> n >> m >> s >> e;
-    d.resize(n, INT_MAX), vis.resize(n, false);
-    c.resize(n, vector<int>(n)), pre.resize(n), g.resize(n);
+    int n, m, src, dst;
+    cin >> n >> m >> src >> dst;
+    dist.resize(n, INT_MAX), cost.resize(n, vector<int>(n));
+    pre.resize(n), vis.resize(n), g.resize(n);
     for (int i = 0; i < m; i++) {
-        int s, e, d, cost;
-        cin >> s >> e >> d >> cost;
-        g[s].emplace_back(e, d);
-        g[e].emplace_back(s, d);
-        c[s][e] = c[e][s] = cost;
+        int c1, c2, dist, c;
+        cin >> c1 >> c2 >> dist >> c;
+        g[c1].emplace_back(c2, dist);
+        g[c2].emplace_back(c1, dist);
+        cost[c1][c2] = cost[c2][c1] = c;
     }
-    dijkstra(s);
-    dfs(s, e);
-    for (int i = (int)ans.size() - 1; i >= 0; i--) {
-        cout << ans[i] << " ";
+    dijkstra(src);
+    dfs(dst, src);
+    for (int i = (int)res.size() - 1; i >= 0; i--) {
+        cout << res[i] << " ";
     }
-    cout << d[e] << " " << minc << "\n";
+    cout << dist[dst] << " " << minCost << "\n";
 
     return 0;
 }
