@@ -19,13 +19,13 @@
 
 using namespace std;
 
-vector<vector<int>> e;
+vector<vector<int>> edge; // adjacency matrix
 
-bool isClique(vector<int>& s, int k) {
+bool isClique(vector<int>& seq, int k) {
     // clique: every two vertices are adjacent
     for (int i = 1; i <= k; i++) {
         for (int j = 1; j < i; j++) {
-            if (e[s[i]][s[j]] != 1) {
+            if (edge[seq[i]][seq[j]] != 1) {
                 return false;
             }
         }
@@ -33,13 +33,13 @@ bool isClique(vector<int>& s, int k) {
     return true;
 }
 
-bool isMaximalClique(vector<int>& s, int k, int nv, vector<bool>& vis) {
+bool isMaximalClique(vector<int>& seq, int k, int v, vector<bool>& vis) {
     // maximal clique: cannot add any vertex to form a larger clique
-    for (int i = 1; i <= nv; i++) {
+    for (int i = 1; i <= v; i++) {
         if (!vis[i]) {
             bool more = true; // extended by including one more
             for (int j = 1; j <= k; j++) {
-                if (e[i][s[j]] != 1) {
+                if (edge[i][seq[j]] != 1) {
                     more = false;
                     break;
                 }
@@ -54,29 +54,29 @@ bool isMaximalClique(vector<int>& s, int k, int nv, vector<bool>& vis) {
 
 int main(int argc, char const *argv[]) {
 
-    int nv, ne; // vertices, edges
-    cin >> nv >> ne;
-    e.resize(nv + 1, vector<int>(nv + 1, 0)); // adjacency matrix
-    for (int i = 0; i < ne; i++) {
-        int a, b;
-        cin >> a >> b;
-        e[a][b] = e[b][a] = 1;
+    int v, e; // vertices, edges
+    cin >> v >> e;
+    edge.resize(v + 1, vector<int>(v + 1)); // adjacency matrix
+    for (int i = 0; i < e; i++) {
+        int u, v;
+        cin >> u >> v;
+        edge[u][v] = edge[v][u] = 1;
     }
     int m;
     cin >> m;
     for (int q = 0; q < m; q++) {
         int k;
         cin >> k;
-        vector<int> s(k + 1);
-        vector<bool> vis(nv + 1);
+        vector<int> seq(k + 1);
+        vector<bool> vis(v + 1);
         for (int i = 1; i <= k; i++) {
-            cin >> s[i];
-            vis[s[i]] = true;
+            cin >> seq[i];
+            vis[seq[i]] = true;
         }
-        if (!isClique(s, k)) {
+        if (!isClique(seq, k)) {
             cout << "Not a Clique\n";
         } else {
-            if (!isMaximalClique(s, k, nv, vis)) {
+            if (!isMaximalClique(seq, k, v, vis)) {
                 cout << "Not Maximal\n";
             } else {
                 cout << "Yes\n";

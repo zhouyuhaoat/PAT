@@ -22,8 +22,8 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
 vector<int> pre, in;
@@ -32,25 +32,22 @@ unordered_map<int, bool> exist;
 
 node *create(int preR, int inL, int inH) {
     // create binary search tree from preorder and inorder traversal
-    if (inL > inH) {
-        return nullptr;
-    }
-    node *root = new node;
-    root->v = pre[preR];
+    if (inL > inH) return nullptr;
+    node *root = new node{pre[preR]};
     int inR = loc[pre[preR]];
-    root->lc = create(preR + 1, inL, inR - 1);
-    root->rc = create(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
+    root->left = create(preR + 1, inL, inR - 1);
+    root->right = create(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
     return root;
 }
 
 int dfs(node *root, int u, int v) { // lowest common ancestor
     if (!root) return -1;
-    // lowest common ancestor in binary search tree is the first node whose value is between u and v
-    if (root->v >= u && root->v <= v) {
-        return root->v;
+    // lowest common ancestor in binary search tree is the first node whose value is between u and val
+    if (root->val >= u && root->val <= v) {
+        return root->val;
     }
-    if (root->v > v) return dfs(root->lc, u, v);
-    if (root->v <= u) return dfs(root->rc, u, v);
+    if (root->val > v) return dfs(root->left, u, v);
+    if (root->val <= u) return dfs(root->right, u, v);
     return -1;
 }
 

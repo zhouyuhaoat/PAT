@@ -22,55 +22,55 @@
 using namespace std;
 
 struct ins { // institution
-    int r, t, n; // rank, total score, number of testees
-    string id;
+    int rank, score, number; // total score, number of testees
+    string school;
 };
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<string, double> insSco; // score
-    unordered_map<string, int> insCnt; // count
+    unordered_map<string, double> scores;
+    unordered_map<string, int> cnt;
     for (int i = 0; i < n; i++) {
-        string id, sch;
-        int sco;
-        cin >> id >> sco >> sch;
-        transform(sch.begin(), sch.end(), sch.begin(), ::tolower);
+        string id, school;
+        int score;
+        cin >> id >> score >> school;
+        transform(school.begin(), school.end(), school.begin(), ::tolower);
         if (id[0] == 'T') {
-            insSco[sch] += sco * 1.5;
+            scores[school] += score * 1.5;
         } else if (id[0] == 'B') {
-            insSco[sch] += sco / 1.5;
+            scores[school] += score / 1.5;
         } else {
-            insSco[sch] += sco;
+            scores[school] += score;
         }
-        insCnt[sch]++;
+        cnt[school]++;
     }
-    vector<ins> ans; // map to vector
-    for (auto it : insSco) {
-        ans.emplace_back(ins{1, (int)(it.second + 1e-8), insCnt[it.first], it.first});
+    vector<ins> res; // map to vector
+    for (auto [school, score] : scores) {
+        res.emplace_back(ins{1, (int)(score + 1e-8), cnt[school], school});
         // 1e-8 is a small number, which is used to avoid floating point error
         // in the case of 0.9999999999999999, it will be rounded to 1
         // and in the case of 1.0000000000000001, it will be rounded to 1
     }
-    sort(ans.begin(), ans.end(), [](ins a, ins b) {
-        if (a.t != b.t) {
-            return a.t > b.t;
-        } else if (a.n != b.n) {
-            return a.n < b.n;
+    sort(res.begin(), res.end(), [](ins a, ins b) {
+        if (a.score != b.score) {
+            return a.score > b.score;
+        } else if (a.number != b.number) {
+            return a.number < b.number;
         } else {
-            return a.id < b.id;
+            return a.school < b.school;
         }
     });
-    cout << ans.size() << "\n";
-    cout << ans[0].r << " " << ans[0].id << " " << ans[0].t << " " << ans[0].n << "\n";
-    for (int i = 1; i < (int)ans.size(); i++) { // rank
-        if (ans[i].t == ans[i - 1].t) {
-            ans[i].r = ans[i - 1].r;
+    cout << res.size() << "\n";
+    cout << res[0].rank << " " << res[0].school << " " << res[0].score << " " << res[0].number << "\n";
+    for (int i = 1; i < (int)res.size(); i++) {
+        if (res[i].score == res[i - 1].score) {
+            res[i].rank = res[i - 1].rank;
         } else {
-            ans[i].r = i + 1;
+            res[i].rank = i + 1;
         }
-        cout << ans[i].r << " " << ans[i].id << " " << ans[i].t << " " << ans[i].n << "\n";
+        cout << res[i].rank << " " << res[i].school << " " << res[i].score << " " << res[i].number << "\n";
     }
 
     return 0;

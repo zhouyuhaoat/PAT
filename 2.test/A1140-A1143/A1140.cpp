@@ -20,22 +20,22 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    string d;
+    string data;
     int n;
-    cin >> d >> n;
+    cin >> data >> n;
     while (--n) {
-        string s;
-        for (int i = 0; i < (int)d.size(); i++) {
+        string seq;
+        for (int i = 0; i < (int)data.size(); i++) {
             int j = i, cnt = 0; // count the number of the same digit
-            while (d[j] == d[i] && j++ < (int)d.size()) {
+            while (data[j] == data[i] && j++ < (int)data.size()) {
                 cnt++;
             }
+            seq += data[i] + to_string(cnt);
             i = j - 1;
-            s += d[i] + to_string(cnt);
         }
-        d = s;
+        data = seq;
     }
-    cout << d << "\n";
+    cout << data << "\n";
 
     return 0;
 }

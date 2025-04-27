@@ -22,8 +22,8 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
 vector<int> pre, in;
@@ -31,23 +31,20 @@ unordered_map<int, int> loc;
 unordered_map<int, bool> exist;
 
 node *create(int preR, int inL, int inH) {
-    if (inL > inH) {
-        return nullptr;
-    }
-    node *root = new node;
-    root->v = pre[preR];
+    if (inL > inH) return nullptr;
+    node *root = new node{pre[preR]};
     int inR = loc[pre[preR]];
-    root->lc = create(preR + 1, inL, inR - 1);
-    root->rc = create(preR + (inR - inL) + 1, inR + 1, inH);
+    root->left = create(preR + 1, inL, inR - 1);
+    root->right = create(preR + (inR - inL) + 1, inR + 1, inH);
     return root;
 }
 
 node *dfs(node *root, int u, int v) { // LCA of BST: recursion
-    if (root->v > u && root->v > v) {
-        return dfs(root->lc, u, v);
+    if (root->val > u && root->val > v) {
+        return dfs(root->left, u, v);
     }
-    if (root->v < u && root->v < v) {
-        return dfs(root->rc, u, v);
+    if (root->val < u && root->val < v) {
+        return dfs(root->right, u, v);
     }
     return root;
 }
@@ -75,7 +72,7 @@ int main(int argc, char const *argv[]) {
             if (left > right) { // make sure left <= right for dfs lca
                 swap(left, right);
             }
-            int lca = dfs(root, left, right)->v;
+            int lca = dfs(root, left, right)->val;
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
             } else {
