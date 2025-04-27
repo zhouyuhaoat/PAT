@@ -30,14 +30,14 @@ int main(int argc, char const *argv[]) {
     }
     sort(d.begin(), d.end(), greater<int>());
     d.emplace_back(0); // add a dummy element for the last day
-    int ans = 0;
+    int res = 0;
     for (int i = 0; i <= n; i++) {
-        if (d[i] <= i + 1) { // the day that one rides less and equal than E miles
-            ans = i;
+        if (d[i] <= i + 1) { // the day that one rides less and equal than E miles: E = i + 1
+            res = i; // maximum: E - 1 = i
             break;
         }
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

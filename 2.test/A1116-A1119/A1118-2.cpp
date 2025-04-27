@@ -20,54 +20,58 @@
 
 using namespace std;
 
-vector<int> f(1e4 + 1); // disjoint set union
+class DisjointSetUnion {
+private:
+    vector<int> f;
 
-int find(int x) {
-    int a = x;
-    while (x != f[x]) {
-        x = f[x];
+public:
+    DisjointSetUnion(int n) {
+        f.resize(n);
+        iota(f.begin(), f.end(), 0);
     }
-    while (a != f[a]) { // path compression
-        int z = a;
-        a = f[a], f[z] = x;
-    }
-    return x;
-}
 
-void joint(int a, int b, int& cnt) {
-    int fa = find(a), fb = find(b);
-    if (fa != fb) {
-        f[fa] = fb;
-        cnt++; // number of edges = number of merges
+    int find(int x) {
+        if (f[x] == x) {
+            return x;
+        }
+        return f[x] = find(f[x]);
     }
-}
+
+    void unite(int a, int b, int& cnt) {
+        int rootA = find(a), rootB = find(b);
+        if (rootA != rootB) {
+            f[rootA] = rootB;
+            cnt++; // number of edges = number of merges
+        }
+    }
+};
 
 int main(int argc, char const *argv[]) {
 
+    DisjointSetUnion dsu(1e4 + 1);
     int n;
     cin >> n;
-    int total = 0, edge = 0;
-    iota(f.begin(), f.end(), 0);
+    int vertex = 0, edge = 0;
     for (int i = 0; i < n; i++) {
         int k, b1;
         cin >> k >> b1;
-        total = max(total, b1);
+        vertex = max(vertex, b1);
         for (int j = 1; j < k; j++) {
             int b2;
             cin >> b2;
-            joint(b1, b2, edge);
-            total = max(total, b2);
+            dsu.unite(b1, b2, edge);
+            vertex = max(vertex, b2);
         }
     }
     // total nodes - number of merges = number of components
     // each merge, add one edge, and remove one component
-    cout << total - edge << " " << total << "\n";
+    cout << vertex - edge << " " << vertex << "\n";
     int q;
     cin >> q;
-    for (int qq = 0; qq < q; qq++) {
+    while (q--) {
         int b1, b2;
         cin >> b1 >> b2;
-        if (find(b1) == find(b2)) {
+        if (dsu.find(b1) == dsu.find(b2)) {
             cout << "Yes\n";
         } else {
             cout << "No\n";

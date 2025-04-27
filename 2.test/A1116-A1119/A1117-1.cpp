@@ -29,13 +29,13 @@ int main(int argc, char const *argv[]) {
         cin >> d[i];
     }
     sort(d.begin(), d.end(), greater<int>());
-    int ans = 0; // riding distance: non-negative integer
+    int res = 0; // riding distance: non-negative integer
     for (int i = 0; i < n; i++) {
-        if (d[i] > i + 1) { // E days that one rides more than E miles
-            ans = max(ans, i + 1); // maximum
+        if (d[i] > i + 1) { // E days that one rides more than E miles: E = i + 1
+            res = max(res, i + 1); // maximum
         }
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

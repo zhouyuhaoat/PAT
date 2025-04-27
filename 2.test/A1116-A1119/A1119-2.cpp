@@ -20,7 +20,7 @@
 
 using namespace std;
 
-bool isUnq = true;
+bool isUnique = true;
 vector<int> pre, in, post;
 
 void intra(int preL, int preH, int postL, int postH) {
@@ -29,14 +29,14 @@ void intra(int preL, int preH, int postL, int postH) {
         return;
     }
     if (pre[preL + 1] == post[postH - 1]) { // only one subtree
-        isUnq = false; // left subtree is empty => not unique
+        isUnique = false; // (let) left subtree is empty => not unique
         in.emplace_back(pre[preL]);
         intra(preL + 1, preH, postL, postH - 1);
     } else {
-        int root = find(pre.begin() + 1, pre.end(), post[postH - 1]) - pre.begin();
-        intra(preL + 1, root - 1, postL, postL + (root - preL) - 1 - 1);
-        in.emplace_back(post[postH]);
-        intra(root, preH, postL + (root - preL) - 1, postH - 1);
+        int rightR = find(pre.begin() + 1, pre.end(), post[postH - 1]) - pre.begin();
+        intra(preL + 1, rightR - 1, postL, postL + (rightR - preL - 1) - 1);
+        in.emplace_back(pre[preL]);
+        intra(rightR, preH, postL + (rightR - preL) - 1, postH - 1);
     }
 }
 
@@ -44,16 +44,15 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    pre.resize(n);
+    pre.resize(n), post.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> pre[i];
     }
-    post.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> post[i];
     }
     intra(0, n - 1, 0, n - 1);
-    isUnq ? cout << "Yes\n" : cout << "No\n";
+    isUnique ? cout << "Yes\n" : cout << "No\n";
     for (int i = 0; i < n; i++) {
         cout << in[i];
         i < n - 1 ? cout << " " : cout << "\n";

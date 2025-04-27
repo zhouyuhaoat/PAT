@@ -19,7 +19,7 @@
 
 using namespace std;
 
-bool isprime(int n) {
+bool isPrime(int n) {
     if (n <= 1) {
         return false;
     }
@@ -35,27 +35,27 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<string, int> r; // rank
+    unordered_map<string, int> rank;
     for (int i = 0; i < n; i++) {
         string s;
         cin >> s;
-        r[s] = i + 1;
+        rank[s] = i + 1;
     }
     int k;
     cin >> k;
-    unordered_map<string, int> c; // whether checked, or visited: bool -> int
+    unordered_map<string, int> check; // whether checked, or visited: bool -> int
     for (int q = 0; q < k; q++) {
         string s;
         cin >> s;
         cout << s << ": ";
-        if (c[s] != 0) {
+        if (check[s] != 0) {
             cout << "Checked\n";
         } else {
-            if (r[s] == 0) {
+            if (rank[s] == 0) {
                 cout << "Are you kidding?\n";
-            } else if (++c[s] && r[s] == 1) {
+            } else if (++check[s] && rank[s] == 1) {
                 cout << "Mystery Award\n";
-            } else if (isprime(r[s])) {
+            } else if (isPrime(rank[s])) {
                 cout << "Minion\n";
             } else {
                 cout << "Chocolate\n";
