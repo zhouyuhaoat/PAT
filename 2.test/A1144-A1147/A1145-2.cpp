@@ -32,23 +32,23 @@ bool isPrime(int n) {
     return true;
 }
 
-bool insert(vector<int>& ht, int key, int msize) {
-    for (int i = 0; i <= msize; i++) {
-        int hk = (key % msize + i * i) % msize;
-        if (ht[hk] == 0) {
-            ht[hk] = key;
+bool insert(vector<int>& hashTable, int key, int size) {
+    for (int i = 0; i <= size; i++) { // increment = 0
+        int hashKey = (key % size + i * i) % size;
+        if (hashTable[hashKey] == 0) {
+            hashTable[hashKey] = key;
             return true;
         }
     }
     return false;
 }
 
-int count(vector<int>& ht, int key, int msize) {
+int count(vector<int>& hashTable, int key, int size) {
     int cnt = 0;
-    for (int i = 0; i <= msize; i++) {
+    for (int i = 0; i <= size; i++) {
         cnt++;
-        int hk = (key % msize + i * i) % msize;
-        if (ht[hk] == key || ht[hk] == 0) {
+        int hashKey = (key % size + i * i) % size;
+        if (hashTable[hashKey] == key || hashTable[hashKey] == 0) {
             return cnt;
         }
     }
@@ -57,26 +57,26 @@ int count(vector<int>& ht, int key, int msize) {
 
 int main(int argc, char const *argv[]) {
 
-    int msize, n, m;
-    cin >> msize >> n >> m;
-    while (!isPrime(msize)) {
-        msize++;
+    int size, n, m;
+    cin >> size >> n >> m;
+    while (!isPrime(size)) {
+        size++;
     }
-    vector<int> ht(msize);
+    vector<int> hashTable(size);
     for (int i = 0; i < n; i++) {
         int key;
         cin >> key;
-        if (!insert(ht, key, msize)) {
+        if (!insert(hashTable, key, size)) {
             cout << key << " cannot be inserted.\n";
         }
     }
-    int cnt = 0;
+    int sum = 0; // sum of search times
     for (int i = 0; i < m; i++) {
         int key;
         cin >> key;
-        cnt += count(ht, key, msize);
+        sum += count(hashTable, key, size);
     }
-    cout << fixed << setprecision(1) << (double)cnt / m << "\n";
+    cout << fixed << setprecision(1) << (double)sum / m << "\n";
 
     return 0;
 }

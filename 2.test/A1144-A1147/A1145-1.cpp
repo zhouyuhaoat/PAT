@@ -34,28 +34,28 @@ bool isPrime(int n) {
 
 int main(int argc, char const *argv[]) {
 
-    int msize, n, m;
-    cin >> msize >> n >> m;
-    while (!isPrime(msize)) { // adjust the size
-        msize++;
+    int size, n, m;
+    cin >> size >> n >> m;
+    while (!isPrime(size)) { // adjust the size
+        size++;
     }
-    vector<int> ht(msize); // 0: empty
+    vector<int> hashTable(size); // 0: empty
     for (int i = 0; i < n; i++) {
         int key;
         cin >> key;
-        if (ht[key % msize] == 0) {
-            ht[key % msize] = key;
+        if (hashTable[key % size] == 0) {
+            hashTable[key % size] = key;
         } else { // collision
-            bool isInsert = false;
-            for (int j = 1; j <= msize; j++) { // quadratic probing
-                int hk = (key % msize + j * j) % msize;
-                if (ht[hk] == 0) {
-                    ht[hk] = key;
-                    isInsert = true;
+            bool inserted = false;
+            for (int j = 1; j <= size; j++) { // quadratic probing
+                int hashKey = (key % size + j * j) % size;
+                if (hashTable[hashKey] == 0) {
+                    hashTable[hashKey] = key;
+                    inserted = true;
                     break;
                 }
             }
-            if (!isInsert) {
+            if (!inserted) {
                 cout << key << " cannot be inserted.\n";
             }
         }
@@ -65,11 +65,11 @@ int main(int argc, char const *argv[]) {
         int key;
         cin >> key;
         cnt++;
-        if (ht[key % msize] != key && ht[key % msize] != 0) { // collision
-            for (int j = 1; j <= msize; j++) {
+        if (hashTable[key % size] != key && hashTable[key % size] != 0) { // collision
+            for (int j = 1; j <= size; j++) {
                 cnt++;
-                int hk = (key % msize + j * j) % msize; // quadratic probing
-                if (ht[hk] == key || ht[hk] == 0) {
+                int hashKey = (key % size + j * j) % size; // quadratic probing
+                if (hashTable[hashKey] == key || hashTable[hashKey] == 0) {
                     break;
                 }
             }

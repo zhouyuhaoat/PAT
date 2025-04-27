@@ -32,13 +32,14 @@ bool isPrime(int n) {
     return true;
 }
 
-int find(vector<int>& ht, int key, int msize, int& cnt) {
+int find(vector<int>& hashTable, int key, int size, int& cnt) {
     cnt = 0;
-    for (int i = 0; i <= msize; i++) {
+    for (int i = 0; i <= size; i++) {
         cnt++;
-        int hk = (key % msize + i * i) % msize;
-        if (ht[hk] == 0 || ht[hk] == key) {
-            return hk;
+        int hashKey = (key % size + i * i) % size;
+        if (hashTable[hashKey] == 0 || hashTable[hashKey] == key) {
+            // judge whether the position is empty firstly
+            return hashKey;
         }
     }
     return -1;
@@ -46,27 +47,27 @@ int find(vector<int>& ht, int key, int msize, int& cnt) {
 
 int main(int argc, char const *argv[]) {
 
-    int msize, n, m;
-    cin >> msize >> n >> m;
-    while (!isPrime(msize)) {
-        msize++;
+    int size, n, m;
+    cin >> size >> n >> m;
+    while (!isPrime(size)) {
+        size++;
     }
-    vector<int> ht(msize);
+    vector<int> hashTable(size);
     for (int i = 0; i < n; i++) {
         int key, cnt;
         cin >> key;
-        int hk = find(ht, key, msize, cnt);
-        if (hk == -1) {
+        int hashKey = find(hashTable, key, size, cnt);
+        if (hashKey == -1) {
             cout << key << " cannot be inserted.\n";
         } else {
-            ht[hk] = key;
+            hashTable[hashKey] = key;
         }
     }
     int sum = 0;
     for (int i = 0; i < m; i++) {
         int key, cnt;
         cin >> key;
-        find(ht, key, msize, cnt);
+        find(hashTable, key, size, cnt);
         sum += cnt;
     }
     cout << fixed << setprecision(1) << (double)sum / m << "\n";

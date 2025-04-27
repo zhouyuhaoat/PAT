@@ -20,30 +20,28 @@
 
 using namespace std;
 
-vector<int> t, post;
+vector<int> tree, post;
 
-void postTra(int r, int n) { // postorder traversal
-    if (r >= n) {
-        return;
-    }
-    postTra(2 * r + 1, n);
-    postTra(2 * r + 2, n);
-    post.emplace_back(t[r]);
+void postTra(int root, int n) { // postorder traversal
+    if (root >= n) return;
+    postTra(2 * root + 1, n);
+    postTra(2 * root + 2, n);
+    post.emplace_back(tree[root]);
 }
 
 int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    t.resize(n);
+    tree.resize(n);
     for (int q = 0; q < m; q++) {
         for (int i = 0; i < n; i++) {
-            cin >> t[i];
+            cin >> tree[i];
         }
-        if (is_heap(t.begin(), t.end())) {
+        if (is_heap(tree.begin(), tree.end())) {
             // is_heap() returns true if the range is a max heap
             cout << "Max Heap\n";
-        } else if (is_heap(t.begin(), t.end(), greater<int>())) {
+        } else if (is_heap(tree.begin(), tree.end(), greater<int>())) {
             // is_heap(greater<int>()) returns true if the range is a min heap
             cout << "Min Heap\n";
         } else {

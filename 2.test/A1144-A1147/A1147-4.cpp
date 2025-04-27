@@ -19,34 +19,32 @@
 
 using namespace std;
 
-vector<int> t, post;
+vector<int> tree, post;
 bool isMaxHeap, isMinHeap;
 
-void postTra(int r, int n) {
-    if (r >= n) {
-        return;
-    }
-    if (r != 0) {
-        if (t[(r - 1) / 2] < t[r]) {
+void postTra(int root, int n) {
+    if (root >= n) return;
+    if (root > 0) {
+        if (tree[(root - 1) / 2] < tree[root]) {
             isMaxHeap = false;
         }
-        if (t[(r - 1) / 2] > t[r]) {
+        if (tree[(root - 1) / 2] > tree[root]) {
             isMinHeap = false;
         }
     }
-    postTra(2 * r + 1, n);
-    postTra(2 * r + 2, n);
-    post.emplace_back(t[r]);
+    postTra(2 * root + 1, n);
+    postTra(2 * root + 2, n);
+    post.emplace_back(tree[root]);
 }
 
 int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    t.resize(n);
+    tree.resize(n);
     for (int q = 0; q < m; q++) {
         for (int i = 0; i < n; i++) {
-            cin >> t[i];
+            cin >> tree[i];
         }
         isMaxHeap = true, isMinHeap = true;
         postTra(0, n);

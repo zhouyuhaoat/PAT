@@ -19,57 +19,53 @@
 
 using namespace std;
 
-vector<int> t, post;
+vector<int> tree, post;
 
-void dfsMax(int r, int n, bool& flag) {
+void dfsMaxHeap(int root, int n, bool& flag) {
     // check if it is a max heap, and get postorder traversal
-    if (r >= n) {
-        return;
-    }
-    if (2 * r + 1 < n && t[r] < t[2 * r + 1]) { // left child
+    if (root >= n) return;
+    if (2 * root + 1 < n && tree[root] < tree[2 * root + 1]) { // left child
         flag = false;
     }
-    if (2 * r + 2 < n && t[r] < t[2 * r + 2]) { // right child
+    if (2 * root + 2 < n && tree[root] < tree[2 * root + 2]) { // right child
         flag = false;
     }
-    dfsMax(2 * r + 1, n, flag);
-    dfsMax(2 * r + 2, n, flag);
-    post.emplace_back(t[r]);
+    dfsMaxHeap(2 * root + 1, n, flag);
+    dfsMaxHeap(2 * root + 2, n, flag);
+    post.emplace_back(tree[root]);
 }
 
-void dfsMin(int r, int n, bool& flag) {
+void dfsMinHeap(int root, int n, bool& flag) {
     // check if it is a min heap, and get postorder traversal
-    if (r >= n) {
-        return;
-    }
-    if (2 * r + 1 < n && t[r] > t[2 * r + 1]) { // left child
+    if (root >= n) return;
+    if (2 * root + 1 < n && tree[root] > tree[2 * root + 1]) { // left child
         flag = false;
     }
-    if (2 * r + 2 < n && t[r] > t[2 * r + 2]) { // right child
+    if (2 * root + 2 < n && tree[root] > tree[2 * root + 2]) { // right child
         flag = false;
     }
-    dfsMin(2 * r + 1, n, flag);
-    dfsMin(2 * r + 2, n, flag);
-    post.emplace_back(t[r]);
+    dfsMinHeap(2 * root + 1, n, flag);
+    dfsMinHeap(2 * root + 2, n, flag);
+    post.emplace_back(tree[root]);
 }
 
 int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    t.resize(n);
+    tree.resize(n);
     for (int q = 0; q < m; q++) {
         for (int i = 0; i < n; i++) {
-            cin >> t[i];
+            cin >> tree[i];
         }
         bool isMaxHeap = true, isMinHeap = true; // suppose it is a max heap, or a min heap
-        if (t[0] > t[1]) { // possibly be a max heap, can not be a min heap
-            dfsMax(0, n, isMaxHeap);
+        if (tree[0] > tree[1]) { // possibly be a max heap, can not be a min heap
+            dfsMaxHeap(0, n, isMaxHeap);
             if (isMaxHeap) {
                 cout << "Max Heap\n";
             }
         } else { // possibly be a min heap, can not be a max heap
-            dfsMin(0, n, isMinHeap);
+            dfsMinHeap(0, n, isMinHeap);
             if (isMinHeap) {
                 cout << "Min Heap\n";
             }

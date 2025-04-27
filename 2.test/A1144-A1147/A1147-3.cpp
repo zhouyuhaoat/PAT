@@ -19,40 +19,38 @@
 
 using namespace std;
 
-vector<int> t, post;
+vector<int> tree, post;
 bool isMaxHeap, isMinHeap;
 
-void isHeap(vector<int>& h) {
-    for (int i = 1; i < (int)h.size(); i++) {
-        if (h[(i - 1) / 2] < h[i]) { // parent < child
+void isHeap(vector<int>& heap) {
+    for (int i = 1; i < (int)heap.size(); i++) {
+        if (heap[(i - 1) / 2] < heap[i]) { // parent < child
             isMaxHeap = false;
         }
-        if (h[(i - 1) / 2] > h[i]) { // parent > child
+        if (heap[(i - 1) / 2] > heap[i]) { // parent > child
             isMinHeap = false;
         }
     }
 }
 
-void postTra(int r, int n) {
-    if (r >= n) {
-        return;
-    }
-    postTra(2 * r + 1, n);
-    postTra(2 * r + 2, n);
-    post.emplace_back(t[r]);
+void postTra(int root, int n) {
+    if (root >= n) return;
+    postTra(2 * root + 1, n);
+    postTra(2 * root + 2, n);
+    post.emplace_back(tree[root]);
 }
 
 int main(int argc, char const *argv[]) {
 
     int m, n;
     cin >> m >> n;
-    t.resize(n);
+    tree.resize(n);
     for (int q = 0; q < m; q++) {
         for (int i = 0; i < n; i++) {
-            cin >> t[i];
+            cin >> tree[i];
         }
         isMaxHeap = true, isMinHeap = true; // suppose it is a heap
-        isHeap(t);
+        isHeap(tree);
         if (isMaxHeap) {
             cout << "Max Heap\n";
         } else if (isMinHeap) {

@@ -20,14 +20,14 @@
 using namespace std;
 
 vector<vector<int>> g;
-vector<int> inDeg;
+vector<int> degree; // in degree
 
-bool isTopologicalOrder(vector<int>& d) {
-    vector<int> temp(inDeg);
-    for (int i = 0; i < (int)d.size(); i++) {
-        if (temp[d[i]] == 0) {
-            for (auto it : g[d[i]]) {
-                temp[it]--;
+bool isTopologicalOrder(vector<int>& seq) {
+    vector<int> temp(degree);
+    for (int i = 0; i < (int)seq.size(); i++) {
+        if (temp[seq[i]] == 0) {
+            for (int v : g[seq[i]]) {
+                temp[v]--;
             }
         } else { // invalid
             return false;
@@ -40,28 +40,28 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    g.resize(n + 1), inDeg.resize(n + 1); // in degree
+    g.resize(n + 1), degree.resize(n + 1);
     for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        g[a].emplace_back(b);
-        inDeg[b]++;
+        int u, v;
+        cin >> u >> v;
+        g[u].emplace_back(v);
+        degree[v]++;
     }
     int k;
     cin >> k;
-    vector<int> ans;
+    vector<int> res;
     for (int q = 0; q < k; q++) {
-        vector<int> d(n);
+        vector<int> seq(n);
         for (int i = 0; i < n; i++) {
-            cin >> d[i];
+            cin >> seq[i];
         }
-        if (!isTopologicalOrder(d)) {
-            ans.emplace_back(q);
+        if (!isTopologicalOrder(seq)) {
+            res.emplace_back(q);
         }
     }
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << ans[i];
-        i < (int)ans.size() - 1 ? cout << " " : cout << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << res[i];
+        i < (int)res.size() - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;
