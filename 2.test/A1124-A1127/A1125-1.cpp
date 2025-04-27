@@ -25,20 +25,20 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
     // greedy: minimum loss => maximum gain
-    sort(d.begin(), d.end());
-    stack<int> s;
-    s.emplace(d[0]);
+    sort(data.begin(), data.end());
+    stack<int> stk;
+    stk.emplace(data[0]);
     for (int i = 1; i < n; i++) {
-        int t = s.top();
-        s.pop();
-        s.emplace((t + d[i]) / 2);
+        int t = stk.top();
+        stk.pop();
+        stk.emplace((t + data[i]) / 2);
     }
-    cout << s.top() << "\n";
+    cout << stk.top() << "\n";
 
     return 0;
 }

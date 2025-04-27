@@ -21,22 +21,15 @@
 
 using namespace std;
 
-struct node {
-    node *lc, *rc;
-};
-
 vector<int> in, post;
-map<int, vector<int>> t;
+map<int, vector<int>> tree; // level -> nodes
 
-void create(int postR, int inL, int inH, int l) {
-    // build tree by inorder and postorder
-    if (inL > inH) {
-        return;
-    }
-    t[l].emplace_back(post[postR]);
+void create(int postR, int inL, int inH, int level) {
+    if (inL > inH) return;
+    tree[level].emplace_back(post[postR]);
     int inR = find(in.begin(), in.end(), post[postR]) - in.begin();
-    create(postR - (inH - inR) - 1, inL, inR - 1, l + 1); // size of right subtree: inH - inR
-    create(postR - 1, inR + 1, inH, l + 1);
+    create(postR - (inH - inR) - 1, inL, inR - 1, level + 1); // right subtree size: inH - inR
+    create(postR - 1, inR + 1, inH, level + 1);
 }
 
 int main(int argc, char const *argv[]) {
@@ -51,17 +44,17 @@ int main(int argc, char const *argv[]) {
         cin >> post[i];
     }
     create(n - 1, 0, n - 1, 1);
-    vector<int> ans;
-    for (auto it : t) { // zigzag level order traversal
-        if (it.first % 2 != 0) {
-            ans.insert(ans.end(), it.second.rbegin(), it.second.rend());
+    vector<int> res;
+    for (auto [level, nodes] : tree) { // zigzag level order traversal
+        if (level % 2 != 0) {
+            res.insert(res.end(), nodes.rbegin(), nodes.rend()); // reverse by reverse iterator
         } else {
-            ans.insert(ans.end(), it.second.begin(), it.second.end());
+            res.insert(res.end(), nodes.begin(), nodes.end());
         }
     }
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << ans[i];
-        i < (int)ans.size() - 1 ? cout << " " : cout << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << res[i];
+        i < (int)res.size() - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

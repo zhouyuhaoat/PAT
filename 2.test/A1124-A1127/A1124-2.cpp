@@ -21,24 +21,24 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    int m, n, st;
-    cin >> m >> n >> st;
-    unordered_map<string, bool> isWin;
-    int cnt = 0;
-    for (int i = 1; i <= m; i++) {
-        string nick;
-        cin >> nick;
-        if (i < st) continue; // skip
-        if (cnt++ % n == 0) {
-            if (isWin[nick]) {
-                cnt--; // reset
+    int m, n, first;
+    cin >> m >> n >> first;
+    unordered_map<string, bool> win;
+    int cnt = 0; // count of followers from the first winner, except won before
+    for (int i = 1; i <= m; i++) { // online
+        string name;
+        cin >> name;
+        if (i < first) continue; // not started yet
+        if (cnt++ % n == 0) { // cnt % gap == 0 to get current winner
+            if (win[name]) {
+                cnt--; // won before, disregard, and restore cnt
                 continue;
             }
-            isWin[nick] = true;
-            cout << nick << "\n";
+            win[name] = true;
+            cout << name << "\n";
         }
     }
-    if (st > m) {
+    if (first > m) {
         cout << "Keep going...\n";
     }
 

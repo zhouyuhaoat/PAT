@@ -24,16 +24,16 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
-    sort(d.begin(), d.end());
-    int ans = d[0];
+    sort(data.begin(), data.end());
+    int res = data[0];
     for (int i = 1; i < n; i++) {
-        ans = (ans + d[i]) / 2;
+        res = (res + data[i]) / 2;
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

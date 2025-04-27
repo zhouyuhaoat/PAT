@@ -21,24 +21,25 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    int m, n, st;
-    cin >> m >> n >> st;
-    string d[m + 1];
+    int m, n, first;
+    cin >> m >> n >> first;
+    string name[m + 1];
     for (int i = 1; i <= m; i++) {
-        cin >> d[i];
+        cin >> name[i];
     }
-    if (st > m) { // no winner
+    if (first > m) { // no winner
         cout << "Keep going...\n";
         return 0;
     }
-    unordered_map<string, bool> isWin;
-    for (int i = st; i <= m; i += n) {
-        while (i <= m && isWin[d[i]]) {
+    unordered_map<string, bool> win;
+    for (int i = first; i <= m; i += n) {
+        // i = first to get first winner, i += gap to get next winner
+        while (i <= m && win[name[i]]) { // won before, skip, next one
             i++;
         }
-        if (i <= m) {
-            cout << d[i] << "\n";
-            isWin[d[i]] = true;
+        if (i <= m) { // avoid out of range since i++ in while loop
+            cout << name[i] << "\n";
+            win[name[i]] = true;
         }
     }
 

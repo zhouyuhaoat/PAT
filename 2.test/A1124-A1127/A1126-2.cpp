@@ -22,12 +22,13 @@ using namespace std;
 vector<bool> vis;
 vector<vector<int>> g;
 
-void dfs(int s, int& cnt) {
+void dfs(int u, int& cnt) {
     cnt++;
-    vis[s] = true;
-    for (int i = 0; i < (int)g[s].size(); i++) {
-        if (!vis[g[s][i]]) {
-            dfs(g[s][i], cnt);
+    vis[u] = true;
+    for (int i = 0; i < (int)g[u].size(); i++) {
+        int v = g[u][i];
+        if (!vis[v]) {
+            dfs(v, cnt);
         }
     }
 }
@@ -48,7 +49,7 @@ int main(int argc, char const *argv[]) {
         cout << g[i].size();
         i < n ? cout << " " : cout << "\n";
     }
-    vis.resize(n + 1, false);
+    vis.resize(n + 1);
     int cnt = 0;
     dfs(1, cnt);
     if (cnt == n) { // all vertices are connected
