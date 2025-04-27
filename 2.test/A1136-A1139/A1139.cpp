@@ -24,7 +24,7 @@
 using namespace std;
 
 unordered_map<int, vector<int>> g;
-map<pair<int, int>, bool> isFri;
+map<pair<int, int>, bool> isFriend;
 
 int main(int argc, char const *argv[]) {
 
@@ -33,34 +33,33 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < m; i++) {
         string s1, s2;
         cin >> s1 >> s2;
-        int a = abs(stoi(s1)), b = abs(stoi(s2));
+        int id1 = abs(stoi(s1)), id2 = abs(stoi(s2));
         if (s1.size() == s2.size()) { // same gender
-            g[a].emplace_back(b), g[b].emplace_back(a);
+            g[id1].emplace_back(id2), g[id2].emplace_back(id1);
         }
-        isFri[make_pair(a, b)] = isFri[make_pair(b, a)] = true;
+        isFriend[{id1, id2}] = isFriend[{id2, id1}] = true;
     }
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
         int s1, s2;
         cin >> s1 >> s2;
-        int a = abs(s1), b = abs(s2);
-        vector<pair<int, int>> ans;
-        // find all friends between two people by two loops
-        for (int i = 0; i < (int)g[a].size(); i++) {
-            for (int j = 0; j < (int)g[b].size(); j++) {
-                if (g[a][i] == b || a == g[b][j]) { // repeated
+        int id1 = abs(s1), id2 = abs(s2);
+        vector<pair<int, int>> res; // id1, id2
+        for (int i = 0; i < (int)g[id1].size(); i++) { // find all friends between two people by two loops
+            for (int j = 0; j < (int)g[id2].size(); j++) {
+                if (g[id1][i] == id2 || id1 == g[id2][j]) { // repeated
                     continue;
                 }
-                if (isFri[make_pair(g[a][i], g[b][j])]) {
-                    ans.emplace_back(make_pair(g[a][i], g[b][j]));
+                if (isFriend[{g[id1][i], g[id2][j]}]) {
+                    res.emplace_back(g[id1][i], g[id2][j]);
                 }
             }
         }
-        sort(ans.begin(), ans.end());
-        cout << ans.size() << "\n";
-        for (auto it : ans) {
-            cout << setfill('0') << setw(4) << it.first << " " << setfill('0') << setw(4) << it.second << "\n";
+        sort(res.begin(), res.end());
+        cout << res.size() << "\n";
+        for (auto [id1, id2] : res) {
+            cout << setfill('0') << setw(4) << id1 << " " << setfill('0') << setw(4) << id2 << "\n";
         }
     }
 

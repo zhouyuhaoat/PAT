@@ -23,9 +23,8 @@ using namespace std;
 
 struct stu {
     string id;
-    int gp, gm, gf, g;
-    // p: programming, m: mid-term, f: final, g: grade
-    stu() : gp(-1), gm(-1), gf(-1), g(-1) { // -1: not present
+    int program, mid, final, grade;
+    stu() : program(-1), mid(-1), final(-1), grade(-1) { // -1: not present
     }
 };
 
@@ -33,43 +32,42 @@ int main(int argc, char const *argv[]) {
 
     int p, m, n;
     cin >> p >> m >> n;
-    unordered_map<string, stu> students;
+    unordered_map<string, stu> students; // id -> student
     for (int i = 0; i < p + m + n; i++) {
         string id;
-        int v;
-        cin >> id >> v;
+        int score;
+        cin >> id >> score;
         students[id].id = id;
         if (i < p) {
-            students[id].gp = v;
+            students[id].program = score;
         } else if (i < p + m) {
-            students[id].gm = v;
+            students[id].mid = score;
         } else {
-            students[id].gf = v;
+            students[id].final = score;
         }
     }
-    vector<stu> ans;
-    for (auto& it : students) {
-        stu& s = it.second;
-        if (s.gf != -1) {
-            if (s.gm != -1 && s.gm > s.gf) {
-                s.g = 0.4 * s.gm + 0.6 * s.gf + 0.5;
+    vector<stu> res;
+    for (auto [id, student] : students) {
+        if (student.final != -1) {
+            if (student.mid != -1 && student.mid > student.final) {
+                student.grade = 0.4 * student.mid + 0.6 * student.final + 0.5;
             } else {
-                s.g = s.gf;
+                student.grade = student.final;
             }
         }
-        if (s.gp >= 200 && s.g >= 60) {
-            ans.emplace_back(s);
+        if (student.program >= 200 && student.grade >= 60) {
+            res.emplace_back(student);
         }
     }
-    sort(ans.begin(), ans.end(), [](stu& a, stu& b) {
-        if (a.g != b.g) {
-            return a.g > b.g;
+    sort(res.begin(), res.end(), [](stu a, stu b) {
+        if (a.grade != b.grade) {
+            return a.grade > b.grade;
         } else {
             return a.id < b.id;
         }
     });
-    for (auto& s : ans) {
-        cout << s.id << " " << s.gp << " " << s.gm << " " << s.gf << " " << s.g << "\n";
+    for (auto [id, program, mid, final, grade] : res) {
+        cout << id << " " << program << " " << mid << " " << final << " " << grade << "\n";
     }
 
     return 0;

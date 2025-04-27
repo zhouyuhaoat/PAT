@@ -23,9 +23,7 @@ using namespace std;
 vector<int> pre, in, post;
 
 void postTra(int preR, int inL, int inH) { // postorder traversal by preorder and inorder
-    if (inL > inH) {
-        return;
-    }
+    if (inL > inH) return;
     int inR = find(in.begin(), in.end(), pre[preR]) - in.begin();
     postTra(preR + 1, inL, inR - 1);
     postTra(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size = inR - inL

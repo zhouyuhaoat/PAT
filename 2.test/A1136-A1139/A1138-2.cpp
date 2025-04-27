@@ -21,12 +21,10 @@
 using namespace std;
 
 vector<int> pre, post;
-unordered_map<int, int> loc; // location of inorder
+unordered_map<int, int> loc; // location in inorder
 
 void postTra(int preR, int inL, int inH) {
-    if (inL > inH) {
-        return;
-    }
+    if (inL > inH) return;
     int inR = loc[pre[preR]];
     postTra(preR + 1, inL, inR - 1);
     postTra(preR + (inR - inL) + 1, inR + 1, inH);

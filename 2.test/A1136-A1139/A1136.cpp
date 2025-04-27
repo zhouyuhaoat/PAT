@@ -14,7 +14,6 @@
 */
 
 // @pintia code=start
-#include <algorithm>
 #include <iostream>
 
 using namespace std;
@@ -50,8 +49,7 @@ int main(int argc, char const *argv[]) {
         return 0;
     }
     for (int i = 0; i < 10; i++) {
-        string a = s, b = s;
-        reverse(b.begin(), b.end());
+        string a = s, b = string(s.rbegin(), s.rend());
         s = sum(a, b);
         cout << a << " + " << b << " = " << s << "\n";
         if (isPalindrome(s)) {

@@ -24,7 +24,7 @@ vector<int> pre;
 unordered_map<int, int> loc;
 
 void postTra(int preR, int inL, int inH) {
-    if (inL == inH) { // leaf node
+    if (inL == inH) { // only one leaf node
         cout << pre[preR] << "\n";
         return;
     }
