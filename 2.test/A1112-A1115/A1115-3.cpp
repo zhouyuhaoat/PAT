@@ -21,40 +21,36 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
-node *insert(node *r, int v) {
-    if (!r) {
-        r = new node{v, nullptr, nullptr};
-        return r;
+node *insert(node *root, int val) {
+    if (!root) {
+        root = new node{val, nullptr, nullptr};
+        return root;
     }
-    if (v <= r->v) {
-        r->lc = insert(r->lc, v);
+    if (val <= root->val) {
+        root->left = insert(root->left, val);
     } else {
-        r->rc = insert(r->rc, v);
+        root->right = insert(root->right, val);
     }
-    return r;
+    return root;
 }
 
-int maxL = -1;
+int maxLevel = -1;
 unordered_map<int, int> cnt;
-void bfs(node *r) {
+void bfs(node *root) { // dfs -> bfs
     queue<pair<node *, int>> q;
-    q.emplace(r, 1);
+    q.emplace(root, 1);
     while (!q.empty()) {
-        node *cur = q.front().first;
-        int l = q.front().second;
+        auto [cur, level] = q.front();
         q.pop();
-        cnt[l]++;
-        maxL = max(maxL, l);
-        if (cur->lc != nullptr) {
-            q.emplace(cur->lc, l + 1);
-        }
-        if (cur->rc != nullptr) {
-            q.emplace(cur->rc, l + 1);
-        }
+        if (!cur) continue;
+        cnt[level]++;
+        maxLevel = max(maxLevel, level);
+        q.emplace(cur->left, level + 1);
+        q.emplace(cur->right, level + 1);
     }
 }
 
@@ -62,14 +58,14 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    node *r = nullptr;
+    node *root = nullptr;
     for (int i = 0; i < n; i++) {
-        int v;
-        cin >> v;
-        r = insert(r, v);
+        int val;
+        cin >> val;
+        root = insert(root, val);
     }
-    bfs(r);
-    cout << cnt[maxL] << " + " << cnt[maxL - 1] << " = " << cnt[maxL] + cnt[maxL - 1] << "\n";
+    bfs(root);
+    cout << cnt[maxLevel] << " + " << cnt[maxLevel - 1] << " = " << cnt[maxLevel] + cnt[maxLevel - 1] << "\n";
 
     return 0;
 }

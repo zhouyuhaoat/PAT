@@ -24,17 +24,18 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
-    nth_element(d.begin(), d.begin() + n / 2, d.end()); // set partition
+    nth_element(data.begin(), data.begin() + n / 2, data.end());
+    // [0, n) -> partition -> [0, n / 2) + [n / 2, n)
     int res = 0;
     for (int i = 0; i < n / 2; i++) {
-        res += d[n - i - 1] - d[i];
+        res += data[n - i - 1] - data[i]; // right - left
     }
-    if (n % 2 == 1) {
-        res += d[n / 2];
+    if (n % 2 == 1) { // odd -> middle
+        res += data[n / 2];
     }
     cout << n % 2 << " " << res << "\n";
 

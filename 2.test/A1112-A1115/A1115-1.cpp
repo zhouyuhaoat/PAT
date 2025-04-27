@@ -20,32 +20,33 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc; // left child, right child
+    int val;
+    node *left, *right;
 };
 
-void insert(node *& r, int v) { // build a binary search tree
-    if (!r) {
-        r = new node{v, nullptr, nullptr};
+void insert(node *& root, int val) { // build a binary search tree
+    // return void with reference to pointer
+    if (!root) {
+        root = new node{val, nullptr, nullptr};
         return;
     }
-    if (v <= r->v) {
-        insert(r->lc, v);
+    if (val <= root->val) {
+        insert(root->left, val);
     } else {
-        insert(r->rc, v);
+        insert(root->right, val);
     }
 }
 
-int maxL = -1; // max level
-unordered_map<int, int> cnt;
-void dfs(node *r, int l) {
-    cnt[l]++;
-    maxL = max(maxL, l);
-    if (r->lc) {
-        dfs(r->lc, l + 1);
+int maxLevel = -1; // max level
+unordered_map<int, int> cnt; // count the number of nodes at each level
+void dfs(node *root, int level) {
+    cnt[level]++;
+    maxLevel = max(maxLevel, level);
+    if (root->left) {
+        dfs(root->left, level + 1);
     }
-    if (r->rc) {
-        dfs(r->rc, l + 1);
+    if (root->right) {
+        dfs(root->right, level + 1);
     }
 }
 
@@ -53,14 +54,14 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    node *r = nullptr;
+    node *root = nullptr;
     for (int i = 0; i < n; i++) {
-        int v;
-        cin >> v;
-        insert(r, v);
+        int val;
+        cin >> val;
+        insert(root, val);
     }
-    dfs(r, 1);
-    cout << cnt[maxL] << " + " << cnt[maxL - 1] << " = " << cnt[maxL] + cnt[maxL - 1] << "\n";
+    dfs(root, 1);
+    cout << cnt[maxLevel] << " + " << cnt[maxLevel - 1] << " = " << cnt[maxLevel] + cnt[maxLevel - 1] << "\n";
 
     return 0;
 }

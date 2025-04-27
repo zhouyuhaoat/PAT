@@ -21,32 +21,32 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    int k;
+    int k; // stuck: appear repeatedly for k times
     string s;
     cin >> k >> s;
-    unordered_set<char> notStk; // not stuck
+    unordered_set<char> notStuck;
     for (int i = 0; i < (int)s.size(); i++) {
-        bool flag = true; // appear repeatedly
+        bool repeat = true; // suppose appear repeatedly
         for (int j = 1; j < k && i + j <= (int)s.size(); j++) { // s[(int)s.size()]
             if (s[i + j] != s[i]) {
-                flag = false;
+                repeat = false;
                 break;
             }
         }
-        if (flag) { // candidates: possibly stuck
+        if (repeat) { // candidates: possibly stuck
             i += k - 1;
         } else {
-            notStk.emplace(s[i]);
+            notStuck.emplace(s[i]);
         }
     }
     string res;
-    unordered_set<char> out;
+    unordered_set<char> out; // for output only once
     for (int i = 0; i < (int)s.size(); i++) {
         res += s[i];
-        if (notStk.find(s[i]) == notStk.end()) { // stuck
+        if (notStuck.find(s[i]) == notStuck.end()) { // stuck
             if (out.find(s[i]) == out.end()) { // not output yet
                 cout << s[i];
-                out.emplace(s[i]); // output only once
+                out.emplace(s[i]);
             }
             i += k - 1;
         }

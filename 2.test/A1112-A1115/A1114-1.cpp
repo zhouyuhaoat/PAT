@@ -26,84 +26,94 @@ using namespace std;
 
 struct fam { // family
     int id, num;
-    double avgEs, avgAr; // estate, area
+    double estate, area; // total -> average
 };
 
-vector<int> f(1e5); // disjoint set union
+class DisjointSetUnion {
+private:
+    vector<int> f; // father
 
-int find(int x) {
-    int a = x;
-    while (x != f[x]) {
-        x = f[x];
+public:
+    DisjointSetUnion(int n) {
+        f.resize(n);
+        iota(f.begin(), f.end(), 0);
     }
-    while (a != f[a]) { // path compression
-        int z = a;
-        a = f[a], f[z] = x;
-    }
-    return x;
-}
 
-void joint(int a, int b) {
-    int fa = find(a), fb = find(b);
-    fa > fb ? f[fa] = fb : f[fb] = fa;
-}
+    int find(int x) {
+        if (f[x] == x) {
+            return x;
+        }
+        return f[x] = find(f[x]); // path compression
+    }
+
+    void unite(int a, int b) {
+        int rootA = find(a), rootB = find(b);
+        if (rootA > rootB) { // union by rank: smaller root to larger root
+            f[rootA] = rootB;
+        } else {
+            f[rootB] = rootA;
+        }
+    }
+};
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, double> es, ar;
-    unordered_set<int> p; // persons
-    iota(f.begin(), f.end(), 0);
+    DisjointSetUnion dsu(1e5);
+    unordered_map<int, double> estate, area;
+    unordered_set<int> persons;
     for (int i = 0; i < n; i++) {
-        int id, fa, ma;
-        cin >> id >> fa >> ma;
-        p.emplace(id);
-        if (fa != -1) {
-            joint(id, fa);
-            p.emplace(fa);
+        int id, father, mather;
+        cin >> id >> father >> mather;
+        persons.emplace(id);
+        if (father != -1) {
+            dsu.unite(id, father);
+            persons.emplace(father);
         }
-        if (ma != -1) {
-            joint(id, ma);
-            p.emplace(ma);
+        if (mather != -1) {
+            dsu.unite(id, mather);
+            persons.emplace(mather);
         }
         int k;
         cin >> k;
         for (int j = 0; j < k; j++) {
-            int chi;
-            cin >> chi;
-            joint(id, chi);
-            p.emplace(chi);
+            int child;
+            cin >> child;
+            dsu.unite(id, child);
+            persons.emplace(child);
         }
         double a, b;
         cin >> a >> b;
-        es[id] = a, ar[id] = b;
+        estate[id] = a, area[id] = b;
     }
-    unordered_map<int, int> famNum;
-    unordered_map<int, double> famEs, famAr;
-    for (auto it : p) {
-        famNum[find(it)]++;
-        if (famEs.count(find(it)) != 0) {
-            famEs[find(it)] += es[it], famAr[find(it)] += ar[it];
-        } else {
-            famEs[find(it)] = es[it], famAr[find(it)] = ar[it];
+    unordered_map<int, fam> families;
+    for (int person : persons) {
+        int id = dsu.find(person); // dsu to find a connected component
+        if (families.count(id) == 0) {
+            families[id] = fam{id, 0, 0, 0};
         }
+        families[id].num++;
+        families[id].estate += estate[person];
+        families[id].area += area[person];
     }
-    vector<fam> ans;
-    for (auto it : famNum) {
-        ans.emplace_back(fam{it.first, it.second, famEs[it.first] / it.second, famAr[it.first] / it.second});
+    vector<fam> res;
+    for (auto [id, family] : families) {
+        family.estate /= family.num; // average
+        family.area /= family.num;
+        res.emplace_back(family);
     }
-    sort(ans.begin(), ans.end(), [](fam a, fam b) -> bool {
-        if (a.avgAr != b.avgAr) {
-            return a.avgAr > b.avgAr;
+    sort(res.begin(), res.end(), [](fam a, fam b) -> bool {
+        if (a.area != b.area) {
+            return a.area > b.area;
         } else {
             return a.id < b.id;
         }
     });
-    cout << ans.size() << "\n";
-    for (auto it : ans) {
-        cout << setfill('0') << setw(4) << it.id << " " << it.num;
-        cout << " " << fixed << setprecision(3) << it.avgEs << " " << it.avgAr << "\n";
+    cout << res.size() << "\n";
+    for (auto family : res) {
+        cout << setfill('0') << setw(4) << family.id << " " << family.num;
+        cout << " " << fixed << setprecision(3) << family.estate << " " << family.area << "\n";
     }
 
     return 0;

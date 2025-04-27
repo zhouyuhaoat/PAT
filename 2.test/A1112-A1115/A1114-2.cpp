@@ -20,84 +20,86 @@
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 
 using namespace std;
 
 struct fam {
     int id, num;
-    double avgEs, avgAr;
+    double estate, area;
 };
+
+unordered_map<int, double> estate, area;
+unordered_set<int> persons;
+unordered_map<int, bool> vis;
+unordered_map<int, vector<int>> g;
+
+fam bfs(int src) { // bfs to find a connected component
+    queue<int> q;
+    q.emplace(src);
+    vis[src] = true;
+    fam family = {10000, 0, 0.0, 0.0};
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        family.id = min(family.id, u);
+        family.num++;
+        family.estate += estate[u], family.area += area[u];
+        for (int v : g[u]) {
+            if (!vis[v]) {
+                vis[v] = true;
+                q.emplace(v);
+            }
+        }
+    }
+    family.estate /= family.num, family.area /= family.num;
+    return family;
+}
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<int, double> es, ar;
-    unordered_set<int> ps;
-    unordered_map<int, vector<int>> g;
     for (int i = 0; i < n; i++) {
-        int id, fa, ma;
-        cin >> id >> fa >> ma;
-        ps.emplace(id);
-        if (fa != -1) {
-            g[id].emplace_back(fa), g[fa].emplace_back(id);
-            ps.emplace(fa);
+        int id, father, mather;
+        cin >> id >> father >> mather;
+        persons.emplace(id);
+        if (father != -1) {
+            g[id].emplace_back(father), g[father].emplace_back(id);
+            persons.emplace(father);
         }
-        if (ma != -1) {
-            g[id].emplace_back(ma), g[ma].emplace_back(id);
-            ps.emplace(ma);
+        if (mather != -1) {
+            g[id].emplace_back(mather), g[mather].emplace_back(id);
+            persons.emplace(mather);
         }
         int k;
         cin >> k;
         for (int j = 0; j < k; j++) {
-            int chi;
-            cin >> chi;
-            g[id].emplace_back(chi), g[chi].emplace_back(id);
-            ps.emplace(chi);
+            int child;
+            cin >> child;
+            g[id].emplace_back(child), g[child].emplace_back(id);
+            persons.emplace(child);
         }
         double a, b;
         cin >> a >> b;
-        es[id] = a, ar[id] = b;
+        estate[id] = a, area[id] = b;
     }
-    unordered_map<int, bool> vis;
-    vector<fam> ans;
-    for (int p : ps) {
-        if (vis[p]) continue;
-        queue<int> q;
-        q.emplace(p);
-        vis[p] = true;
-        int minID = 10000, famNum = 0;
-        double famEs = 0.0, famAr = 0.0;
-        while (!q.empty()) {
-            int u = q.front();
-            q.pop();
-            minID = min(minID, u), famNum++;
-            if (es.count(u)) {
-                famEs += es[u], famAr += ar[u];
-            }
-            if (g.count(u) != 0) {
-                for (int v : g[u]) {
-                    if (!vis[v]) {
-                        vis[v] = true;
-                        q.emplace(v);
-                    }
-                }
-            }
+    vector<fam> res;
+    for (int person : persons) {
+        if (!vis[person]) {
+            res.emplace_back(bfs(person));
         }
-        ans.emplace_back(fam{minID, famNum, famEs / famNum, famAr / famNum});
     }
-    sort(ans.begin(), ans.end(), [](fam a, fam b) -> bool {
-        if (a.avgAr != b.avgAr) {
-            return a.avgAr > b.avgAr;
+    sort(res.begin(), res.end(), [](fam a, fam b) -> bool {
+        if (a.area != b.area) {
+            return a.area > b.area;
         } else {
             return a.id < b.id;
         }
     });
-    cout << ans.size() << "\n";
-    for (auto it : ans) {
-        cout << setfill('0') << setw(4) << it.id << " " << it.num;
-        cout << " " << fixed << setprecision(3) << it.avgEs << " " << it.avgAr << "\n";
+    cout << res.size() << "\n";
+    for (auto family : res) {
+        cout << setfill('0') << setw(4) << family.id << " " << family.num;
+        cout << " " << fixed << setprecision(3) << family.estate << " " << family.area << "\n";
     }
 
     return 0;

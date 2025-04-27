@@ -24,18 +24,19 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
+    vector<int> data(n);
     int sum = 0;
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
-        sum += d[i];
+        cin >> data[i];
+        sum += data[i];
     }
-    sort(d.begin(), d.end());
-    int sumL = 0; // set partition
-    for (int i = 0; i <= n / 2 - 1; i++) {
-        sumL += d[i];
+    sort(data.begin(), data.end());
+    int left = 0;
+    for (int i = 0; i < n / 2; i++) { // n / 2 elements in the left set
+        left += data[i];
     }
-    cout << n % 2 << " " << sum - 2 * sumL << "\n";
+    int right = sum - left; // n / 2 + n % 2 elements in the right set
+    cout << n % 2 << " " << right - left << "\n";
 
     return 0;
 }

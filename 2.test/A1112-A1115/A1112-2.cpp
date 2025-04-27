@@ -24,21 +24,23 @@ int main(int argc, char const *argv[]) {
     int k;
     string s;
     cin >> k >> s;
-    unordered_set<char> notStk;
+    unordered_set<char> notStuck;
     for (int i = 0; i < (int)s.size(); i++) {
         int j = s.find_first_not_of(s[i], i);
-        if (j == -1) j = s.size();
-        if ((j - i) % k == 0) {
+        if (j == -1) { // not found
+            j = s.size();
+        }
+        if ((j - i) % k == 0) { // repeat k times
             i += k - 1;
         } else {
-            notStk.emplace(s[i]);
+            notStuck.emplace(s[i]);
         }
     }
     string res;
     unordered_set<char> out;
     for (int i = 0; i < (int)s.size(); i++) {
         res += s[i];
-        if (notStk.find(s[i]) == notStk.end()) {
+        if (notStuck.find(s[i]) == notStuck.end()) {
             if (out.find(s[i]) == out.end()) {
                 cout << s[i];
                 out.emplace(s[i]);
