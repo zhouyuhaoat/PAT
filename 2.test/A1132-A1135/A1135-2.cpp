@@ -20,51 +20,51 @@
 using namespace std;
 
 struct node {
-    int v, bh;
-    node *lc, *rc;
+    int val, blackHeight;
+    node *left, *right;
 };
 
 vector<int> pre;
 
-int getBh(node *r) {
-    return !r ? 0 : r->bh;
+int getBlackHeight(node *root) {
+    return root ? root->blackHeight : 0;
 }
 
-void updateBh(node *r) {
-    r->bh = max(getBh(r->lc), getBh(r->rc));
-    if (r->v > 0) r->bh++;
+void updateBlockHeight(node *root) {
+    root->blackHeight = max(getBlackHeight(root->left), getBlackHeight(root->right));
+    if (root->val > 0) root->blackHeight++;
 }
 
-node *insert(node *root, int v) { // suppose the tree is a binary search tree
+node *insert(node *root, int val) { // suppose the tree is a binary search tree
     if (!root) {
-        root = new node{v, v > 0 ? 1 : 0, nullptr, nullptr};
-    } else if (abs(v) < abs(root->v)) {
-        root->lc = insert(root->lc, v);
+        root = new node{val, val > 0, nullptr, nullptr};
+    } else if (abs(val) < abs(root->val)) {
+        root->left = insert(root->left, val);
     } else {
-        root->rc = insert(root->rc, v);
+        root->right = insert(root->right, val);
     }
-    updateBh(root);
+    updateBlockHeight(root);
     return root;
 }
 
 void dfs(node *root, bool& flag) {
     if (!flag) return;
-    if (root->v < 0) {
-        if (root->lc && root->lc->v < 0) {
+    if (root->val < 0) {
+        if (root->left && root->left->val < 0) {
             flag = false;
             return;
         }
-        if (root->rc && root->rc->v < 0) {
+        if (root->right && root->right->val < 0) {
             flag = false;
             return;
         }
     }
-    if (getBh(root->lc) != getBh(root->rc)) {
+    if (getBlackHeight(root->left) != getBlackHeight(root->right)) {
         flag = false;
         return;
     }
-    if (root->lc) dfs(root->lc, flag);
-    if (root->rc) dfs(root->rc, flag);
+    if (root->left) dfs(root->left, flag);
+    if (root->right) dfs(root->right, flag);
 }
 
 int main(int argc, char const *argv[]) {

@@ -20,46 +20,44 @@
 using namespace std;
 
 struct node {
-    int v, bh;
-    node *lc, *rc;
-    node(int v, int bh, node *lc, node *rc) : v(v), lc(lc), rc(rc) {
-    }
+    int val, blackHeight;
+    node *left, *right;
 };
 
-int getBh(node *root) {
-    return !root ? 0 : root->bh;
+int getBlackHeight(node *root) {
+    return root ? root->blackHeight : 0;
 }
 
-void updateBh(node *root) {
-    root->bh = max(getBh(root->lc), getBh(root->rc));
-    if (root->v > 0) root->bh++;
+void updateBlockHeight(node *root) {
+    root->blackHeight = max(getBlackHeight(root->left), getBlackHeight(root->right));
+    if (root->val > 0) root->blackHeight++;
 }
 
-node *insert(node *root, int v) {
+node *insert(node *root, int val) {
     if (!root) {
-        root = new node(v, v > 0 ? 1 : 0, nullptr, nullptr);
-    } else if (abs(v) < abs(root->v)) {
-        root->lc = insert(root->lc, v);
+        root = new node{val, val > 0, nullptr, nullptr};
+    } else if (abs(val) < abs(root->val)) {
+        root->left = insert(root->left, val);
     } else {
-        root->rc = insert(root->rc, v);
+        root->right = insert(root->right, val);
     }
-    updateBh(root);
+    updateBlockHeight(root);
     return root;
 }
 
 bool judge1(node *root) { // property 4
     if (!root) return true;
-    if (root->v < 0) {
-        if (root->lc && root->lc->v < 0) return false;
-        if (root->rc && root->rc->v < 0) return false;
+    if (root->val < 0) {
+        if (root->left && root->left->val < 0) return false;
+        if (root->right && root->right->val < 0) return false;
     }
-    return judge1(root->lc) && judge1(root->rc);
+    return judge1(root->left) && judge1(root->right);
 }
 
 bool judge2(node *root) { // property 5
     if (!root) return true;
-    if (getBh(root->lc) != getBh(root->rc)) return false;
-    return judge2(root->lc) && judge2(root->rc);
+    if (getBlackHeight(root->left) != getBlackHeight(root->right)) return false;
+    return judge2(root->left) && judge2(root->right);
 }
 
 int main(int argc, char const *argv[]) {

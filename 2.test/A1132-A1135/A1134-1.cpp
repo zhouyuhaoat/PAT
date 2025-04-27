@@ -24,30 +24,30 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<pair<int, int>> e(m); // edges
+    vector<pair<int, int>> edges(m); // edge: left -> right
     for (int i = 0; i < m; i++) {
-        cin >> e[i].first >> e[i].second;
+        cin >> edges[i].first >> edges[i].second;
     }
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
         int n;
         cin >> n;
-        unordered_set<int> v; // vertices
+        unordered_set<int> vertices;
         for (int i = 0; i < n; i++) {
             int vertex;
             cin >> vertex;
-            v.emplace(vertex);
+            vertices.emplace(vertex);
         }
-        bool flag = true; // whether cover all edges
-        for (auto& edge : e) {
-            if (v.find(edge.first) == v.end() && v.find(edge.second) == v.end()) {
+        bool cover = true; // whether cover all edges
+        for (auto [left, right] : edges) {
+            if (vertices.find(left) == vertices.end() && vertices.find(right) == vertices.end()) {
                 // cover: at least one vertex of the edge is in the set
-                flag = false;
+                cover = false;
                 break;
             }
         }
-        flag ? cout << "Yes\n" : cout << "No\n";
+        cover ? cout << "Yes\n" : cout << "No\n";
     }
 
     return 0;

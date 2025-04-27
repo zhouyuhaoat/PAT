@@ -35,22 +35,22 @@ int main(int argc, char const *argv[]) {
         cin >> addr >> data >> next;
         nodes[addr] = {data, next};
     }
-    vector<int> ans, a2, a3;
+    vector<int> res, list1, list2;
     for (int p = head; p != -1; p = nodes[p].next) {
         if (nodes[p].data < 0) {
-            ans.emplace_back(p);
+            res.emplace_back(p);
         } else if (nodes[p].data <= k) {
-            a2.emplace_back(p);
+            list1.emplace_back(p);
         } else {
-            a3.emplace_back(p);
+            list2.emplace_back(p);
         }
     }
-    ans.insert(ans.end(), a2.begin(), a2.end());
-    ans.insert(ans.end(), a3.begin(), a3.end());
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << setfill('0') << setw(5) << ans[i] << " " << nodes[ans[i]].data << " ";
-        if (i < (int)ans.size() - 1) {
-            cout << setfill('0') << setw(5) << ans[i + 1] << "\n";
+    res.insert(res.end(), list1.begin(), list1.end());
+    res.insert(res.end(), list2.begin(), list2.end());
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << setfill('0') << setw(5) << res[i] << " " << nodes[res[i]].data << " ";
+        if (i < (int)res.size() - 1) {
+            cout << setfill('0') << setw(5) << res[i + 1] << "\n";
         } else {
             cout << "-1\n";
         }

@@ -23,26 +23,26 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> e(n); // edges of vertex
+    vector<vector<int>> edges(n); // edge id of vertex
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
-        e[a].emplace_back(i), e[b].emplace_back(i);
+        edges[a].emplace_back(i), edges[b].emplace_back(i);
     }
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
         int n;
         cin >> n;
-        vector<bool> edge(m, false);
+        vector<bool> cover(m, false); // edge covered by vertex
         int cnt = 0; // count of covered edges
         for (int i = 0; i < n; i++) {
-            int v;
-            cin >> v;
-            for (auto it : e[v]) { // one vertex covers edges
-                if (!edge[it]) {
+            int vertex;
+            cin >> vertex;
+            for (int id : edges[vertex]) {
+                if (!cover[id]) {
                     cnt++;
-                    edge[it] = true;
+                    cover[id] = true;
                 }
             }
         }

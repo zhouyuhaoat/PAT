@@ -21,20 +21,19 @@
 using namespace std;
 
 struct node {
-    int v, bh; // black height
-    // positive: black; negative: red
-    node *lc, *rc;
+    int val, blackHeight; // positive: black; negative: red
+    node *left, *right;
 };
 
 vector<int> pre, in;
 
-int getBh(node *r) {
-    return !r ? 0 : r->bh;
+int getBlackHeight(node *root) {
+    return root ? root->blackHeight : 0;
 }
 
-void updateBh(node *r) {
-    r->bh = max(getBh(r->lc), getBh(r->rc));
-    if (r->v > 0) r->bh++;
+void updateBlockHeight(node *root) {
+    root->blackHeight = max(getBlackHeight(root->left), getBlackHeight(root->right));
+    if (root->val > 0) root->blackHeight++;
 }
 
 node *create(int preR, int inL, int inH, bool& flag) {
@@ -44,36 +43,34 @@ node *create(int preR, int inL, int inH, bool& flag) {
         flag = false;
         return nullptr;
     }
-    node *root = new node;
-    root->v = pre[preR];
-    if (root->v > 0) root->bh = 1;
-    root->lc = create(preR + 1, inL, inR - 1, flag);
-    root->rc = create(preR + inR - inL + 1, inR + 1, inH, flag); // left subtree size: inR - inL
-    updateBh(root); // from bottom to top
+    node *root = new node{pre[preR], pre[preR] > 0};
+    root->left = create(preR + 1, inL, inR - 1, flag);
+    root->right = create(preR + (inR - inL) + 1, inR + 1, inH, flag); // left subtree size: inR - inL
+    updateBlockHeight(root); // from bottom to top
     return root;
 }
 
 void dfs(node *root, bool& flag) { // Is It A Red-Black Tree
     if (!flag) return;
-    if (root->v < 0) {
+    if (root->val < 0) {
         // property 4: If a node is red, then both its children are black.
-        if (root->lc && root->lc->v < 0) {
+        if (root->left && root->left->val < 0) {
             flag = false;
             return;
         }
-        if (root->rc && root->rc->v < 0) {
+        if (root->right && root->right->val < 0) {
             flag = false;
             return;
         }
     }
     // property 5: For each node, all simple paths from the node to descendant leaves
     // contain the same number of black nodes.
-    if (getBh(root->lc) != getBh(root->rc)) {
+    if (getBlackHeight(root->left) != getBlackHeight(root->right)) {
         flag = false;
         return;
     }
-    if (root->lc) dfs(root->lc, flag);
-    if (root->rc) dfs(root->rc, flag);
+    if (root->left) dfs(root->left, flag);
+    if (root->right) dfs(root->right, flag);
 }
 
 int main(int argc, char const *argv[]) {
