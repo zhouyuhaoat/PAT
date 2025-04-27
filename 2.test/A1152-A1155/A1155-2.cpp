@@ -19,11 +19,11 @@
 
 using namespace std;
 
-vector<int> t, path;
+vector<int> tree, path;
 
-void dfs(int r, int n) {
-    if (r * 2 > n) { // left node & empty node (out of range)
-        if (r <= n) { // left node
+void dfs(int root, int n) {
+    if (root * 2 > n) { // left node & empty node (out of range)
+        if (root <= n) { // left node
             // no need to emplace and pop itself since emplaced and popped by parent
             for (int i = 0; i < (int)path.size(); i++) {
                 cout << path[i];
@@ -32,22 +32,22 @@ void dfs(int r, int n) {
         }
         return;
     }
-    path.emplace_back(t[r * 2 + 1]);
-    dfs(r * 2 + 1, n);
+    path.emplace_back(tree[root * 2 + 1]);
+    dfs(root * 2 + 1, n);
     path.pop_back();
-    path.emplace_back(t[r * 2]);
-    dfs(r * 2, n);
+    path.emplace_back(tree[root * 2]);
+    dfs(root * 2, n);
     path.pop_back();
 }
 
-bool isMinHeap = true, isMaxHeap = true; // suppose it is a heap
+bool isMaxHeap = true, isMinHeap = true; // suppose it is a heap
 void isHeap(int n) {
     // judge heap property by parent-child relationship in one pass
     for (int i = 2; i <= n && (isMinHeap || isMaxHeap); i++) { // until the end or not a heap
-        if (t[i / 2] < t[i]) { // possibly be a min heap, can not be a max heap
+        if (tree[i / 2] < tree[i]) { // possibly be a min heap, can not be a max heap
             isMaxHeap = false;
         }
-        if (t[i / 2] > t[i]) { // possibly be a max heap, can not be a min heap
+        if (tree[i / 2] > tree[i]) { // possibly be a max heap, can not be a min heap
             isMinHeap = false;
         }
     }
@@ -57,11 +57,11 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n + 1);
+    tree.resize(n + 1);
     for (int i = 1; i <= n; i++) {
-        cin >> t[i];
+        cin >> tree[i];
     }
-    path.emplace_back(t[1]); // source of the path: emplace itself -> emplace children
+    path.emplace_back(tree[1]); // source of the path: emplace itself -> emplace children
     dfs(1, n); // 1-based index
     isHeap(n);
     if (isMaxHeap) {

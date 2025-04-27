@@ -37,9 +37,9 @@ int main(int argc, char const *argv[]) {
     string s;
     cin >> s;
     for (int i = 0; i < (int)s.size() - k + 1; i++) {
-        string ss = s.substr(i, k); // each k-length substring
-        if (isPrime(stoi(ss))) {
-            cout << ss << "\n";
+        string temp = s.substr(i, k); // each k-length substring
+        if (isPrime(stoi(temp))) {
+            cout << temp << "\n";
             return 0;
         }
     }

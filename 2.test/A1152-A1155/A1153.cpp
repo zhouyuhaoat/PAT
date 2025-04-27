@@ -33,13 +33,13 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    unordered_map<string, int> siteCnt, siteSum; // count of testee, sum of scores of site
-    unordered_map<string, unordered_map<string, int>> date; // site and count of testee of the site of date
-    vector<pair<string, int>> card(n); // card number and score of testee
+    unordered_map<string, int> cnt, score; // site -> count of testee, sum of scores
+    unordered_map<string, unordered_map<string, int>> date; // data -> site -> count of testee
+    vector<pair<string, int>> card(n); // id, score of testee
     for (int i = 0; i < n; i++) {
         cin >> card[i].first >> card[i].second;
-        siteCnt[card[i].first.substr(1, 3)]++;
-        siteSum[card[i].first.substr(1, 3)] += card[i].second;
+        cnt[card[i].first.substr(1, 3)]++;
+        score[card[i].first.substr(1, 3)] += card[i].second;
         date[card[i].first.substr(4, 6)][card[i].first.substr(1, 3)]++;
     }
     sort(card.begin(), card.end(), cmp);
@@ -50,23 +50,23 @@ int main(int argc, char const *argv[]) {
         cout << "Case " << q + 1 << ": " << type << " " << term << "\n";
         bool flag = true;
         if (type == 1) {
-            for (auto it : card) {
-                if (it.first[0] == term[0]) { // the level
-                    cout << it.first << " " << it.second << "\n";
+            for (auto [id, score] : card) {
+                if (id[0] == term[0]) { // the level
+                    cout << id << " " << score << "\n";
                     flag = false;
                 }
             }
         } else if (type == 2) {
-            if (siteCnt[term] != 0) {
-                cout << siteCnt[term] << " " << siteSum[term] << "\n";
+            if (cnt[term] != 0) {
+                cout << cnt[term] << " " << score[term] << "\n";
                 flag = false;
             }
         } else {
             // map -> vector -> sort
-            vector<pair<string, int>> ans(date[term].begin(), date[term].end());
-            sort(ans.begin(), ans.end(), cmp);
-            for (auto it : ans) {
-                cout << it.first << " " << it.second << "\n";
+            vector<pair<string, int>> res(date[term].begin(), date[term].end());
+            sort(res.begin(), res.end(), cmp);
+            for (auto [site, cnt] : res) {
+                cout << site << " " << cnt << "\n";
                 flag = false;
             }
         }

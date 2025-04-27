@@ -20,13 +20,13 @@
 
 using namespace std;
 
-vector<int> t, path;
+vector<int> tree, path;
 
-void dfs(int r, int n) {
-    if (2 * r + 1 >= n) { // left node & empty node (out of range)
+void dfs(int root, int n) {
+    if (2 * root + 1 >= n) { // left node & empty node (out of range)
         // possible unvalid before recursion
-        if (r < n) { // left node
-            path.emplace_back(t[r]);
+        if (root < n) { // left node
+            path.emplace_back(tree[root]);
             for (int i = 0; i < (int)path.size(); i++) {
                 cout << path[i];
                 i < (int)path.size() - 1 ? cout << " " : cout << "\n";
@@ -35,12 +35,12 @@ void dfs(int r, int n) {
         }
         return;
     }
-    path.emplace_back(t[r]);
-    dfs(2 * r + 2, n);
+    path.emplace_back(tree[root]);
+    dfs(2 * root + 2, n);
     // couteract between pop and emplace
     // path.pop_back();
-    // path.emplace_back(t[r]);
-    dfs(2 * r + 1, n);
+    // path.emplace_back(t[root]);
+    dfs(2 * root + 1, n);
     path.pop_back();
 }
 
@@ -48,15 +48,15 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n);
+    tree.resize(n);
     for (int i = 0; i < n; i++) {
-        cin >> t[i];
+        cin >> tree[i];
     }
     dfs(0, n); // 0-based index
-    if (is_heap(t.begin(), t.end())) {
+    if (is_heap(tree.begin(), tree.end())) {
         // is_heap() returns true if the range is a max heap
         cout << "Max Heap\n";
-    } else if (is_heap(t.begin(), t.end(), greater<int>())) {
+    } else if (is_heap(tree.begin(), tree.end(), greater<int>())) {
         // is_heap(greater<int>()) returns true if the range is a min heap
         cout << "Min Heap\n";
     } else {

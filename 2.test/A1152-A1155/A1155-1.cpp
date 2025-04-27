@@ -19,12 +19,12 @@
 
 using namespace std;
 
-vector<int> t, path;
+vector<int> tree, path;
 
-void dfs(int r, int n) {
-    if (2 * r + 1 >= n) { // leaf node: right child also must not exist
+void dfs(int root, int n) {
+    if (2 * root + 1 >= n) { // leaf node: right child also must not exist
         // all valid nodes since valid before recursion
-        path.emplace_back(t[r]);
+        path.emplace_back(tree[root]);
         for (int i = 0; i < (int)path.size(); i++) {
             cout << path[i];
             i < (int)path.size() - 1 ? cout << " " : cout << "\n";
@@ -33,29 +33,29 @@ void dfs(int r, int n) {
         return;
     }
     // right subtree first
-    if (2 * r + 2 < n) { // valid node before recursion
-        path.emplace_back(t[r]);
-        dfs(2 * r + 2, n);
+    if (2 * root + 2 < n) { // valid node before recursion
+        path.emplace_back(tree[root]);
+        dfs(2 * root + 2, n);
         path.pop_back();
     }
-    if (2 * r + 1 < n) {
-        path.emplace_back(t[r]);
-        dfs(2 * r + 1, n);
+    if (2 * root + 1 < n) {
+        path.emplace_back(tree[root]);
+        dfs(2 * root + 1, n);
         path.pop_back();
     }
 }
 
 bool isMaxHeap = true, isMinHeap = true; // suppose it is a max heap, or a min heap
 void isHeap(int n) {
-    if (t[0] > t[1]) { // possibly be a max heap
+    if (tree[0] > tree[1]) { // possibly be a max heap
         isMinHeap = false; // can not be a min heap
         for (int i = 0; i < n / 2; i++) {
             // judge whether the parent node is greater than its children
-            if (2 * i + 1 < n && t[2 * i + 1] > t[i]) {
+            if (2 * i + 1 < n && tree[2 * i + 1] > tree[i]) {
                 isMaxHeap = false;
                 break;
             }
-            if (2 * i + 2 < n && t[2 * i + 2] > t[i]) {
+            if (2 * i + 2 < n && tree[2 * i + 2] > tree[i]) {
                 isMaxHeap = false;
                 break;
             }
@@ -64,11 +64,11 @@ void isHeap(int n) {
         isMaxHeap = false; // can not be a max heap
         for (int i = 0; i < n / 2; i++) {
             // judge whether the parent node is less than its children
-            if (2 * i + 1 < n && t[2 * i + 1] < t[i]) {
+            if (2 * i + 1 < n && tree[2 * i + 1] < tree[i]) {
                 isMinHeap = false;
                 break;
             }
-            if (2 * i + 2 < n && t[2 * i + 2] < t[i]) {
+            if (2 * i + 2 < n && tree[2 * i + 2] < tree[i]) {
                 isMinHeap = false;
                 break;
             }
@@ -80,9 +80,9 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n);
+    tree.resize(n);
     for (int i = 0; i < n; i++) {
-        cin >> t[i];
+        cin >> tree[i];
     }
     dfs(0, n); // 0-based index
     isHeap(n);

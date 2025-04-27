@@ -24,31 +24,31 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<pair<int, int>> g; // edge
+    vector<pair<int, int>> edge;
     for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        g.emplace_back(a, b);
+        int u, v;
+        cin >> u >> v;
+        edge.emplace_back(u, v);
     }
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
-        vector<int> c(n);
-        unordered_set<int> color;
+        vector<int> color(n);
+        unordered_set<int> colors;
         for (int i = 0; i < n; i++) {
-            cin >> c[i];
-            color.emplace(c[i]);
+            cin >> color[i];
+            colors.emplace(color[i]);
         }
         bool coloring = true;
-        for (auto it : g) {
-            if (c[it.first] == c[it.second]) {
+        for (auto [u, v] : edge) {
+            if (color[u] == color[v]) {
                 // no two vertices sharing the same edge have the same color
                 coloring = false;
                 break;
             }
         }
         if (coloring) {
-            cout << color.size() << "-coloring\n";
+            cout << colors.size() << "-coloring\n";
         } else {
             cout << "No\n";
         }
