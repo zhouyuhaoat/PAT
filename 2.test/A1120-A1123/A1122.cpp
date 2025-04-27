@@ -36,25 +36,25 @@ int main(int argc, char const *argv[]) {
     for (int q = 0; q < k; q++) {
         int N;
         cin >> N;
-        vector<int> p(N); // path
-        unordered_set<int> v;
+        vector<int> path(N);
+        unordered_set<int> vertex;
         for (int i = 0; i < N; i++) {
-            cin >> p[i];
-            v.emplace(p[i]);
+            cin >> path[i];
+            vertex.emplace(path[i]);
         }
-        if (N != n + 1 || p[0] != p[N - 1] || (int)v.size() != n) {
+        if (N != n + 1 || path[0] != path[N - 1] || (int)vertex.size() != n) {
             // if not all vertex, or not a cycle, or repeated
             cout << "NO\n";
             continue;
         }
-        bool isRea = true; // reachable
+        bool reachable = true;
         for (int i = 1; i < N; i++) {
-            if (!g[p[i - 1]][p[i]]) {
-                isRea = false;
+            if (!g[path[i - 1]][path[i]]) {
+                reachable = false;
                 break;
             }
         }
-        isRea ? cout << "YES\n" : cout << "NO\n";
+        reachable ? cout << "YES\n" : cout << "NO\n";
     }
 
     return 0;

@@ -21,96 +21,94 @@
 using namespace std;
 
 struct node {
-    int v, l, i, h;
-    node *lc, *rc;
+    int val, height, level, id;
+    node *left, *right;
 };
 
-int geth(node *r) {
-    return r == nullptr ? 0 : r->h;
+int getHeight(node *root) {
+    return root ? root->height : 0;
 }
 
-void updateh(node *r) {
-    r->h = max(geth(r->lc), geth(r->rc)) + 1;
+void updateHeight(node *root) {
+    root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
 }
 
-int getbf(node *r) {
-    return geth(r->lc) - geth(r->rc);
+int getBalanceFactor(node *root) {
+    return getHeight(root->left) - getHeight(root->right);
 }
 
-void L(node *& r) { // 11 -> 34
-    node *temp = r->rc;
-    r->rc = temp->lc;
-    temp->lc = r;
-    updateh(r), updateh(temp);
-    r = temp;
+void L(node *& root) { // 11 -> 34
+    node *temp = root->right;
+    root->right = temp->left;
+    temp->left = root;
+    updateHeight(root), updateHeight(temp);
+    root = temp;
 }
 
-void R(node *& r) { // 00 -> 34
-    node *temp = r->lc;
-    r->lc = temp->rc;
-    temp->rc = r;
-    updateh(r), updateh(temp);
-    r = temp;
+void R(node *& root) { // 00 -> 34
+    node *temp = root->left;
+    root->left = temp->right;
+    temp->right = root;
+    updateHeight(root), updateHeight(temp);
+    root = temp;
 }
 
-void insert(node *& r, int v) {
-    if (r == nullptr) {
-        r = new node{v, 0, 0, 1, nullptr, nullptr};
+void insert(node *& root, int val) {
+    if (!root) {
+        root = new node{val, 1, 0, 0, nullptr, nullptr};
         return;
     }
-    if (v < r->v) {
-        insert(r->lc, v), updateh(r);
-        if (getbf(r) == 2) {
-            if (getbf(r->lc) == -1) { // 01 -> 00
-                L(r->lc);
+    if (val < root->val) {
+        insert(root->left, val), updateHeight(root);
+        if (getBalanceFactor(root) == 2) {
+            if (getBalanceFactor(root->left) == -1) { // 01 -> 00
+                L(root->left);
             }
-            R(r); // 00
+            R(root); // 00
         }
     } else {
-        insert(r->rc, v), updateh(r);
-        if (getbf(r) == -2) {
-            if (getbf(r->rc) == 1) { // 10 -> 11
-                R(r->rc);
+        insert(root->right, val), updateHeight(root);
+        if (getBalanceFactor(root) == -2) {
+            if (getBalanceFactor(root->right) == 1) { // 10 -> 11
+                R(root->right);
             }
-            L(r); // 11
+            L(root); // 11
         }
     }
 }
 
-vector<node> ans;
-void dfs(node *r, int l, int i) {
-    if (r == nullptr) {
-        return;
-    }
-    r->l = l, r->i = i;
-    ans.emplace_back(*r);
-    dfs(r->lc, l + 1, 2 * i + 1);
-    dfs(r->rc, l + 1, 2 * i + 2);
+vector<node> res;
+void dfs(node *root, int level, int id) {
+    if (!root) return;
+    root->level = level, root->id = id;
+    res.emplace_back(*root);
+    dfs(root->left, level + 1, 2 * id + 1);
+    dfs(root->right, level + 1, 2 * id + 2);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    node *r = nullptr;
+    node *root = nullptr;
     for (int i = 0; i < n; i++) {
-        int v;
-        cin >> v;
-        insert(r, v);
+        int val;
+        cin >> val;
+        insert(root, val);
     }
-    dfs(r, 1, 0);
-    sort(ans.begin(), ans.end(), [](node a, node b) {
-        if (a.l != b.l) {
-            return a.l < b.l;
+    dfs(root, 1, 0);
+    sort(res.begin(), res.end(), [](node a, node b) {
+        if (a.level != b.level) {
+            return a.level < b.level;
         } else {
-            return a.i < b.i;
+            return a.id < b.id;
         }
     });
     for (int i = 0; i < n; i++) {
-        cout << ans[i].v;
+        cout << res[i].val;
         i < n - 1 ? cout << " " : cout << "\n";
     }
-    ans[n - 1].i == n - 1 ? cout << "YES\n" : cout << "NO\n";
+    res[n - 1].id == n - 1 ? cout << "YES\n" : cout << "NO\n";
 
     return 0;
 }

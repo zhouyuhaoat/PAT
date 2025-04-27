@@ -32,16 +32,16 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    set<int> ans; // for ascending order
+    set<int> res; // for ascending order
     for (int i = 0; i < n; i++) {
         int num;
         cin >> num;
-        ans.emplace(convert(num));
+        res.emplace(convert(num));
     }
-    cout << ans.size() << "\n";
-    for (auto it = ans.begin(); it != ans.end(); it++) {
+    cout << res.size() << "\n";
+    for (auto it = res.begin(); it != res.end(); it++) {
         cout << *it;
-        next(it) != ans.end() ? cout << " " : cout << "\n";
+        next(it) != res.end() ? cout << " " : cout << "\n";
     }
 
     return 0;

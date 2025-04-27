@@ -25,26 +25,26 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<string, string> c; // couple
+    unordered_map<string, string> couple;
     // int -> string: avoid id = 00000
     for (int i = 0; i < n; i++) {
         string c1, c2;
         cin >> c1 >> c2;
-        c[c1] = c2, c[c2] = c1;
+        couple[c1] = c2, couple[c2] = c1;
     }
     int m;
     cin >> m;
-    unordered_map<string, bool> g; // guest
+    unordered_map<string, bool> guest;
     set<string> single; // damn single
     for (int i = 0; i < m; i++) {
         string id;
         cin >> id;
-        if (g[c[id]]) {
-            single.erase(c[id]);
+        if (guest[couple[id]]) { // couple is guested before
+            single.erase(couple[id]);
         } else {
             single.emplace(id);
         }
-        g[id] = true;
+        guest[id] = true;
     }
     cout << single.size() << "\n";
     for (auto it = single.begin(); it != single.end(); it++) {
