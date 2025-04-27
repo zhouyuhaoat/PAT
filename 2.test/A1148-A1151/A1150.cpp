@@ -29,44 +29,44 @@ int main(int argc, char const *argv[]) {
     // Not a TS cycle: not start and end at the same vertex, or visit some vertex more than once
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> d(n + 1, vector<int>(n + 1));
+    vector<vector<int>> dist(n + 1, vector<int>(n + 1));
     for (int i = 0; i < m; i++) {
-        int a, b, dist;
-        cin >> a >> b >> dist;
-        d[a][b] = d[b][a] = dist;
+        int a, b, distance;
+        cin >> a >> b >> distance;
+        dist[a][b] = dist[b][a] = distance;
     }
     int k;
     cin >> k;
     int minID = -1, minDist = INT_MAX;
     for (int q = 0; q < k; q++) {
-        int nv, src;
-        cin >> nv >> src;
-        int lastID = src, dst, dist = 0;
-        bool isRea = true; // reachable
+        int N, src;
+        cin >> N >> src;
+        int lastID = src, dst, distance = 0;
+        bool reachable = true; // reachable
         unordered_set<int> path;
-        for (int i = 1; i < nv; i++) {
+        for (int i = 1; i < N; i++) {
             cin >> dst;
-            dist += d[lastID][dst];
-            if (d[lastID][dst] == 0) {
-                isRea = false;
+            distance += dist[lastID][dst];
+            if (dist[lastID][dst] == 0) {
+                reachable = false;
             }
             path.emplace(dst);
             lastID = dst;
         }
         bool simCycle = false, cycle = false;
-        if (src == dst && isRea) { // start and end at the same vertex
+        if (src == dst && reachable) { // start and end at the same vertex
             if ((int)path.size() == n) { // TS cycle: visit each vertex at least once
                 cycle = true;
-                if (nv == n + 1) { // TS simple cycle: visit each vertex exactly once
+                if (N == n + 1) { // TS simple cycle: visit each vertex exactly once
                     simCycle = true;
                 }
             }
         }
         cout << "Path " << q + 1 << ": ";
-        if (isRea) {
-            cout << dist;
-            if ((simCycle || cycle) && dist < minDist) {
-                minDist = dist;
+        if (reachable) {
+            cout << distance;
+            if ((simCycle || cycle) && distance < minDist) {
+                minDist = distance;
                 minID = q + 1;
             }
         } else {

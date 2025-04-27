@@ -23,16 +23,17 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n + 1);
+    vector<int> say(n + 1);
+    // statement: positive for human and negative for werewolf
     for (int i = 1; i <= n; i++) {
-        cin >> d[i];
+        cin >> say[i];
     }
     for (int i = 1; i <= n; i++) {
         for (int j = i + 1; j <= n; j++) {
             vector<int> lie, wolf(n + 1, 1);
             wolf[i] = wolf[j] = -1; // suppose i and j are werewolves
             for (int k = 1; k <= n; k++) {
-                if (d[k] * wolf[abs(d[k])] < 0) { // liar
+                if (say[k] * wolf[abs(say[k])] < 0) { // liar
                     lie.emplace_back(k);
                 }
             }

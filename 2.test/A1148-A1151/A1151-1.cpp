@@ -21,8 +21,8 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
 vector<int> pre, in;
@@ -31,22 +31,19 @@ unordered_map<int, bool> exist;
 
 node *create(int preR, int inL, int inH) {
     // create binary search tree from preorder and inorder traversal
-    if (inL > inH) {
-        return nullptr;
-    }
-    node *root = new node;
-    root->v = pre[preR];
+    if (inL > inH) return nullptr;
+    node *root = new node{pre[preR]};
     int inR = loc[pre[preR]];
-    root->lc = create(preR + 1, inL, inR - 1);
-    root->rc = create(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
+    root->left = create(preR + 1, inL, inR - 1);
+    root->right = create(preR + (inR - inL) + 1, inR + 1, inH); // left subtree size: inR - inL
     return root;
 }
 
 node *dfs(node *root, int u, int v) { // LCA of Binary Tree
-    // not use -1 as a marker, because -1 may be a valid node value
-    if (!root || root->v == u || root->v == v) return root; // candidate of LCA
-    node *left = dfs(root->lc, u, v);
-    node *right = dfs(root->rc, u, v);
+    // don't use -1 as a marker, because -1 may be a valid node value
+    if (!root || root->val == u || root->val == v) return root; // candidate of LCA
+    node *left = dfs(root->left, u, v);
+    node *right = dfs(root->right, u, v);
     if (left && right) return root; // both or different sides
     return left == nullptr ? right : left; // one or same side, or null
 }
@@ -69,7 +66,7 @@ int main(int argc, char const *argv[]) {
         int u, v;
         cin >> u >> v;
         if (exist[u] && exist[v]) {
-            int lca = dfs(root, u, v)->v; // no need to ensure u < v
+            int lca = dfs(root, u, v)->val; // no need to ensure u < v
             if (lca != u && lca != v) {
                 cout << "LCA of " << u << " and " << v << " is " << lca << ".\n";
             } else {

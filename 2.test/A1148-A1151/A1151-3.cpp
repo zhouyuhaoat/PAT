@@ -28,10 +28,10 @@ int main(int argc, char const *argv[]) {
     unordered_map<int, int> loc;
     unordered_map<int, bool> exist;
     for (int i = 0; i < n; i++) {
-        int v;
-        cin >> v;
-        loc[v] = i;
-        exist[v] = true;
+        int val;
+        cin >> val;
+        loc[val] = i;
+        exist[val] = true;
     }
     for (int i = 0; i < n; i++) {
         cin >> pre[i];

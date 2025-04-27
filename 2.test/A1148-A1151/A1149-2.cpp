@@ -24,11 +24,12 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    unordered_map<int, unordered_set<int>> dan;
+    unordered_map<int, unordered_set<int>> dangerous;
     for (int i = 0; i < n; i++) {
         int a, b;
         cin >> a >> b;
-        dan[a].emplace(b), dan[b].emplace(a);
+        dangerous[a].emplace(b);
+        dangerous[b].emplace(a);
     }
     for (int q = 0; q < m; q++) {
         int k;
@@ -41,9 +42,9 @@ int main(int argc, char const *argv[]) {
         }
         bool safe = true;
         for (int good : goods) {
-            if (dan.find(good) != dan.end()) {
-                for (int danGood : dan[good]) {
-                    if (goods.find(danGood) != goods.end()) {
+            if (dangerous.find(good) != dangerous.end()) {
+                for (int dangerousGood : dangerous[good]) {
+                    if (goods.find(dangerousGood) != goods.end()) {
                         safe = false;
                         break;
                     }

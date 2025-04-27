@@ -24,11 +24,12 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    unordered_map<int, vector<int>> dan; // adjacency list
+    unordered_map<int, vector<int>> dangerous; // adjacency list
     for (int i = 0; i < n; i++) {
         int a, b;
         cin >> a >> b;
-        dan[a].emplace_back(b), dan[b].emplace_back(a);
+        dangerous[a].emplace_back(b);
+        dangerous[b].emplace_back(a);
     }
     for (int q = 0; q < m; q++) {
         int k;
@@ -42,8 +43,8 @@ int main(int argc, char const *argv[]) {
         bool safe = true;
         for (int i = 0; i < k && safe; i++) {
             // check if there is any dangerous goods in the adjacency list of each goods
-            for (int j = 0; j < (int)dan[goods[i]].size() && safe; j++) {
-                if (exist[dan[goods[i]][j]]) {
+            for (int j = 0; j < (int)dangerous[goods[i]].size() && safe; j++) {
+                if (exist[dangerous[goods[i]][j]]) {
                     safe = false;
                 }
             }

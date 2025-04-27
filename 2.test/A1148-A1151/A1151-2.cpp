@@ -21,8 +21,8 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
 vector<int> pre, in;
