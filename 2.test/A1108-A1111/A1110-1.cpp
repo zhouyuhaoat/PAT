@@ -21,12 +21,12 @@
 using namespace std;
 
 struct node {
-    int v, id;
-    int lc, rc;
+    int val, id;
+    int left, right;
 };
 
 vector<bool> isRoot;
-vector<node> t;
+vector<node> tree;
 
 int getID(string s) { // get id from string, not char
     if (isdigit(s[0])) {
@@ -37,39 +37,35 @@ int getID(string s) { // get id from string, not char
     }
 }
 
-void dfs(int r, int id) {
-    t[r].id = id;
-    if (t[r].lc != -1) {
-        dfs(t[r].lc, 2 * id + 1);
-    }
-    if (t[r].rc != -1) {
-        dfs(t[r].rc, 2 * id + 2);
-    }
+void dfs(int root, int id) {
+    if (root == -1) return;
+    tree[root].id = id;
+    dfs(tree[root].left, 2 * id + 1);
+    dfs(tree[root].right, 2 * id + 2);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n), isRoot.resize(n, true);
+    tree.resize(n), isRoot.resize(n, true);
     for (int i = 0; i < n; i++) {
-        string lc, rc;
-        cin >> lc >> rc;
-        t[i] = {i, 0, getID(lc), getID(rc)};
+        string left, right;
+        cin >> left >> right;
+        tree[i] = {i, 0, getID(left), getID(right)};
     }
-    int r = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
-    dfs(r, 0);
-    sort(t.begin(), t.end(), [](node a, node b) {
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
+    dfs(root, 0);
+    sort(tree.begin(), tree.end(), [](node a, node b) {
         return a.id < b.id;
     });
-    for (int i = 0; i < n; i++) {
-        // if CBT, the id should be in ascending order, from 0 to n-1.
-        if (t[i].id != i) {
-            cout << "NO " << r << "\n";
+    for (int i = 0; i < n; i++) { // if CBT, the id should be in ascending order, from 0 to n-1.
+        if (tree[i].id != i) {
+            cout << "NO " << root << "\n";
             return 0;
         }
     }
-    cout << "YES " << t[n - 1].v << "\n";
+    cout << "YES " << tree[n - 1].val << "\n";
 
     return 0;
 }

@@ -20,132 +20,138 @@
 
 using namespace std;
 
-struct nodeL { // length, distance first
-    int v, l, t;
-    nodeL(int v, int l, int t) : v(v), l(l), t(t) {
+struct nodeDist { // distance first
+    int val, dist, time;
+    nodeDist(int val, int dist, int time) : val(val), dist(dist), time(time) {
     }
-    friend bool operator<(nodeL a, nodeL b) {
-        return a.l > b.l;
+    friend bool operator<(nodeDist a, nodeDist b) {
+        return a.dist > b.dist;
     }
 };
 
-struct nodeT { // time first
-    int v, l, t;
-    nodeT(int v, int l, int t) : v(v), l(l), t(t) {
+struct nodeTime { // time first
+    int val, dist, time;
+    nodeTime(int val, int dist, int time) : val(val), dist(dist), time(time) {
     }
-    friend bool operator<(nodeT a, nodeT b) {
-        return a.t > b.t;
+    friend bool operator<(nodeTime a, nodeTime b) {
+        return a.time > b.time;
     }
 };
 
 vector<bool> vis;
-vector<int> dl, dt; // shortest distance, time
-vector<vector<nodeL>> gl;
-vector<vector<nodeT>> gt;
-vector<vector<int>> prel, pret; // previous
-vector<vector<int>> ll, tt; // distance, time between two nodes
+vector<int> dist, times; // shortest distance, time
+vector<vector<nodeDist>> gDist;
+vector<vector<nodeTime>> gTime;
+vector<vector<int>> preDist, preTime; // predecessor
+vector<vector<int>> matDist, matTime; // weight matrix (distance & time) between two nodes
 
-void dijkstraL(int s) { // dijkstra with distance first
-    dl[s] = 0;
-    priority_queue<nodeL> q;
-    q.emplace(s, 0, 0);
+void dijkstraDist(int src) { // dijkstra with distance first
+    fill(vis.begin(), vis.end(), false);
+    fill(dist.begin(), dist.end(), INT_MAX);
+    fill(times.begin(), times.end(), INT_MAX);
+    dist[src] = 0;
+    priority_queue<nodeDist> q;
+    q.emplace(src, 0, 0);
     while (!q.empty()) {
-        nodeL t = q.top();
+        nodeDist top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
-        for (int i = 0; i < (int)gl[u].size(); i++) {
-            int v = gl[u][i].v;
+        for (int i = 0; i < (int)gDist[u].size(); i++) {
+            int v = gDist[u][i].val;
             if (!vis[v]) {
-                if (dl[u] + gl[u][i].l < dl[v]) {
-                    dl[v] = dl[u] + gl[u][i].l;
-                    dt[v] = dt[u] + gl[u][i].t;
-                    prel[v].clear();
-                    prel[v].emplace_back(u);
-                    q.emplace(v, dl[v], dt[v]);
-                } else if (dl[u] + gl[u][i].l == dl[v]) {
-                    prel[v].emplace_back(u);
+                if (dist[u] + gDist[u][i].dist < dist[v]) {
+                    dist[v] = dist[u] + gDist[u][i].dist;
+                    times[v] = times[u] + gDist[u][i].time;
+                    preDist[v].clear();
+                    preDist[v].emplace_back(u);
+                    q.emplace(v, dist[v], times[v]);
+                } else if (dist[u] + gDist[u][i].dist == dist[v]) {
+                    preDist[v].emplace_back(u);
                 }
             }
         }
     }
 }
 
-void dijkstraT(int s) { // dijkstra with time first
-    dt[s] = 0;
-    priority_queue<nodeT> q;
-    q.emplace(s, 0, 0);
+void dijkstraTime(int src) { // dijkstra with time first
+    fill(vis.begin(), vis.end(), false);
+    fill(dist.begin(), dist.end(), INT_MAX);
+    fill(times.begin(), times.end(), INT_MAX);
+    times[src] = 0;
+    priority_queue<nodeTime> q;
+    q.emplace(src, 0, 0);
     while (!q.empty()) {
-        nodeT t = q.top();
+        nodeTime top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
-        for (int i = 0; i < (int)gt[u].size(); i++) {
-            int v = gt[u][i].v;
+        for (int i = 0; i < (int)gTime[u].size(); i++) {
+            int v = gTime[u][i].val;
             if (!vis[v]) {
-                if (dt[u] + gt[u][i].t < dt[v]) {
-                    dt[v] = dt[u] + gt[u][i].t;
-                    dl[v] = dl[u] + gt[u][i].l;
-                    pret[v].clear();
-                    pret[v].emplace_back(u);
-                    q.emplace(v, dl[v], dt[v]);
-                } else if (dt[u] + gt[u][i].t == dt[v]) {
-                    pret[v].emplace_back(u);
+                if (times[u] + gTime[u][i].time < times[v]) {
+                    times[v] = times[u] + gTime[u][i].time;
+                    dist[v] = dist[u] + gTime[u][i].dist;
+                    preTime[v].clear();
+                    preTime[v].emplace_back(u);
+                    q.emplace(v, dist[v], times[v]);
+                } else if (times[u] + gTime[u][i].time == times[v]) {
+                    preTime[v].emplace_back(u);
                 }
             }
         }
     }
 }
 
-int maxT = INT_MAX;
-vector<int> tempL, ansL;
-void dfsL(int s, int v) { // dfs to find the shortest path with distance first
-    if (v == s) {
-        tempL.emplace_back(v);
-        int sumT = 0;
-        for (int i = tempL.size() - 1; i > 0; i--) {
-            sumT += tt[tempL[i]][tempL[i - 1]];
+int minTime = INT_MAX;
+vector<int> tempDist, resDist;
+void dfsDist(int u, int src) { // dfs to find the shortest path with distance first and time second
+    if (u == src) {
+        tempDist.emplace_back(u);
+        int sum = 0;
+        for (int i = tempDist.size() - 1; i > 0; i--) {
+            sum += matTime[tempDist[i]][tempDist[i - 1]];
         }
-        if (sumT < maxT) {
-            maxT = sumT;
-            ansL = tempL;
+        if (sum < minTime) {
+            minTime = sum;
+            resDist = tempDist;
         }
-        tempL.pop_back();
+        tempDist.pop_back();
         return;
     }
-    tempL.emplace_back(v);
-    for (int i = 0; i < (int)prel[v].size(); i++) {
-        dfsL(s, prel[v][i]);
+    tempDist.emplace_back(u);
+    for (int i = 0; i < (int)preDist[u].size(); i++) {
+        dfsDist(preDist[u][i], src);
     }
-    tempL.pop_back();
+    tempDist.pop_back();
 }
 
-int maxL = INT_MAX;
-vector<int> tempT, ansT;
-void dfsT(int s, int v) { // dfs to find the shortest path with time first
-    if (v == s) {
-        tempT.emplace_back(v);
-        if ((int)tempT.size() < maxL) {
-            maxL = tempT.size();
-            ansT = tempT;
+int minStation = INT_MAX;
+vector<int> tempTime, resTime;
+void dfsTime(int u, int src) { // dfs to find the shortest path with time first and station second
+    if (u == src) {
+        tempTime.emplace_back(u);
+        if ((int)tempTime.size() < minStation) {
+            minStation = tempTime.size();
+            resTime = tempTime;
         }
-        tempT.pop_back();
+        tempTime.pop_back();
         return;
     }
-    tempT.emplace_back(v);
-    for (int i = 0; i < (int)pret[v].size(); i++) {
-        dfsT(s, pret[v][i]);
+    tempTime.emplace_back(u);
+    for (int i = 0; i < (int)preTime[u].size(); i++) {
+        dfsTime(preTime[u][i], src);
     }
-    tempT.pop_back();
+    tempTime.pop_back();
 }
 
-void print(vector<int> v) {
+void print(vector<int>& v) {
     for (int i = v.size() - 1; i >= 0; i--) {
         cout << v[i];
         i > 0 ? cout << " -> " : cout << "\n";
@@ -156,37 +162,34 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vis.resize(n, false), dl.resize(n, INT_MAX), dt.resize(n, INT_MAX);
-    gl.resize(n), gt.resize(n), prel.resize(n), pret.resize(n);
-    ll.resize(n, vector<int>(n)), tt.resize(n, vector<int>(n));
+    vis.resize(n), dist.resize(n), times.resize(n);
+    gDist.resize(n), gTime.resize(n), preDist.resize(n), preTime.resize(n);
+    matDist.resize(n, vector<int>(n)), matTime.resize(n, vector<int>(n));
     for (int i = 0; i < m; i++) {
-        int v1, v2, w, l, t;
-        cin >> v1 >> v2 >> w >> l >> t;
-        gl[v1].emplace_back(v2, l, t), gt[v1].emplace_back(v2, l, t);
-        ll[v1][v2] = l, tt[v1][v2] = t;
-        if (w == 0) { // bi-direction
-            gl[v2].emplace_back(v1, l, t), gt[v2].emplace_back(v1, l, t);
-            ll[v2][v1] = l, tt[v2][v1] = t;
+        int v1, v2, way, length, time;
+        cin >> v1 >> v2 >> way >> length >> time;
+        gDist[v1].emplace_back(v2, length, time);
+        gTime[v1].emplace_back(v2, length, time);
+        matDist[v1][v2] = length, matTime[v1][v2] = time;
+        if (way == 0) { // bi-direction
+            gDist[v2].emplace_back(v1, length, time);
+            gTime[v2].emplace_back(v1, length, time);
+            matDist[v2][v1] = length, matTime[v2][v1] = time;
         }
     }
-    int s, e;
-    cin >> s >> e;
-    dijkstraL(s);
-    dfsL(s, e);
-    int dis = dl[e];
-    fill(vis.begin(), vis.end(), false);
-    fill(dl.begin(), dl.end(), INT_MAX);
-    fill(dt.begin(), dt.end(), INT_MAX);
-    dijkstraT(s);
-    dfsT(s, e);
-    if (ansL == ansT) {
-        cout << "Distance = " << dis << "; Time = " << dt[e] << ": ";
-        print(ansL);
+    int src, dst;
+    cin >> src >> dst;
+    dijkstraDist(src), dfsDist(dst, src);
+    int distance = dist[dst]; // store the shortest distance before next dijkstra
+    dijkstraTime(src), dfsTime(dst, src);
+    if (resDist == resTime) {
+        cout << "Distance = " << distance << "; Time = " << times[dst] << ": ";
+        print(resDist);
     } else {
-        cout << "Distance = " << dis << ": ";
-        print(ansL);
-        cout << "Time = " << dt[e] << ": ";
-        print(ansT);
+        cout << "Distance = " << distance << ": ";
+        print(resDist);
+        cout << "Time = " << times[dst] << ": ";
+        print(resTime);
     }
 
     return 0;

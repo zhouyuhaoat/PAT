@@ -21,17 +21,17 @@
 using namespace std;
 
 struct node {
-    int v, dis;
-    node(int v, int dis) : v(v), dis(dis) {
+    int val, dist;
+    node(int val, int dist) : val(val), dist(dist) {
     }
     friend bool operator<(node a, node b) {
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
 struct edge { // for multiple edges between two vertices
-    int to, length, time;
-    edge(int to, int length, int time) : to(to), length(length), time(time) {
+    int to, dist, time;
+    edge(int to, int dist, int time) : to(to), dist(dist), time(time) {
     }
 };
 
@@ -48,19 +48,20 @@ pair<int, string> dijkstra(string primary) {
     priority_queue<node> q;
     q.emplace(src, 0);
     while (!q.empty()) {
-        node t = q.top();
+        node top = q.top();
         q.pop();
-        int u = t.v;
-        if (vis[u] || t.dis > d1[u]) {
+        int u = top.val;
+        if (vis[u] || top.dist > d1[u]) {
             continue;
         }
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].to;
-            int weight = primary == "Distance" ? g[u][i].length : g[u][i].time;
-            int secondary = primary == "Distance" ? g[u][i].time : 1;
+            int weight = primary == "Distance" ? g[u][i].dist : g[u][i].time; // primary: distance or time
+            int secondary = primary == "Distance" ? g[u][i].time : 1; // secondary: time or station
             if (!vis[v]) {
                 if (make_pair(d1[u] + weight, d2[u] + secondary) < make_pair(d1[v], d2[v])) {
+                    // pair: compare first by distance, then by time
                     d1[v] = d1[u] + weight;
                     d2[v] = d2[u] + secondary;
                     pre[v] = u;
@@ -73,19 +74,18 @@ pair<int, string> dijkstra(string primary) {
     for (int i = dst; i != src; i = pre[i]) {
         path.emplace_back(i);
     }
-    pair<int, string> ans = {d1[dst], to_string(src)};
+    pair<int, string> res = {d1[dst], to_string(src)};
     for (int i = path.size() - 1; i >= 0; i--) {
-        ans.second += " -> " + to_string(path[i]);
+        res.second += " -> " + to_string(path[i]);
     }
-    return ans;
+    return res;
 }
 
 int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vis.resize(n), d1.resize(n), d2.resize(n);
-    pre.resize(n), g.resize(n);
+    vis.resize(n), d1.resize(n), d2.resize(n), pre.resize(n), g.resize(n);
     for (int i = 0; i < m; i++) {
         int v1, v2, way, length, time;
         cin >> v1 >> v2 >> way >> length >> time;
@@ -95,12 +95,12 @@ int main(int argc, char const *argv[]) {
         }
     }
     cin >> src >> dst;
-    auto ans1 = dijkstra("Distance"), ans2 = dijkstra("Time");
-    if (ans1.second != ans2.second) {
-        cout << "Distance = " << ans1.first << ": " << ans1.second << "\n";
-        cout << "Time = " << ans2.first << ": " + ans2.second << "\n";
+    auto resDist = dijkstra("Distance"), resTime = dijkstra("Time");
+    if (resDist.second != resTime.second) {
+        cout << "Distance = " << resDist.first << ": " << resDist.second << "\n";
+        cout << "Time = " << resTime.first << ": " + resTime.second << "\n";
     } else {
-        cout << "Distance = " << ans1.first << "; Time = " << ans2.first << ": " << ans1.second << "\n";
+        cout << "Distance = " << resDist.first << "; Time = " << resTime.first << ": " << resDist.second << "\n";
     }
 
     return 0;

@@ -29,7 +29,8 @@ bool valid(string s, double& num) {
     }
     ostringstream oss;
     oss << fixed << setprecision(2) << num;
-    string formatted = oss.str();
+    string formatted = oss.str(); // formatted is a string with 2 decimal places
+    // and it should include the original string, to ensure that the number is accurate up to 2 decimal places
     if (formatted.substr(0, s.size()) != s || num < -1000 || num > 1000) {
         return false;
     }

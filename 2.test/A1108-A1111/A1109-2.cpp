@@ -22,37 +22,39 @@ using namespace std;
 
 struct peo {
     string id;
-    int h;
+    int height;
 };
 
 int main(int argc, char const *argv[]) {
 
-    int n, k;
-    cin >> n >> k;
-    vector<peo> p(n);
+    int n, row;
+    cin >> n >> row;
+    vector<peo> people(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].id >> p[i].h;
+        cin >> people[i].id >> people[i].height;
     }
-    sort(p.begin(), p.end(), [](peo a, peo b) -> bool {
-        if (a.h != b.h) {
-            return a.h > b.h;
+    sort(people.begin(), people.end(), [](peo a, peo b) -> bool {
+        if (a.height != b.height) {
+            return a.height > b.height;
         } else {
             return a.id < b.id;
         }
     });
-    for (int i = 0, j = n / k + n % k; i < n; i = j, j += n / k) {
-        vector<string> res(j - i);
+    for (int lo = 0, hi = n / row + n % row; lo < n; lo = hi, hi += n / row) {
+        vector<string> res(hi - lo);
         int mi = res.size() / 2;
-        for (int k = i; k < j; k++) {
-            if ((k - i) % 2 == 0) {
-                res[mi + (k - i) / 2] = p[k].id;
-            } else {
-                res[mi - (k - i + 1) / 2] = p[k].id;
+        for (int i = lo; i < hi; i++) {
+            if ((i - lo) % 2 == 0) { // center, or then right
+                // e.g. i = lo, index = mi, center position
+                res[mi + (i - lo) / 2] = people[i].id;
+            } else { // left firstly
+                // e.g. i = lo + 1, index = mi - 1
+                res[mi - (i - lo + 1) / 2] = people[i].id;
             }
         }
-        for (int k = 0; k < (int)res.size(); k++) {
-            cout << res[k];
-            k < (int)res.size() - 1 ? cout << " " : cout << "\n";
+        for (int i = 0; i < (int)res.size(); i++) {
+            cout << res[i];
+            i < (int)res.size() - 1 ? cout << " " : cout << "\n";
         }
     }
 

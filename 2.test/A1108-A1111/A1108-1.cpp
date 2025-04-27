@@ -36,6 +36,7 @@ bool valid(string s, double& num) {
     }
     size_t dot = s.find('.');
     if (dot != string::npos && s.size() - dot > 3) {
+        // accurate up to no more than 2 decimal place
         return false;
     }
     return true;

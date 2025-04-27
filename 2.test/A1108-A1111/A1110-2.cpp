@@ -21,11 +21,11 @@
 using namespace std;
 
 struct node {
-    int lc, rc;
+    int left, right;
 };
 
 vector<bool> isRoot;
-vector<node> t;
+vector<node> tree;
 
 int getID(string s) {
     if (isdigit(s[0])) {
@@ -37,32 +37,30 @@ int getID(string s) {
 }
 
 int maxID = -1, lastNode = -1;
-void dfs(int r, int id) {
-    if (r == -1) {
-        return;
-    }
+void dfs(int root, int id) {
+    if (root == -1) return;
     if (id > maxID) {
         maxID = id;
-        lastNode = r;
+        lastNode = root;
     }
-    dfs(t[r].lc, 2 * id + 1);
-    dfs(t[r].rc, 2 * id + 2);
+    dfs(tree[root].left, 2 * id + 1);
+    dfs(tree[root].right, 2 * id + 2);
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n), isRoot.resize(n, true);
+    tree.resize(n), isRoot.resize(n, true);
     for (int i = 0; i < n; i++) {
-        string lc, rc;
-        cin >> lc >> rc;
-        t[i] = {getID(lc), getID(rc)};
+        string left, right;
+        cin >> left >> right;
+        tree[i] = {getID(left), getID(right)};
     }
-    int r = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
-    dfs(r, 0);
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin();
+    dfs(root, 0);
     if (maxID >= n) { // if CBT, the maximum id should be n-1
-        cout << "NO " << r << "\n";
+        cout << "NO " << root << "\n";
     } else {
         cout << "YES " << lastNode << "\n";
     }

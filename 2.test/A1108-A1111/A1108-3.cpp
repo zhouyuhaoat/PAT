@@ -22,10 +22,10 @@
 using namespace std;
 
 bool valid(string s, double& num) {
-    char b[50];
+    char formatted[50];
     sscanf(s.c_str(), "%lf", &num);
-    sprintf(b, "%.2lf", num);
-    if (strncmp(s.c_str(), b, s.size()) != 0 || num < -1000 || num > 1000) {
+    sprintf(formatted, "%.2lf", num);
+    if (strncmp(s.c_str(), formatted, s.size()) != 0 || num < -1000 || num > 1000) {
         return false;
     }
     return true;

@@ -22,37 +22,39 @@ using namespace std;
 
 struct peo {
     string id;
-    int h;
+    int height;
 };
 
 int main(int argc, char const *argv[]) {
 
-    int n, k;
-    cin >> n >> k;
-    vector<peo> p(n);
+    int n, row;
+    cin >> n >> row;
+    vector<peo> people(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].id >> p[i].h;
+        cin >> people[i].id >> people[i].height;
     }
-    sort(p.begin(), p.end(), [](peo a, peo b) -> bool {
-        if (a.h != b.h) {
-            return a.h > b.h;
+    sort(people.begin(), people.end(), [](peo a, peo b) -> bool {
+        if (a.height != b.height) {
+            return a.height > b.height;
         } else {
             return a.id < b.id;
         }
     });
-    for (int i = 0, j = n / k + n % k; i < n; i = j, j += n / k) {
-        // i: the start index of the current row; j: the start index of the next row
-        vector<string> res(j - i);
-        int mi = res.size() / 2, dir = -1; // direction
-        res[mi] = p[i].id;
-        for (int k = i + 1; k < j; k++) {
-            int offset = (k - i - 1) / 2 + 1;
-            res[mi + offset * dir] = p[k].id;
+    for (int lo = 0, hi = n / row + n % row; lo < n; lo = hi, hi += n / row) {
+        // divide n into g groups: each complete group = n / g; last truncated group = n % g
+        // lo: the start index of the current row; hi: the start index of the next row
+        vector<string> res(hi - lo);
+        int mi = res.size() / 2, dir = -1; // direction: left firstly, then right
+        res[mi] = people[lo].id; // center
+        for (int i = lo + 1; i < hi; i++) {
+            int dist = i - lo, offset = (dist + 1) / 2 * dir;
+            // e.g. i = lo + 1, dist = 1, offset = 1, dir = -1
+            res[mi + offset] = people[i].id;
             dir = -dir;
         }
-        for (int k = 0; k < (int)res.size(); k++) {
-            cout << res[k];
-            k < (int)res.size() - 1 ? cout << " " : cout << "\n";
+        for (int i = 0; i < (int)res.size(); i++) {
+            cout << res[i];
+            i < (int)res.size() - 1 ? cout << " " : cout << "\n";
         }
     }
 

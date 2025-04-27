@@ -17,16 +17,15 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
-#include <vector>
 
 using namespace std;
 
 struct node {
-    int lc, rc;
+    int left, right;
 };
 
 vector<bool> isRoot;
-vector<node> t;
+vector<node> tree;
 
 int getID(string s) {
     if (isdigit(s[0])) {
@@ -37,18 +36,18 @@ int getID(string s) {
     }
 }
 
-bool bfs(int r, int n, int& lastNode) {
+bool bfs(int root, int n, int& lastNode) {
     queue<int> q;
-    q.emplace(r);
+    q.emplace(root);
     while (n--) { // ensure all nodes are visited
-        int f = q.front();
+        int cur = q.front();
         q.pop();
-        if (f == -1) { // if CBT, there is no empty node
+        if (cur == -1) { // if CBT, there is no empty node before the last node
             return false;
         }
-        lastNode = f;
-        q.emplace(t[f].lc);
-        q.emplace(t[f].rc);
+        lastNode = cur;
+        q.emplace(tree[cur].left);
+        q.emplace(tree[cur].right);
     }
     return true;
 }
@@ -57,17 +56,17 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n), isRoot.resize(n, true);
+    tree.resize(n), isRoot.resize(n, true);
     for (int i = 0; i < n; i++) {
-        string lc, rc;
-        cin >> lc >> rc;
-        t[i] = {getID(lc), getID(rc)};
+        string left, right;
+        cin >> left >> right;
+        tree[i] = {getID(left), getID(right)};
     }
-    int r = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin(), lastNode = -1;
-    if (bfs(r, n, lastNode)) {
+    int root = find(isRoot.begin(), isRoot.end(), true) - isRoot.begin(), lastNode = -1;
+    if (bfs(root, n, lastNode)) {
         cout << "YES " << lastNode << "\n";
     } else {
-        cout << "NO " << r << "\n";
+        cout << "NO " << root << "\n";
     }
 
     return 0;
