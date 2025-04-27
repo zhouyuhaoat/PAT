@@ -20,15 +20,16 @@
 
 using namespace std;
 
-bool isQueen(vector<int> c) {
-    unordered_map<int, bool> row, diagL, diagR;
-    for (int i = 1; i < (int)c.size(); i++) {
-        if (row[c[i]] || diagL[c[i] + i] || diagR[c[i] - i]) {
+bool isQueen(vector<int> chess) {
+    // left-bottom corner is origin, column is x-axis, row is y-axis
+    // main diagonal: y = -x + b => row + column = constant
+    // anti diagonal: y = x + b => row - column = constant
+    unordered_map<int, bool> row, diagMain, diagAnti;
+    for (int i = 1; i < (int)chess.size(); i++) {
+        if (row[chess[i]] || diagMain[chess[i] + i] || diagAnti[chess[i] - i]) {
             return false;
         }
-        row[c[i]] = true, diagL[c[i] + i] = true, diagR[c[i] - i] = true;
-        // diagL: main diagonal, (row + column) is constant
-        // diagR: anti diagonal, (row - column) is constant
+        row[chess[i]] = true, diagMain[chess[i] + i] = true, diagAnti[chess[i] - i] = true;
     }
     return true;
 }
@@ -40,12 +41,12 @@ int main(int argc, char const *argv[]) {
     while (k--) {
         int n;
         cin >> n;
-        vector<int> c(n + 1); // all 1-based index
+        vector<int> chess(n + 1); // all 1-based index
         // chessboard: left-bottom corner is (1, 1)
         for (int i = 1; i <= n; i++) { // column
-            cin >> c[i]; // row
+            cin >> chess[i]; // row
         }
-        isQueen(c) ? cout << "YES\n" : cout << "NO\n";
+        isQueen(chess) ? cout << "YES\n" : cout << "NO\n";
     }
 
     return 0;

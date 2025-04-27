@@ -21,27 +21,27 @@
 using namespace std;
 
 struct node {
-    string v;
-    int lc, rc;
+    string val;
+    int left, right;
 };
 
-vector<node> t;
-string ans;
+vector<node> tree;
+string res;
 
-void dfs(int r) {
-    bool nonLeaf = t[r].lc != -1 || t[r].rc != -1; // non-leaf node
+void dfs(int root) {
+    bool nonLeaf = tree[root].left != -1 || tree[root].right != -1; // non-leaf node
     if (nonLeaf) {
-        ans += "(";
+        res += "(";
     }
-    if (t[r].lc != -1) {
-        dfs(t[r].lc);
+    if (tree[root].left != -1) {
+        dfs(tree[root].left);
     }
-    ans += t[r].v;
-    if (t[r].rc != -1) {
-        dfs(t[r].rc);
+    res += tree[root].val;
+    if (tree[root].right != -1) {
+        dfs(tree[root].right);
     }
     if (nonLeaf) {
-        ans += ")";
+        res += ")";
     }
 }
 
@@ -49,24 +49,24 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 1; i <= n; i++) {
-        cin >> t[i].v >> t[i].lc >> t[i].rc;
-        if (t[i].lc != -1) {
-            isroot[t[i].lc] = false;
+        cin >> tree[i].val >> tree[i].left >> tree[i].right;
+        if (tree[i].left != -1) {
+            isRoot[tree[i].left] = false;
         }
-        if (t[i].rc != -1) {
-            isroot[t[i].rc] = false;
+        if (tree[i].right != -1) {
+            isRoot[tree[i].right] = false;
         }
     }
-    int r = find(isroot.begin() + 1, isroot.end(), true) - isroot.begin();
-    dfs(r); // inorder traversal for infix expression
+    int root = find(isRoot.begin() + 1, isRoot.end(), true) - isRoot.begin();
+    dfs(root); // inorder traversal for infix expression
     // same as non-leaf node, the parentheses of root are not needed
-    if (ans[0] == '(') { // parentheses of root: at the beginning and end
-        cout << ans.substr(1, ans.size() - 2) << "\n"; // remove the outer parentheses
+    if (res[0] == '(') { // parentheses of root: at the beginning and end
+        cout << res.substr(1, res.size() - 2) << "\n"; // remove the outer parentheses
     } else {
-        cout << ans << "\n";
+        cout << res << "\n";
     }
 
     return 0;

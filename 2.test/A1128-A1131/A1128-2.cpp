@@ -19,15 +19,15 @@
 
 using namespace std;
 
-bool isQueen(vector<int> c) {
-    for (int i = 1; i < (int)c.size(); i++) {
+bool isQueen(vector<int> chess) {
+    for (int i = 1; i < (int)chess.size(); i++) {
         for (int j = 1; j < i; j++) { // all previous columns
-            if (c[i] == c[j] || i - j == abs(c[i] - c[j])) {
+            if (chess[i] == chess[j] || i - j == abs(chess[i] - chess[j])) {
                 /*
-                1. c[i] == c[j]: same row
-                2. i - j == abs(c[i] - c[j]): same diagonal
+                1. chess[i] == chess[j]: same row
+                2. i - j == abs(chess[i] - chess[j]): same diagonal
                     1. i - j: delta column
-                    2. c[i] - c[j]: delta row
+                    2. chess[i] - chess[j]: delta row
                     3. gradient of diagonal = delta row / delta column = 1 or -1
                  */
                 return false;
@@ -44,11 +44,11 @@ int main(int argc, char const *argv[]) {
     while (k--) {
         int n;
         cin >> n;
-        vector<int> c(n + 1);
+        vector<int> chess(n + 1);
         for (int i = 1; i <= n; i++) {
-            cin >> c[i];
+            cin >> chess[i];
         }
-        isQueen(c) ? cout << "YES\n" : cout << "NO\n";
+        isQueen(chess) ? cout << "YES\n" : cout << "NO\n";
     }
 
     return 0;

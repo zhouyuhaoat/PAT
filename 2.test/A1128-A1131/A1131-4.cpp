@@ -29,12 +29,12 @@ vector<vector<int>> g(maxn);
 map<pair<int, int>, int> line;
 
 int minStop = INT_MAX, minTrans = INT_MAX;
-vector<int> ans, temp;
+vector<int> res, temp;
 
 int transfer(vector<int>& path) {
     int cnt = 0;
     for (int i = 1; i < (int)path.size() - 1; i++) {
-        if (line[{path[i - 1], path[i]}] != line[{path[i], path[i + 1]}]) {
+        if (line[{path[i], path[i - 1]}] != line[{path[i], path[i + 1]}]) {
             cnt++;
         }
     }
@@ -48,12 +48,12 @@ void dfs(int u, int dst, int stop) {
         if (stop < minStop) {
             minStop = stop;
             minTrans = transfer(temp);
-            ans = temp;
+            res = temp;
         } else if (stop == minStop) {
             int trans = transfer(temp);
             if (trans < minTrans) {
                 minTrans = trans;
-                ans = temp;
+                res = temp;
             }
         }
         vis[u] = false;
@@ -79,9 +79,9 @@ void print(vector<int>& path) {
     cout << "Take Line#" << line[{path[0], path[1]}] << " from ";
     cout << setfill('0') << setw(4) << path[0] << " to ";
     for (int i = 1; i < (int)path.size() - 1; i++) {
-        if (line[{path[i + 1], path[i]}] != line[{path[i], path[i - 1]}]) {
+        if (line[{path[i], path[i + 1]}] != line[{path[i], path[i - 1]}]) {
             cout << setfill('0') << setw(4) << path[i] << ".\n";
-            cout << "Take Line#" << line[{path[i + 1], path[i]}] << " from ";
+            cout << "Take Line#" << line[{path[i], path[i + 1]}] << " from ";
             cout << setfill('0') << setw(4) << path[i] << " to ";
         }
     }
@@ -112,9 +112,9 @@ int main(int argc, char const *argv[]) {
         cin >> src >> dst;
         fill(vis.begin(), vis.end(), false);
         minStop = minTrans = INT_MAX;
-        ans.clear(), temp.clear();
-        dfs(src, dst, 0);
-        print(ans);
+        res.clear(), temp.clear();
+        dfs(src, dst, 0); // mark source in dfs
+        print(res);
     }
 
     return 0;

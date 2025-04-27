@@ -25,30 +25,30 @@ using namespace std;
 const int maxn = 1e4;
 
 struct sta {
-    int id, dis; // distance = 1 for each edge
-    sta(int id, int dis) : id(id), dis(dis) { // constructor
+    int id, dist; // distance = 1 for each edge
+    sta(int id, int dist) : id(id), dist(dist) {
     }
-    friend bool operator<(sta a, sta b) { // overload operator< for priority_queue
-        return a.dis > b.dis;
+    friend bool operator<(sta a, sta b) {
+        return a.dist > b.dist;
     }
 };
 
 vector<bool> vis(maxn);
-vector<int> d(maxn);
-vector<vector<int>> pre(maxn);
+vector<int> dist(maxn); // shortest distance
+vector<vector<int>> pre(maxn); // predecessor
 vector<vector<sta>> g(maxn);
 map<pair<int, int>, int> line;
 
-void dijkstra(int st) {
+void dijkstra(int src) {
     fill(vis.begin(), vis.end(), false);
-    fill(d.begin(), d.end(), INT_MAX);
+    fill(dist.begin(), dist.end(), INT_MAX);
     pre.clear();
     priority_queue<sta> q;
-    d[st] = 0, q.emplace(st, 0);
+    dist[src] = 0, q.emplace(src, 0);
     while (!q.empty()) {
-        sta t = q.top();
+        sta top = q.top();
         q.pop();
-        int u = t.id;
+        int u = top.id;
         if (vis[u]) {
             continue;
         }
@@ -56,12 +56,12 @@ void dijkstra(int st) {
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i].id;
             if (!vis[v]) {
-                if (d[u] + g[u][i].dis < d[v]) { // relax
-                    d[v] = d[u] + g[u][i].dis;
+                if (dist[u] + g[u][i].dist < dist[v]) { // relax
+                    dist[v] = dist[u] + g[u][i].dist;
                     pre[v].clear();
                     pre[v].emplace_back(u);
-                    q.emplace(v, d[v]);
-                } else if (d[u] + g[u][i].dis == d[v]) { // multiple shortest paths
+                    q.emplace(v, dist[v]);
+                } else if (dist[u] + g[u][i].dist == dist[v]) { // multiple shortest paths
                     pre[v].emplace_back(u);
                 }
             }
@@ -72,33 +72,33 @@ void dijkstra(int st) {
 int transfer(vector<int>& path) {
     int cnt = 0;
     for (int i = 1; i < (int)path.size() - 1; i++) { // traverse the path wholely
-        if (line[{path[i - 1], path[i]}] != line[{path[i], path[i + 1]}]) {
+        if (line[{path[i], path[i - 1]}] != line[{path[i], path[i + 1]}]) {
             cnt++;
         }
     }
     return cnt;
 }
 
-int minDis = INT_MAX, minTrans = INT_MAX;
-vector<int> ans, temp;
-void dfs(int s, int v) { // backtracking by dfs
-    if (v == s) {
-        temp.emplace_back(v);
+int minDist = INT_MAX, minTrans = INT_MAX;
+vector<int> res, temp;
+void dfs(int u, int src) { // backtracking by dfs
+    if (u == src) {
+        temp.emplace_back(u);
         int cnt = transfer(temp); // count of transfer
-        if ((int)temp.size() < minDis) {
-            minDis = temp.size();
+        if ((int)temp.size() < minDist) { // distance = stations - 1
+            minDist = temp.size();
             minTrans = cnt;
-            ans = temp;
-        } else if ((int)temp.size() == minDis && cnt < minTrans) {
+            res = temp;
+        } else if ((int)temp.size() == minDist && cnt < minTrans) {
             minTrans = cnt;
-            ans = temp;
+            res = temp;
         }
         temp.pop_back();
         return;
     }
-    temp.emplace_back(v);
-    for (int i = 0; i < (int)pre[v].size(); i++) {
-        dfs(s, pre[v][i]);
+    temp.emplace_back(u);
+    for (int i = 0; i < (int)pre[u].size(); i++) {
+        dfs(pre[u][i], src);
     }
     temp.pop_back();
 }
@@ -108,7 +108,7 @@ void print(vector<int>& path) {
     cout << "Take Line#" << line[{path[path.size() - 1], path[path.size() - 2]}] << " from ";
     cout << setfill('0') << setw(4) << path[path.size() - 1] << " to ";
     for (int i = path.size() - 2; i > 0; i--) { // traverse the path wholely
-        if (line[{path[i], path[i - 1]}] != line[{path[i + 1], path[i]}]) { // transfer
+        if (line[{path[i], path[i - 1]}] != line[{path[i], path[i + 1]}]) { // transfer
             cout << setfill('0') << setw(4) << path[i] << ".\n";
             cout << "Take Line#" << line[{path[i], path[i - 1]}] << " from ";
             cout << setfill('0') << setw(4) << path[i] << " to ";
@@ -129,7 +129,7 @@ int main(int argc, char const *argv[]) {
         for (int j = 1; j < m; j++) {
             int id;
             cin >> id;
-            line[{lastID, id}] = i + 1, line[{id, lastID}] = i + 1; // bidirectional
+            line[{lastID, id}] = i + 1, line[{id, lastID}] = i + 1; // bi-directional
             g[lastID].emplace_back(id, 1), g[id].emplace_back(lastID, 1);
             lastID = id;
         }
@@ -140,10 +140,10 @@ int main(int argc, char const *argv[]) {
         int src, dst;
         cin >> src >> dst;
         dijkstra(src);
-        minDis = minTrans = INT_MAX;
-        ans.clear(), temp.clear();
-        dfs(src, dst);
-        print(ans);
+        minDist = minTrans = INT_MAX;
+        res.clear(), temp.clear();
+        dfs(dst, src);
+        print(res);
     }
 
     return 0;

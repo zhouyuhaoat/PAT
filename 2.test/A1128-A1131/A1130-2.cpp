@@ -21,43 +21,43 @@
 using namespace std;
 
 struct node {
-    string v;
-    int lc, rc;
+    string val;
+    int left, right;
 };
 
-vector<node> t;
+vector<node> tree;
 
-string dfs(int r) {
-    if (r == -1) { // invalid node
+string dfs(int root) {
+    if (root == -1) { // invalid node
         return "";
     }
-    if (t[r].lc == -1 && t[r].rc == -1) { // leaf node: operand
-        return t[r].v;
+    if (tree[root].left == -1 && tree[root].right == -1) { // leaf node: operand
+        return tree[root].val;
     }
-    return "(" + dfs(t[r].lc) + t[r].v + dfs(t[r].rc) + ")"; // non-leaf node: operator
+    return "(" + dfs(tree[root].left) + tree[root].val + dfs(tree[root].right) + ")"; // non-leaf node: operator
 }
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 1; i <= n; i++) {
-        cin >> t[i].v >> t[i].lc >> t[i].rc;
-        if (t[i].lc != -1) {
-            isroot[t[i].lc] = false;
+        cin >> tree[i].val >> tree[i].left >> tree[i].right;
+        if (tree[i].left != -1) {
+            isRoot[tree[i].left] = false;
         }
-        if (t[i].rc != -1) {
-            isroot[t[i].rc] = false;
+        if (tree[i].right != -1) {
+            isRoot[tree[i].right] = false;
         }
     }
-    int r = find(isroot.begin() + 1, isroot.end(), true) - isroot.begin();
-    string ans = dfs(r);
+    int root = find(isRoot.begin() + 1, isRoot.end(), true) - isRoot.begin();
+    string res = dfs(root);
     if (n == 1) { // root is the only one operand
-        cout << ans << "\n";
+        cout << res << "\n";
     } else { // root is an operator
-        cout << ans.substr(1, ans.size() - 2) << "\n";
+        cout << res.substr(1, res.size() - 2) << "\n";
     }
 
     return 0;

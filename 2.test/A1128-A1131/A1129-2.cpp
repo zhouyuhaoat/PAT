@@ -21,7 +21,7 @@
 using namespace std;
 
 struct cmp {
-    bool operator()(const pair<int, int>& a, const pair<int, int>& b) const {
+    bool operator()(pair<int, int> a, pair<int, int> b) const {
         if (a.second != b.second) {
             return a.second > b.second;
         } else {
@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]) {
     int n, k;
     cin >> n >> k;
     unordered_map<int, int> freq;
-    set<pair<int, int>, cmp> s; // pair: <id, frequency>
+    set<pair<int, int>, cmp> s; // pair: id, frequency
     for (int i = 0; i < n; i++) {
         int id;
         cin >> id;

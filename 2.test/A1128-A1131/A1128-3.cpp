@@ -20,16 +20,16 @@
 
 using namespace std;
 
-bool isQueen(vector<int> c) {
-    bitset<1001> row, diagL, diagR; // of each column
-    for (int i = 1; i < (int)c.size(); i++) {
-        if (row.test(c[i]) || diagL.test(c[i]) || diagR.test(c[i])) {
+bool isQueen(vector<int> chess) {
+    bitset<1001> row, diagMain, diagAnti; // of current column
+    for (int i = 1; i < (int)chess.size(); i++) {
+        if (row.test(chess[i]) || diagMain.test(chess[i]) || diagAnti.test(chess[i])) {
             return false;
         }
-        row.set(c[i]), diagL.set(c[i]), diagR.set(c[i]);
-        diagL >>= 1, diagR <<= 1; // shift for next column
-        // diagL: main diagonal, from top left (down, >>) to bottom right
-        // diagR: anti diagonal, from bottom left (up, <<) to top right
+        row.set(chess[i]), diagMain.set(chess[i]), diagAnti.set(chess[i]);
+        diagMain >>= 1, diagAnti <<= 1; // shift for next column
+        // main diagonal, from top left (down, >>) to bottom right
+        // anti diagonal, from bottom left (up, <<) to top right
     }
     return true;
 }
@@ -41,11 +41,11 @@ int main(int argc, char const *argv[]) {
     while (k--) {
         int n;
         cin >> n;
-        vector<int> c(n + 1);
+        vector<int> chess(n + 1);
         for (int i = 1; i <= n; i++) {
-            cin >> c[i];
+            cin >> chess[i];
         }
-        isQueen(c) ? cout << "YES\n" : cout << "NO\n";
+        isQueen(chess) ? cout << "YES\n" : cout << "NO\n";
     }
 
     return 0;

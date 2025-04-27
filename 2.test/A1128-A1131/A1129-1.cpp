@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    unordered_map<int, int> freq;
+    unordered_map<int, int> freq; // id -> frequency
     set<node> s;
     for (int i = 0; i < n; i++) {
         int id;
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
         if (!s.empty()) {
             cout << id << ":";
             int cnt = 0;
-            for (auto it = s.begin(); cnt++ < k && it != s.end(); it++) {
+            for (auto it = s.begin(); cnt++ < k && it != s.end(); it++) { // top k
                 cout << " " << it->id;
             }
             cout << "\n";
@@ -52,7 +52,7 @@ int main(int argc, char const *argv[]) {
         if (it != s.end()) {
             s.erase(it);
         }
-        s.insert(node{id, ++freq[id]});
+        s.emplace(id, ++freq[id]);
     }
 
     return 0;

@@ -24,26 +24,26 @@ using namespace std;
 
 const int maxn = 1e4;
 
-vector<int> d(maxn);
+vector<int> dist(maxn);
 vector<vector<int>> pre(maxn), g(maxn);
 map<pair<int, int>, int> line;
 
-void bfs(int st) { // dijkstra -> equal edge weights -> bfs
-    fill(d.begin(), d.end(), INT_MAX);
+void bfs(int src) { // dijkstra -> equal edge weights -> bfs
+    fill(dist.begin(), dist.end(), INT_MAX);
     pre.clear();
     queue<int> q;
-    d[st] = 0, q.emplace(st);
+    dist[src] = 0, q.emplace(src);
     while (!q.empty()) {
         int u = q.front();
         q.pop();
         for (int i = 0; i < (int)g[u].size(); i++) {
             int v = g[u][i];
-            if (d[u] + 1 < d[v]) {
-                d[v] = d[u] + 1;
+            if (dist[u] + 1 < dist[v]) {
+                dist[v] = dist[u] + 1;
                 pre[v].clear();
                 pre[v].emplace_back(u);
                 q.emplace(v);
-            } else if (d[u] + 1 == d[v]) {
+            } else if (dist[u] + 1 == dist[v]) {
                 pre[v].emplace_back(u);
             }
         }
@@ -53,33 +53,33 @@ void bfs(int st) { // dijkstra -> equal edge weights -> bfs
 int transfer(vector<int>& path) {
     int cnt = 0;
     for (int i = 1; i < (int)path.size() - 1; i++) {
-        if (line[{path[i - 1], path[i]}] != line[{path[i], path[i + 1]}]) {
+        if (line[{path[i], path[i - 1]}] != line[{path[i], path[i + 1]}]) {
             cnt++;
         }
     }
     return cnt;
 }
 
-int minTrans = INT_MAX, minDis = INT_MAX;
-vector<int> ans, temp;
-void dfs(int s, int v) {
-    if (v == s) {
-        temp.emplace_back(v);
+int minTrans = INT_MAX, minDist = INT_MAX;
+vector<int> res, temp;
+void dfs(int u, int src) {
+    if (u == src) {
+        temp.emplace_back(u);
         int cnt = transfer(temp);
-        if ((int)temp.size() < minDis) {
-            minDis = temp.size();
+        if ((int)temp.size() < minDist) {
+            minDist = temp.size();
             minTrans = cnt;
-            ans = temp;
-        } else if ((int)temp.size() == minDis && cnt < minTrans) {
+            res = temp;
+        } else if ((int)temp.size() == minDist && cnt < minTrans) {
             minTrans = cnt;
-            ans = temp;
+            res = temp;
         }
         temp.pop_back();
         return;
     }
-    temp.emplace_back(v);
-    for (int i = 0; i < (int)pre[v].size(); i++) {
-        dfs(s, pre[v][i]);
+    temp.emplace_back(u);
+    for (int i = 0; i < (int)pre[u].size(); i++) {
+        dfs(pre[u][i], src);
     }
     temp.pop_back();
 }
@@ -89,7 +89,7 @@ void print(vector<int>& path) {
     cout << "Take Line#" << line[{path[path.size() - 1], path[path.size() - 2]}] << " from ";
     cout << setfill('0') << setw(4) << path[path.size() - 1] << " to ";
     for (int i = path.size() - 2; i > 0; i--) {
-        if (line[{path[i], path[i - 1]}] != line[{path[i + 1], path[i]}]) {
+        if (line[{path[i], path[i - 1]}] != line[{path[i], path[i + 1]}]) {
             cout << setfill('0') << setw(4) << path[i] << ".\n";
             cout << "Take Line#" << line[{path[i], path[i - 1]}] << " from ";
             cout << setfill('0') << setw(4) << path[i] << " to ";
@@ -121,10 +121,10 @@ int main(int argc, char const *argv[]) {
         int src, dst;
         cin >> src >> dst;
         bfs(src);
-        minTrans = minDis = INT_MAX;
-        ans.clear(), temp.clear();
-        dfs(src, dst);
-        print(ans);
+        minTrans = minDist = INT_MAX;
+        res.clear(), temp.clear();
+        dfs(dst, src);
+        print(res);
     }
 
     return 0;
