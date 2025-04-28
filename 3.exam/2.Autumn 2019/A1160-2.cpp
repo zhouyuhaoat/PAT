@@ -22,14 +22,14 @@ using namespace std;
 
 int K, m, n, suffix;
 vector<int> prefix;
-// K: number of digits; m: sum of digits; n: sum of m + 1
+// K: number of digits; m: sum of digits fo A; n: sum of digits of A + 1
 // suffix: number of trailing 9s; prefix: number in reverse order
 
 void dfs(int k, int sum, vector<pair<int, int>>& res) {
     if ((K - k) * 9 + sum < m) return; // remaining digits can't reach the target sum
     if (k > K || sum > m) return; // exceeded bounds
     if (k == K && sum == m) {
-        if (prefix.back() != 0 && prefix[0] != 9) { // the first digit is not 0 and the last digit is not 9
+        if (prefix.back() != 0 && prefix[0] != 9) { // the first digit cannot be 0 and the last digit cannot be 9
             int A = 0; // the number to be formed
             for (int i = prefix.size() - 1; i >= 0; i--) { // construct the number from the prefix
                 A = A * 10 + prefix[i];
@@ -49,19 +49,19 @@ void dfs(int k, int sum, vector<pair<int, int>>& res) {
 }
 
 vector<int> getPrimeFactors(int n) { // prime factorization
-    vector<int> res;
+    vector<int> pfs;
     for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) {
-            res.emplace_back(i);
+            pfs.emplace_back(i);
             while (n % i == 0) { // avoid duplicates
                 n /= i;
             }
         }
     }
     if (n > 1) {
-        res.emplace_back(n);
+        pfs.emplace_back(n);
     }
-    return res;
+    return pfs;
 }
 
 int main(int argc, char const *argv[]) {
@@ -92,8 +92,8 @@ int main(int argc, char const *argv[]) {
         }
         if (!res.empty()) {
             sort(res.begin(), res.end());
-            for (auto it : res) {
-                cout << it.first << " " << it.second << "\n";
+            for (auto [n, A] : res) {
+                cout << n << " " << A << "\n";
             }
         } else {
             cout << "No Solution\n";

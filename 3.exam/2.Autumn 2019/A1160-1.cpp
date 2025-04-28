@@ -46,28 +46,32 @@ int getSum(int n) { // sum of digits
 
 int main(int argc, char const *argv[]) {
 
-    int n;
-    cin >> n;
-    for (int q = 0; q < n; q++) {
-        int k, m;
-        cin >> k >> m;
+    int N;
+    cin >> N;
+    for (int q = 0; q < N; q++) {
+        int K, m;
+        cin >> K >> m;
         cout << "Case " << q + 1 << "\n";
-        // the greatest common divisor of m and n is a prime number which is greater than 2.
-        // 1. n = m + 1: the gcd of two consecutive numbers always equals 1
-        // 2. n < m: the suffix is 9s
+        /*
+        m: sum of digits of A; n: sum of digits of A + 1
+        the greatest common divisor of m and n is a prime number which is greater than 2.
+        1. n = m + 1: the gcd of two consecutive numbers always equals 1
+        2. n < m: the suffix is 9s
+        */
         bool flag = false;
-        for (int i = 3; i < m; i++) {
-            if (isPrime(gcd(m, i))) {
-                if ((m - i + 1) % 9 == 0) { // m - i + 1: the number of digits in the suffix
-                    int rc = (m - i + 1) / 9; // the number of 9s in the suffix
-                    string suffix = string(rc, '9');
-                    int lc = k - rc; // the number of digits in the prefix
-                    int sum = m - rc * 9; // the sum of digits in the prefix
-                    if (sum >= 1 && sum <= lc * 9) { // valid
-                        int lj = pow(10, lc - 1), rj = lj * 10 - 1; // the range of the prefix
-                        for (int j = lj; j <= rj; j++) {
-                            if (getSum(j) == sum && j % 10 != 9) { // the last digit in the prefix is not 9
-                                cout << i << " " << j << suffix << "\n";
+        for (int n = 3; n < m; n++) {
+            if (isPrime(gcd(m, n))) {
+                if ((m - n + 1) % 9 == 0) { // m - n + 1: the sum of digits in the suffix
+                    int right = (m - n + 1) / 9; // the number of 9s in the suffix
+                    string suffix = string(right, '9');
+                    int left = K - right; // the number of digits in the prefix
+                    int sum = m - right * 9; // the sum of digits in the prefix
+                    if (sum >= 1 && sum <= left * 9) { // valid
+                        int lo = pow(10, left - 1), hi = lo * 10 - 1; // the range of the prefix
+                        for (int prefix = lo; prefix <= hi; prefix++) {
+                            if (getSum(prefix) == sum && prefix % 10 != 9) {
+                                // the last digit in the prefix cannot be 9
+                                cout << n << " " << prefix << suffix << "\n";
                                 flag = true;
                             }
                         }

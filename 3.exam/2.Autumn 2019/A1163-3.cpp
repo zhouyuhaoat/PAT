@@ -21,36 +21,36 @@
 using namespace std;
 
 struct node {
-    int v, dis;
-    node(int v, int dis) : v(v), dis(dis) {
+    int val, dist;
+    node(int val, int dis) : val(val), dist(dis) {
     }
     friend bool operator<(node a, node b) {
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
-vector<int> d;
+vector<int> dist;
 vector<bool> vis;
 vector<vector<node>> g;
 
-bool dijkstra(int n, vector<int>& p) {
+bool dijkstra(int n, vector<int>& seq) {
     fill(vis.begin(), vis.end(), false);
-    fill(d.begin(), d.end(), INT_MAX);
+    fill(dist.begin(), dist.end(), INT_MAX);
     priority_queue<node> q;
-    d[p[1]] = 0;
+    dist[seq[1]] = 0;
     for (int i = 1; i <= n; i++) {
-        int u = p[i];
+        int u = seq[i];
         vis[u] = true;
-        while (!q.empty() && vis[q.top().v]) { // not yet visited
+        while (!q.empty() && vis[q.top().val]) { // ensure not yet visited
             q.pop();
         }
-        if (!q.empty() && q.top().dis < d[u]) { // the smaller minimum distance
+        if (!q.empty() && q.top().dist < dist[u]) { // the smaller minimum distance
             return false;
         }
         for (auto [v, dis] : g[u]) {
-            if (!vis[v] && d[u] + dis < d[v]) {
-                d[v] = d[u] + dis;
-                q.emplace(v, d[v]);
+            if (!vis[v] && dist[u] + dis < dist[v]) {
+                dist[v] = dist[u] + dis;
+                q.emplace(v, dist[v]);
             }
         }
     }
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[]) {
 
     int nv, ne;
     cin >> nv >> ne;
-    d.resize(nv + 1), vis.resize(nv + 1), g.resize(nv + 1);
+    dist.resize(nv + 1), vis.resize(nv + 1), g.resize(nv + 1);
     for (int i = 0; i < ne; i++) {
         int a, b, c;
         cin >> a >> b >> c;
@@ -70,11 +70,11 @@ int main(int argc, char const *argv[]) {
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
-        vector<int> p(nv + 1);
+        vector<int> seq(nv + 1);
         for (int i = 1; i <= nv; i++) {
-            cin >> p[i];
+            cin >> seq[i];
         }
-        dijkstra(nv, p) ? cout << "Yes\n" : cout << "No\n";
+        dijkstra(nv, seq) ? cout << "Yes\n" : cout << "No\n";
     }
 
     return 0;

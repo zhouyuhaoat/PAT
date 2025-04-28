@@ -21,36 +21,36 @@
 using namespace std;
 
 struct node {
-    int v, dis; // vertex id, distance
-    node(int v, int dis) : v(v), dis(dis) { // constructor
+    int val, dist;
+    node(int val, int dist) : val(val), dist(dist) { // constructor
     }
     friend bool operator<(node a, node b) { // overload < operator for min-heap
-        return a.dis > b.dis;
+        return a.dist > b.dist;
     }
 };
 
-vector<int> d;
+vector<int> dist;
 vector<bool> vis;
 vector<vector<node>> g;
 
-void dijkstra(int s) { // Dijkstra's algorithm
-    fill(d.begin(), d.end(), INT_MAX);
+void dijkstra(int src) { // Dijkstra's algorithm
+    fill(dist.begin(), dist.end(), INT_MAX);
     fill(vis.begin(), vis.end(), false);
     priority_queue<node> q;
-    d[s] = 0, q.emplace(s, 0);
+    dist[src] = 0, q.emplace(src, 0);
     while (!q.empty()) {
-        node t = q.top();
+        node top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
-            if (!vis[v] && d[u] + g[u][i].dis < d[v]) { // relaxation
-                d[v] = d[u] + g[u][i].dis;
-                q.emplace(v, d[v]);
+            int v = g[u][i].val;
+            if (!vis[v] && dist[u] + g[u][i].dist < dist[v]) {
+                dist[v] = dist[u] + g[u][i].dist;
+                q.emplace(v, dist[v]);
             }
         }
     }
@@ -60,7 +60,7 @@ int main(int argc, char const *argv[]) {
 
     int nv, ne;
     cin >> nv >> ne;
-    d.resize(nv + 1), vis.resize(nv + 1), g.resize(nv + 1);
+    dist.resize(nv + 1), vis.resize(nv + 1), g.resize(nv + 1);
     for (int i = 0; i < ne; i++) {
         int a, b, c;
         cin >> a >> b >> c;
@@ -69,15 +69,15 @@ int main(int argc, char const *argv[]) {
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
-        vector<int> p(nv);
+        vector<int> seq(nv);
         for (int i = 0; i < nv; i++) {
-            cin >> p[i];
+            cin >> seq[i];
         }
-        dijkstra(p[0]);
+        dijkstra(seq[0]);
         bool flag = true;
         // Dijkstra Sequence: the nodes in the path are in non-decreasing order of their distances
         for (int i = 1; i < nv; i++) {
-            if (d[p[i]] < d[p[i - 1]]) {
+            if (dist[seq[i]] < dist[seq[i - 1]]) {
                 flag = false;
                 break;
             }

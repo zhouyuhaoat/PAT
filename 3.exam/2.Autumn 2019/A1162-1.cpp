@@ -21,20 +21,20 @@
 using namespace std;
 
 struct node {
-    string v;
-    int lc, rc;
+    string val;
+    int left, right;
 };
 
-vector<node> d; // 1-based index
+vector<node> tree; // 1-based index
 
-string dfs(int r) { // postfix expression: unary operator, binary operator
-    if (d[r].lc != -1 && d[r].rc != -1) { // both left and right children
-        return "(" + dfs(d[r].lc) + dfs(d[r].rc) + d[r].v + ")";
-    } else if (d[r].rc != -1) { // only right child
+string dfs(int root) { // postfix expression: unary operator, binary operator
+    if (tree[root].left != -1 && tree[root].right != -1) { // both left and right children
+        return "(" + dfs(tree[root].left) + dfs(tree[root].right) + tree[root].val + ")";
+    } else if (tree[root].right != -1) { // only right child
         // for the case of only one child, the child must be on the right
-        return "(" + d[r].v + dfs(d[r].rc) + ")";
+        return "(" + tree[root].val + dfs(tree[root].right) + ")";
     } else { // no child
-        return "(" + d[r].v + ")";
+        return "(" + tree[root].val + ")";
     }
 }
 
@@ -42,19 +42,19 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    d.resize(n + 1);
-    vector<bool> isroot(n + 1, true);
+    tree.resize(n + 1);
+    vector<bool> isRoot(n + 1, true);
     for (int i = 1; i <= n; i++) {
-        cin >> d[i].v >> d[i].lc >> d[i].rc;
-        if (d[i].lc != -1) {
-            isroot[d[i].lc] = false;
+        cin >> tree[i].val >> tree[i].left >> tree[i].right;
+        if (tree[i].left != -1) {
+            isRoot[tree[i].left] = false;
         }
-        if (d[i].rc != -1) {
-            isroot[d[i].rc] = false;
+        if (tree[i].right != -1) {
+            isRoot[tree[i].right] = false;
         }
     }
-    int r = find(isroot.begin() + 1, isroot.end(), true) - isroot.begin();
-    cout << dfs(r) << "\n";
+    int root = find(isRoot.begin() + 1, isRoot.end(), true) - isRoot.begin();
+    cout << dfs(root) << "\n";
 
     return 0;
 }

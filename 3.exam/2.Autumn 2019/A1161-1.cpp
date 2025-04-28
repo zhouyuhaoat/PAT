@@ -25,38 +25,37 @@ struct node {
     int data, next;
 };
 
-unordered_map<int, node> nodes;
-
 int main(int argc, char const *argv[]) {
 
     int head1, head2, n;
     cin >> head1 >> head2 >> n;
+    unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
         int addr;
         cin >> addr >> nodes[addr].data >> nodes[addr].next;
     }
-    vector<int> l1, l2;
+    vector<int> list1, list2;
     for (int p = head1; p != -1; p = nodes[p].next) {
-        l1.emplace_back(p);
+        list1.emplace_back(p);
     }
     for (int p = head2; p != -1; p = nodes[p].next) {
-        l2.emplace_back(p);
+        list2.emplace_back(p);
     }
-    if (l1.size() < l2.size()) { // merge the shorter one into the longer one
-        swap(l1, l2);
+    if (list1.size() < list2.size()) { // merge the shorter one into the longer one
+        swap(list1, list2);
     }
-    vector<int> ans;
-    int idx = l2.size() - 1; // reverse order
-    for (int i = 0; i < (int)l1.size(); i++) {
-        ans.emplace_back(l1[i]);
+    vector<int> res;
+    int idx = list2.size() - 1; // reverse order
+    for (int i = 0; i < (int)list1.size(); i++) {
+        res.emplace_back(list1[i]);
         if ((i + 1) % 2 == 0 && idx >= 0) { // each two elements
-            ans.emplace_back(l2[idx--]);
+            res.emplace_back(list2[idx--]);
         }
     }
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << setfill('0') << setw(5) << ans[i] << " " << nodes[ans[i]].data << " ";
-        if (i < (int)ans.size() - 1) {
-            cout << setfill('0') << setw(5) << ans[i + 1] << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << setfill('0') << setw(5) << res[i] << " " << nodes[res[i]].data << " ";
+        if (i < (int)res.size() - 1) {
+            cout << setfill('0') << setw(5) << res[i + 1] << "\n";
         } else {
             cout << "-1\n";
         }
