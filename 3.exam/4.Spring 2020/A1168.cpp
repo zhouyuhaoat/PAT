@@ -36,12 +36,12 @@ int main(int argc, char const *argv[]) {
     cin >> s;
     bool allPrime = true;
     for (int i = 0; i < (int)s.size(); i++) {
-        string ss = s.substr(i); // suffix
-        if (isPrime(stoi(ss))) {
-            cout << ss << " Yes\n";
+        string suffix = s.substr(i);
+        if (isPrime(stoi(suffix))) {
+            cout << suffix << " Yes\n";
         } else {
             allPrime = false;
-            cout << ss << " No\n";
+            cout << suffix << " No\n";
         }
     }
     if (allPrime) {

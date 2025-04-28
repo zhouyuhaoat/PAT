@@ -20,14 +20,14 @@
 using namespace std;
 
 struct node {
-    int v, r; // value, run
-    node(int v, int r) : v(v), r(r) { // constructor
+    int val, run;
+    node(int val, int run) : val(val), run(run) { // constructor
     }
     friend bool operator<(node a, node b) { // overload < operator for min-heap
-        if (a.r != b.r) {
-            return a.r > b.r;
+        if (a.run != b.run) {
+            return a.run > b.run;
         } else {
-            return a.v > b.v;
+            return a.val > b.val;
         }
     }
 };
@@ -36,37 +36,37 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
-    vector<vector<int>> run(n); // runs
+    vector<vector<int>> runs(n);
     priority_queue<node> q;
     for (int i = 0; i < m; i++) { // initialization
-        q.emplace(d[i], 0);
+        q.emplace(data[i], 0);
     }
     for (int i = m; i < n; i++) {
-        node t = q.top(); // just output
+        node top = q.top(); // just output
         q.pop();
-        run[t.r].emplace_back(t.v);
-        if (d[i] >= t.v) { // the current run: not smaller than just output
-            q.emplace(d[i], t.r);
+        runs[top.run].emplace_back(top.val);
+        if (data[i] >= top.val) { // the current run: not smaller than just output
+            q.emplace(data[i], top.run);
         } else { // next new run
-            q.emplace(d[i], t.r + 1);
+            q.emplace(data[i], top.run + 1);
         }
     }
     while (!q.empty()) { // the last run
-        node t = q.top();
+        node top = q.top();
         q.pop();
-        run[t.r].emplace_back(t.v);
+        runs[top.run].emplace_back(top.val);
     }
     for (int i = 0; i < n; i++) {
-        if (run[i].empty()) {
+        if (runs[i].empty()) {
             break;
         }
-        for (int j = 0; j < (int)run[i].size(); j++) {
-            cout << run[i][j];
-            j < (int)run[i].size() - 1 ? cout << " " : cout << "\n";
+        for (int j = 0; j < (int)runs[i].size(); j++) {
+            cout << runs[i][j];
+            j < (int)runs[i].size() - 1 ? cout << " " : cout << "\n";
         }
     }
 

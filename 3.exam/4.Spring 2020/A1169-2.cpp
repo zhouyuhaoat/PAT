@@ -19,7 +19,7 @@
 
 using namespace std;
 
-const int maxn = 1e5 + 1;
+int maxn = 1e5 + 1;
 vector<bool> sum(2 * maxn - 1), dup(maxn);
 // difference -> summation: also means that the number is existed
 
@@ -45,14 +45,14 @@ int main(int argc, char const *argv[]) {
                 continue;
             }
             int num = d[i][q];
-            bool dif = false;
-            for (auto it : pre) {
+            bool diff = false;
+            for (int it : pre) {
                 if (sum[it + num]) { // it + num - num = it
-                    dif = true;
+                    diff = true;
                     break;
                 }
             }
-            bool flag = dif && !dup[num];
+            bool flag = diff && !dup[num];
             if (flag) {
                 sum[num] = dup[num] = true;
                 pre.emplace_back(num);
@@ -70,8 +70,8 @@ int main(int argc, char const *argv[]) {
     }
     if (!win.empty()) {
         cout << "Winner(s):";
-        for (auto it : win) {
-            cout << " " << it;
+        for (int id : win) {
+            cout << " " << id;
         }
         cout << "\n";
     } else {

@@ -23,24 +23,24 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n);
+    vector<int> data(n);
     priority_queue<int, vector<int>, greater<int>> q1, q2; // the current run, next new run
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
         if (i < m) {
-            q1.emplace(d[i]);
+            q1.emplace(data[i]);
         }
     }
     int idx = m; // index
     while (!q1.empty()) {
-        int t = q1.top(); // just output
+        int top = q1.top(); // just output
         q1.pop();
-        cout << t;
-        if (idx < n) { // t = last in
-            if (d[idx] >= t) { // the current run: not smaller than just output
-                q1.emplace(d[idx]);
+        cout << top;
+        if (idx < n) { // top = last in
+            if (data[idx] >= top) { // the current run: not smaller than just output
+                q1.emplace(data[idx]);
             } else { // next new run
-                q2.emplace(d[idx]);
+                q2.emplace(data[idx]);
             }
             idx++;
         }

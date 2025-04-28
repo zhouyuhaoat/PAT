@@ -19,22 +19,22 @@
 
 using namespace std;
 
-const int maxn = 1e5 + 1;
-vector<bool> dif(maxn), dup(maxn); // difference, duplicate
+int maxn = 1e5 + 1;
+vector<bool> diff(maxn), dup(maxn); // difference, duplicate
 
 int main(int argc, char const *argv[]) {
 
     int n1, n2;
     cin >> n1 >> n2;
-    dif[abs(n1 - n2)] = true;
+    diff[abs(n1 - n2)] = true;
     dup[n1] = dup[n2] = true;
     vector<int> pre = {n1, n2}; // previous numbers
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> d(n + 1, vector<int>(m + 1)); // data
+    vector<vector<int>> data(n + 1, vector<int>(m + 1));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            cin >> d[i + 1][j + 1];
+            cin >> data[i + 1][j + 1];
         }
     }
     vector<bool> out(n + 1); // kicked out
@@ -45,12 +45,12 @@ int main(int argc, char const *argv[]) {
             if (out[i]) {
                 continue;
             }
-            int num = d[i][q];
+            int num = data[i][q];
             // 1. must be the difference of two numbers that are previously given
             // 2. and must not be duplicated to any of the existed numbers
-            if (dif[num] && !dup[num]) { // next round
-                for (auto it : pre) { // update dif by all previous numbers
-                    dif[abs(it - num)] = true;
+            if (diff[num] && !dup[num]) { // next round
+                for (int it : pre) { // update dif by all previous numbers
+                    diff[abs(it - num)] = true;
                 }
                 dup[num] = true;
                 pre.emplace_back(num);
@@ -62,8 +62,8 @@ int main(int argc, char const *argv[]) {
                 }
             }
         }
-        for (auto it : outID) {
-            cout << "Round #" << q << ": " << it << " is out.\n";
+        for (int id : outID) {
+            cout << "Round #" << q << ": " << id << " is out.\n";
         }
     }
     vector<int> win; // winners
@@ -74,8 +74,8 @@ int main(int argc, char const *argv[]) {
     }
     if (!win.empty()) {
         cout << "Winner(s):";
-        for (auto it : win) {
-            cout << " " << it;
+        for (int id : win) {
+            cout << " " << id;
         }
         cout << "\n";
     } else {
