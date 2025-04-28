@@ -18,31 +18,31 @@
 using namespace std;
 
 struct per {
-    string ent, exi; // enter and exit
+    string enter, exit;
 };
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<per> p(n);
+    vector<per> person(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].ent >> p[i].exi; // time <=> string
+        cin >> person[i].enter >> person[i].exit; // time <=> string
     }
     // greedy: activity selection, interval scheduling
-    sort(p.begin(), p.end(), [](per a, per b) {
-        if (a.exi != b.exi) {
-            return a.exi < b.exi; // end time: as earlier as possible
+    sort(person.begin(), person.end(), [](per a, per b) {
+        if (a.exit != b.exit) {
+            return a.exit < b.exit; // end time: as earlier as possible
         } else {
-            return a.ent > b.ent; // start time: for shorter time duration
+            return a.enter > b.enter; // start time: for shorter time duration
         }
     });
     int cnt = 1;
-    string lastExi = p[0].exi;
+    string lastExit = person[0].exit;
     for (int i = 1; i < n; i++) {
-        if (p[i].ent >= lastExi) { // not overlap: enter after last exit
+        if (person[i].enter >= lastExit) { // not overlap: enter after last exit
             cnt++;
-            lastExi = p[i].exi;
+            lastExit = person[i].exit;
         }
     }
     cout << cnt << "\n";

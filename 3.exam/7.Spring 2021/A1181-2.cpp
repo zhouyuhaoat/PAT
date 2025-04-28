@@ -18,30 +18,30 @@
 using namespace std;
 
 struct per {
-    string ent, exi;
+    string enter, exit;
 };
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<per> p(n);
+    vector<per> person(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].ent >> p[i].exi;
+        cin >> person[i].enter >> person[i].exit;
     }
-    sort(p.begin(), p.end(), [](per a, per b) {
-        if (a.ent != b.ent) {
-            return a.ent > b.ent; // start time: as later as possible
+    sort(person.begin(), person.end(), [](per a, per b) {
+        if (a.enter != b.enter) {
+            return a.enter > b.enter; // start time: as later as possible
         } else {
-            return a.exi < b.exi; // end time: for shorter time duration
+            return a.exit < b.exit; // end time: for shorter time duration
         }
     });
     int cnt = 1;
-    string lastEnt = p[0].ent;
+    string lastEnter = person[0].enter;
     for (int i = 1; i < n; i++) {
-        if (p[i].exi <= lastEnt) { // not overlap: exit before last enter
+        if (person[i].exit <= lastEnter) { // not overlap: exit before last enter
             cnt++;
-            lastEnt = p[i].ent;
+            lastEnter = person[i].enter;
         }
     }
     cout << cnt << "\n";

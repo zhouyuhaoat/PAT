@@ -17,13 +17,13 @@
 
 using namespace std;
 
-vector<int> t;
+vector<int> tree;
 
 void upAdjust(int lo, int hi) { // up adjust, or heapify for max-heap [lo, hi]
     int i = hi, j = i / 2;
     while (j >= lo) {
-        if (t[i] > t[j]) { // child > parent
-            swap(t[i], t[j]);
+        if (tree[i] > tree[j]) { // child > parent
+            swap(tree[i], tree[j]);
             i = j, j = i / 2; // move up
         } else {
             break;
@@ -35,15 +35,15 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    t.resize(n + 1);
+    tree.resize(n + 1);
     for (int i = 0; i < n; i++) {
-        cin >> t[i + 1];
+        cin >> tree[i + 1];
         upAdjust(1, i + 1);
     }
     // max heap is a (complete) binary tree
     unordered_map<int, int> loc; // 1-based index
     for (int i = 0; i < n; i++) {
-        loc[t[i + 1]] = i + 1;
+        loc[tree[i + 1]] = i + 1;
     }
     getchar();
     for (int q = 0; q < m; q++) {

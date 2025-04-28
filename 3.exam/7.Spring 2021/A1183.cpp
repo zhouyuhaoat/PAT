@@ -17,17 +17,17 @@
 
 using namespace std;
 
-vector<vector<int>> d;
+vector<vector<int>> dist;
 
 struct node {
-    int id, dis;
-    node(int id, int dis) : id(id), dis(dis) {
+    int val, dist;
+    node(int val, int dist) : val(val), dist(dist) {
     }
     friend bool operator<(node a, node b) {
-        if (a.dis != b.dis) {
-            return a.dis > b.dis;
+        if (a.dist != b.dist) {
+            return a.dist > b.dist;
         } else {
-            return a.id > b.id;
+            return a.val > b.val;
         }
     }
 };
@@ -36,8 +36,8 @@ void floyd(int n) { // Floyd-Warshall algorithm
     for (int k = 0; k <= n; k++) { // the intermediate node
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= n; j++) {
-                if (d[i][k] != INT_MAX && d[k][j] != INT_MAX) {
-                    d[i][j] = min(d[i][j], d[i][k] + d[k][j]); // shorter path via k
+                if (dist[i][k] != INT_MAX && dist[k][j] != INT_MAX) {
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]); // shorter path via k
                 } // else: no path
             }
         }
@@ -48,40 +48,40 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    d.resize(n + 1, vector<int>(n + 1, INT_MAX));
+    dist.resize(n + 1, vector<int>(n + 1, INT_MAX));
     for (int i = 0; i < m; i++) {
         int u, v, dis;
         cin >> u >> v >> dis;
-        d[u][v] = d[v][u] = dis;
+        dist[u][v] = dist[v][u] = dis;
     }
     floyd(n); // all pairs shortest path
     vector<bool> vis(n + 1, false);
-    vector<int> ans;
+    vector<int> res;
     int sum = 0, src = 0;
     vis[src] = true;
-    ans.emplace_back(src);
+    res.emplace_back(src);
     while (true) {
         priority_queue<node> q;
         for (int i = 0; i <= n; i++) { // route
             if (!vis[i]) {
-                q.emplace(i, d[src][i]);
+                q.emplace(i, dist[src][i]);
                 // src: the source point in each step
             }
         }
-        if (q.empty() || q.top().dis == INT_MAX) {
+        if (q.empty() || q.top().dist == INT_MAX) {
             break;
         }
-        node t = q.top();
-        vis[t.id] = true;
-        ans.emplace_back(t.id);
-        sum += t.dis;
-        src = t.id;
+        node top = q.top(); // next node to visit
+        vis[top.val] = true;
+        res.emplace_back(top.val);
+        sum += top.dist;
+        src = top.val;
     }
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << ans[i];
-        i < (int)ans.size() - 1 ? cout << " " : cout << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << res[i];
+        i < (int)res.size() - 1 ? cout << " " : cout << "\n";
     }
-    if ((int)ans.size() == n + 1) { // all nodes are visited
+    if ((int)res.size() == n + 1) { // all nodes are visited
         cout << sum << "\n";
     } else {
         vector<int> notVis;

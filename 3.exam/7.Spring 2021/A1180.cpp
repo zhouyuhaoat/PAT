@@ -42,21 +42,21 @@ int main(int argc, char const *argv[]) {
         cout << maxP << "\n";
         return 0;
     }
-    int maxDif = -1, lastP = -1; // dif: difference; p: prime
-    for (int dif = maxP / (n - 1); dif >= 1; dif--) {
+    int maxDiff = -1, lastP = -1; // diff: difference; last prime
+    for (int diff = maxP / (n - 1); diff >= 1; diff--) {
         bool ok = false; // flag to check if a valid sequence is found
-        for (int e = maxP; e > maxP - dif; e--) { // end of the sequence
+        for (int e = maxP; e > maxP - diff; e--) { // end of the sequence
             if (!isPrime[e]) continue;
             bool flag = true; // flag to check if all elements are prime
             for (int i = 0; i < n; i++) {
-                if (!isPrime[e - i * dif]) {
+                if (!isPrime[e - i * diff]) {
                     flag = false;
                     break;
                 }
             }
             if (flag) {
                 ok = true;
-                maxDif = dif, lastP = e;
+                maxDiff = diff, lastP = e;
                 break;
             }
         }
@@ -64,9 +64,9 @@ int main(int argc, char const *argv[]) {
             break;
         }
     }
-    if (maxDif != -1) {
+    if (maxDiff != -1) {
         for (int i = n - 1; i >= 0; i--) {
-            cout << lastP - i * maxDif;
+            cout << lastP - i * maxDiff;
             i > 0 ? cout << " " : cout << "\n";
         }
     } else {
