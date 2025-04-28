@@ -17,20 +17,20 @@
 using namespace std;
 
 struct arr { // array
-    int add, len; // address, length
+    int addr, size;
 };
 
 int main(int argc, char const *argv[]) {
 
     int n, k;
     cin >> n >> k;
-    vector<arr> d(n);
+    vector<arr> data(n);
     int size = 0; // total size of the array
     for (int i = 0; i < n; i++) {
-        cin >> d[i].add >> d[i].len;
-        size += d[i].len;
+        cin >> data[i].addr >> data[i].size;
+        size += data[i].size;
     }
-    int ans = 1; // the number of arrays that initialized
+    int res = 1; // the number of arrays that initialized
     for (int q = 0; q < k; q++) {
         int v;
         cin >> v;
@@ -40,18 +40,18 @@ int main(int argc, char const *argv[]) {
         }
         int sum = 0; // dynamic size
         for (int i = 0; i < n; i++) { // 0-th array
-            sum += d[i].len;
+            sum += data[i].size;
             if (v < sum) { // find the array
-                cout << d[i].add + (v - (sum - d[i].len)) * 4 << "\n";
-                // sum - d[i].len: the start address of the array
-                // v - (sum - d[i].len): the offset of the element
+                cout << data[i].addr + (v - (sum - data[i].size)) * 4 << "\n";
+                // sum - data[i].size: the start address of the array
+                // v - (sum - data[i].size): the offset of the element
                 // * 4: the size of each element, 4 bytes
-                ans = max(ans, i + 1);
+                res = max(res, i + 1);
                 break;
             }
         }
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

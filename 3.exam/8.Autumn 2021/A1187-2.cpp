@@ -18,19 +18,19 @@
 using namespace std;
 
 struct node {
-    int key, pri;
-    int lc = -1, rc = -1;
+    int key, priority;
+    int left = -1, right = -1;
 };
 
-vector<node> t;
+vector<node> tree;
 vector<int> level;
 
 int insert(int root, int id) {
     if (root == -1) return id;
-    if (t[id].key < t[root].key) {
-        t[root].lc = insert(t[root].lc, id);
+    if (tree[id].key < tree[root].key) {
+        tree[root].left = insert(tree[root].left, id);
     } else {
-        t[root].rc = insert(t[root].rc, id);
+        tree[root].right = insert(tree[root].right, id);
     }
     return root;
 }
@@ -42,8 +42,8 @@ void bfs(int root) {
         int cur = q.front();
         q.pop();
         level.emplace_back(cur);
-        if (t[cur].lc != -1) q.emplace(t[cur].lc);
-        if (t[cur].rc != -1) q.emplace(t[cur].rc);
+        if (tree[cur].left != -1) q.emplace(tree[cur].left);
+        if (tree[cur].right != -1) q.emplace(tree[cur].right);
     }
 }
 
@@ -51,12 +51,12 @@ int main(int argc, char *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n + 1);
+    tree.resize(n + 1);
     for (int i = 1; i <= n; i++) {
-        cin >> t[i].key >> t[i].pri;
+        cin >> tree[i].key >> tree[i].priority;
     }
-    sort(t.begin() + 1, t.end(), [](node a, node b) {
-        return a.pri < b.pri;
+    sort(tree.begin() + 1, tree.end(), [](node a, node b) {
+        return a.priority < b.priority;
     });
     int root = -1;
     for (int i = 1; i <= n; i++) {
@@ -64,11 +64,11 @@ int main(int argc, char *argv[]) {
     }
     bfs(root);
     for (int i = 0; i < (int)level.size(); i++) {
-        cout << t[level[i]].key;
+        cout << tree[level[i]].key;
         i < (int)level.size() - 1 ? cout << " " : cout << "\n";
     }
     for (int i = 0; i < (int)level.size(); i++) {
-        cout << t[level[i]].pri;
+        cout << tree[level[i]].priority;
         i < (int)level.size() - 1 ? cout << " " : cout << "\n";
     }
 

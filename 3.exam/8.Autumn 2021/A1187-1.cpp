@@ -22,23 +22,23 @@ using namespace std;
 // 2. and an inorder traversal gives the keys in sorted order.
 
 struct node {
-    int key, pri; // key, priority
-    node *lc, *rc;
+    int key, priority;
+    node *left, *right;
 };
 
-vector<node> t, level;
+vector<node> tree, level;
 
 node *insert(node *root, int id) {
     // insert a node with index 'id' into the tree rooted at 'root'
     // and return the root of the tree
     if (!root) {
-        root = new node{t[id].key, t[id].pri, nullptr, nullptr};
+        root = new node{tree[id].key, tree[id].priority};
         return root;
     }
-    if (t[id].key < root->key) { // keys: inorder sorted
-        root->lc = insert(root->lc, id);
+    if (tree[id].key < root->key) { // keys: inorder sorted
+        root->left = insert(root->left, id);
     } else {
-        root->rc = insert(root->rc, id);
+        root->right = insert(root->right, id);
     }
     return root;
 }
@@ -51,8 +51,8 @@ void bfs(node root) { // level-order traversal
         q.pop();
         level.emplace_back(t);
         // *: dereference the pointer
-        if (t.lc) q.emplace(*t.lc);
-        if (t.rc) q.emplace(*t.rc);
+        if (t.left) q.emplace(*t.left);
+        if (t.right) q.emplace(*t.right);
     }
 }
 
@@ -60,12 +60,12 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    t.resize(n + 1);
+    tree.resize(n + 1);
     for (int i = 0; i < n; i++) {
-        cin >> t[i + 1].key >> t[i + 1].pri;
+        cin >> tree[i + 1].key >> tree[i + 1].priority;
     }
-    sort(t.begin() + 1, t.end(), [](node a, node b) { // priority: (min) heap-ordered
-        return a.pri < b.pri;
+    sort(tree.begin() + 1, tree.end(), [](node a, node b) { // priority: (min) heap-ordered
+        return a.priority < b.priority;
     });
     node *root = nullptr;
     for (int i = 1; i <= n; i++) {
@@ -77,7 +77,7 @@ int main(int argc, char const *argv[]) {
         i < (int)level.size() - 1 ? cout << " " : cout << "\n";
     }
     for (int i = 0; i < (int)level.size(); i++) {
-        cout << level[i].pri;
+        cout << level[i].priority;
         i < (int)level.size() - 1 ? cout << " " : cout << "\n";
     }
 

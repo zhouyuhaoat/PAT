@@ -19,33 +19,33 @@
 using namespace std;
 
 struct per {
-    int id, w; // the heavier one wears larger hat
+    int id, weight; // the heavier one wears larger hat
 };
 
 int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) { // stack from bottom to top
-        cin >> d[i];
+        cin >> data[i];
     }
-    vector<per> p(n);
+    vector<per> person(n);
     for (int i = 0; i < n; i++) {
-        cin >> p[i].w;
-        p[i].id = i + 1; // 0-based -> 1-based
+        cin >> person[i].weight;
+        person[i].id = i + 1; // 0-based -> 1-based
     }
-    vector<int> s(d); // size of hats
-    sort(s.begin(), s.end(), greater<int>()); // larger hats first
+    vector<int> hat(data); // size of hats
+    sort(hat.begin(), hat.end(), greater<int>()); // larger hats first
     unordered_map<int, int> order; // size -> index -> person
     for (int i = 0; i < n; i++) {
-        order[s[i]] = i;
+        order[hat[i]] = i;
     }
-    sort(p.begin(), p.end(), [](per a, per b) { // heavier person first
-        return a.w > b.w;
+    sort(person.begin(), person.end(), [](per a, per b) { // heavier person first
+        return a.weight > b.weight;
     });
     for (int i = n - 1; i >= 0; i--) { // de-stack from top to bottom
-        cout << p[order[d[i]]].id;
+        cout << person[order[data[i]]].id;
         i > 0 ? cout << " " : cout << "\n";
     }
 
