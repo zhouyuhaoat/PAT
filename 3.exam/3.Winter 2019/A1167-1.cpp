@@ -22,27 +22,25 @@
 using namespace std;
 
 struct node {
-    int v, i, l; // value, 0-based index, level
-    node *lc, *rc;
+    int val, id, level; // 0-based index
+    node *left, *right;
 };
 
 vector<int> in, temp;
 unordered_map<int, int> loc;
-vector<node> ans;
+vector<node> res;
 
 node *create(int inL, int inH, int i, int h) {
     // create a Cartesian tree by inorder traversal
-    if (inL > inH) {
-        return nullptr;
-    }
+    if (inL > inH) return nullptr;
     temp.assign(in.begin() + inL, in.begin() + inH + 1);
     sort(temp.begin(), temp.end());
     // Cartesian tree is a binary tree that satisfies the (min-)heap property
-    node *root = new node{temp[0], i, h, nullptr, nullptr};
+    node *root = new node{temp[0], i, h};
     int inR = loc[temp[0]];
-    root->lc = create(inL, inR - 1, 2 * i + 1, h + 1);
-    root->rc = create(inR + 1, inH, 2 * i + 2, h + 1);
-    ans.emplace_back(*root);
+    root->left = create(inL, inR - 1, 2 * i + 1, h + 1);
+    root->right = create(inR + 1, inH, 2 * i + 2, h + 1);
+    res.emplace_back(*root);
     return root;
 }
 
@@ -56,16 +54,16 @@ int main(int argc, char const *argv[]) {
         loc[in[i]] = i;
     }
     create(0, n - 1, 0, 1);
-    sort(ans.begin(), ans.end(), [](node a, node b) { // level order traversal
-        if (a.l != b.l) {
-            return a.l < b.l;
+    sort(res.begin(), res.end(), [](node a, node b) { // level order traversal
+        if (a.level != b.level) {
+            return a.level < b.level;
         } else {
-            return a.i < b.i;
+            return a.id < b.id;
         }
     });
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << ans[i].v;
-        i < (int)ans.size() - 1 ? cout << " " : cout << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << res[i].val;
+        i < (int)res.size() - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

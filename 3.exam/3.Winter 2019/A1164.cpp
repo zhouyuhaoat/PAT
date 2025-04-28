@@ -20,7 +20,7 @@
 using namespace std;
 
 vector<string> split(string s) {
-    vector<string> w; // split words with capital letters
+    vector<string> words; // split words with capital letters
     for (int i = 0; i < (int)s.size(); i++) {
         while (i < (int)s.size() && !isupper(s[i])) { // skip non-capital letters
             i++;
@@ -30,33 +30,33 @@ vector<string> split(string s) {
             j++;
         }
         if (i != j) { // if there is a word
-            w.emplace_back(s.substr(i, j - i));
+            words.emplace_back(s.substr(i, j - i));
             i = j;
         }
     }
-    return w;
+    return words;
 }
 
 int main(int argc, char const *argv[]) {
 
-    vector<vector<string>> l(26, vector<string>(7));
+    vector<vector<string>> letter(26, vector<string>(7));
     for (int i = 0; i < 26; i++) {
         for (int j = 0; j < 7; j++) {
-            cin >> l[i][j];
+            cin >> letter[i][j];
         }
     }
-    string t;
+    string s;
     getchar();
-    getline(cin, t);
-    vector<string> w = split(t);
-    for (int i = 0; i < (int)w.size(); i++) {
+    getline(cin, s);
+    vector<string> words = split(s);
+    for (int i = 0; i < (int)words.size(); i++) {
         for (int j = 0; j < 7; j++) {
-            for (int k = 0; k < (int)w[i].size(); k++) {
-                cout << l[w[i][k] - 'A'][j];
-                k < (int)w[i].size() - 1 ? cout << " " : cout << "\n";
+            for (int k = 0; k < (int)words[i].size(); k++) {
+                cout << letter[words[i][k] - 'A'][j];
+                k < (int)words[i].size() - 1 ? cout << " " : cout << "\n";
             }
         }
-        if (i < (int)w.size() - 1) {
+        if (i < (int)words.size() - 1) {
             cout << "\n";
         }
     }

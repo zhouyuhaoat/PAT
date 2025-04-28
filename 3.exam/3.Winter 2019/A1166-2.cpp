@@ -19,12 +19,12 @@
 
 using namespace std;
 
-vector<vector<bool>> r; // friendship relation
+vector<vector<bool>> relate;
 
 bool isFriend(vector<int>& area) {
-    for (auto i : area) { // two loops for all pairs
-        for (auto j : area) {
-            if (i != j && !r[i][j]) {
+    for (int i : area) {
+        for (int j : area) {
+            if (i != j && !relate[i][j]) {
                 return false;
             }
         }
@@ -36,7 +36,7 @@ int invite(int n, vector<int>& area, vector<bool>& inArea) {
     for (int i = 1; i <= n; i++) {
         if (!inArea[i]) {
             area.emplace_back(i); // suppose i is invited
-            if (isFriend(area)) {
+            if (isFriend(area)) { // re-use isFriend
                 return i;
             }
             area.pop_back();
@@ -49,11 +49,11 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    r.resize(n + 1, vector<bool>(n + 1));
+    relate.resize(n + 1, vector<bool>(n + 1));
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
-        r[a][b] = r[b][a] = true;
+        relate[a][b] = relate[b][a] = true;
     }
     int k;
     cin >> k;

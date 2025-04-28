@@ -22,13 +22,13 @@
 using namespace std;
 
 vector<int> in;
-map<int, int> ans; // 1-based index -> value
+map<int, int> res; // 1-based index -> value
 
 void dfs(int index, int inL, int inH) {
     if (inL > inH) return;
     int inR = min_element(in.begin() + inL, in.begin() + inH + 1) - in.begin();
     // position of the minimum value in the range [inL, inH]
-    ans[index] = in[inR];
+    res[index] = in[inR];
     dfs(index * 2, inL, inR - 1);
     dfs(index * 2 + 1, inR + 1, inH);
 }
@@ -42,9 +42,9 @@ int main(int argc, char const *argv[]) {
         cin >> in[i];
     }
     dfs(1, 0, n - 1);
-    for (auto it = ans.begin(); it != ans.end(); it++) {
+    for (auto it = res.begin(); it != res.end(); it++) {
         cout << it->second;
-        next(it) != ans.end() ? cout << " " : cout << "\n";
+        next(it) != res.end() ? cout << " " : cout << "\n";
     }
 
     return 0;

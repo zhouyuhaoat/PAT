@@ -25,12 +25,11 @@ struct node {
     int data, next;
 };
 
-unordered_map<int, node> nodes;
-
 int main(int argc, char const *argv[]) {
 
     int head, n, k;
     cin >> head >> n >> k;
+    unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
         int addr;
         cin >> addr >> nodes[addr].data >> nodes[addr].next;
@@ -39,18 +38,18 @@ int main(int argc, char const *argv[]) {
     for (int p = head; p != -1; p = nodes[p].next) {
         addr.emplace_back(p);
     }
-    vector<int> ans;
+    vector<int> res;
     int size = addr.size();
     int g = size / k + (size % k != 0); // including the last block
     for (int i = g - 1; i >= 0; i--) {
         for (int j = i * k; j < (i + 1) * k && j < size; j++) {
-            ans.emplace_back(addr[j]);
+            res.emplace_back(addr[j]);
         }
     }
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << setfill('0') << setw(5) << ans[i] << " " << nodes[ans[i]].data << " ";
-        if (i < (int)ans.size() - 1) {
-            cout << setfill('0') << setw(5) << ans[i + 1] << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << setfill('0') << setw(5) << res[i] << " " << nodes[res[i]].data << " ";
+        if (i < (int)res.size() - 1) {
+            cout << setfill('0') << setw(5) << res[i + 1] << "\n";
         } else {
             cout << "-1\n";
         }

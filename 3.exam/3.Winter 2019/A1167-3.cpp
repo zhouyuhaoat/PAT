@@ -22,20 +22,18 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
 vector<int> in;
 
 node *create(int inL, int inH) {
-    if (inL > inH) {
-        return nullptr;
-    }
+    if (inL > inH) return nullptr;
     int inR = min_element(in.begin() + inL, in.begin() + inH + 1) - in.begin();
-    node *root = new node{in[inR], nullptr, nullptr};
-    root->lc = create(inL, inR - 1);
-    root->rc = create(inR + 1, inH);
+    node *root = new node{in[inR]};
+    root->left = create(inL, inR - 1);
+    root->right = create(inR + 1, inH);
     return root;
 }
 
@@ -46,12 +44,12 @@ vector<int> bfs(node *root) {
     while (!q.empty()) {
         node *cur = q.front();
         q.pop();
-        res.emplace_back(cur->v);
-        if (cur->lc) {
-            q.emplace(cur->lc);
+        res.emplace_back(cur->val);
+        if (cur->left) {
+            q.emplace(cur->left);
         }
-        if (cur->rc) {
-            q.emplace(cur->rc);
+        if (cur->right) {
+            q.emplace(cur->right);
         }
     }
     return res;

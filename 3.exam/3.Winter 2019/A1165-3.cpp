@@ -25,57 +25,35 @@ struct node {
     int data, next;
 };
 
-unordered_map<int, node> nodes;
-vector<pair<int, int>> lists;
-
-void print(int head) {
-    for (int p = head; p != -1; p = nodes[p].next) {
-        cout << setfill('0') << setw(5) << p << " " << nodes[p].data << " ";
-        if (nodes[p].next != -1) {
-            cout << setfill('0') << setw(5) << nodes[p].next << "\n";
-        } else {
-            cout << "-1\n";
-        }
-    }
-}
-
-int connect() {
-    int head = -1, tail = -1;
-    for (int i = lists.size() - 1; i >= 0; i--) {
-        auto& lst = lists[i];
-        if (lst.first != -1) { // not empty
-            if (head == -1) { // first list
-                head = lst.first;
-            }
-            if (tail != -1) { // not first list
-                nodes[tail].next = lst.first;
-            }
-            tail = lst.second;
-        }
-    }
-    if (tail != -1) { // end
-        nodes[tail].next = -1;
-    }
-    return head;
-}
-
 int main(int argc, char const *argv[]) {
 
     int head, n, k;
     cin >> head >> n >> k;
+    unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
         int addr;
         cin >> addr >> nodes[addr].data >> nodes[addr].next;
     }
-    for (int p = head, cnt = 0; p != -1; p = nodes[p].next, cnt++) {
-        if (cnt % k == 0) { // new list
-            lists.emplace_back(p, p);
-        } else { // update tail
-            lists.back().second = p;
+    vector<int> addr;
+    for (int p = head; p != -1; p = nodes[p].next) {
+        addr.emplace_back(p);
+    }
+    vector<int> res;
+    int size = addr.size(); // size % k: the last truncated block
+    for (int lo = size - size % k, hi = size; lo >= 0; hi = lo, lo -= k) {
+        // lo: the start index of the block; hi: the start index of the next block
+        for (int i = lo; i < hi; i++) {
+            res.emplace_back(addr[i]);
         }
     }
-    head = connect();
-    print(head);
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << setfill('0') << setw(5) << res[i] << " " << nodes[res[i]].data << " ";
+        if (i < (int)res.size() - 1) {
+            cout << setfill('0') << setw(5) << res[i + 1] << "\n";
+        } else {
+            cout << "-1\n";
+        }
+    }
 
     return 0;
 }
