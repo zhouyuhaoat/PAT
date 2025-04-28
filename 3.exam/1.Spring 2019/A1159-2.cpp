@@ -21,26 +21,23 @@
 using namespace std;
 
 struct node {
-    int v, l;
-    node *p, *lc, *rc; // parent
+    int val, level;
+    node *parent, *left, *right;
 };
 
 vector<int> post;
 unordered_map<int, int> loc;
-unordered_map<int, node *> t;
+unordered_map<int, node *> tree;
 bool fbt = true;
 
-node *create(int postR, int inL, int inH, int l, node *parent) {
-    if (inL > inH) {
-        return nullptr;
-    }
-    node *root = new node{post[postR], l, nullptr, nullptr, nullptr};
+node *create(int postR, int inL, int inH, int level, node *parent) {
+    if (inL > inH) return nullptr;
+    node *root = new node{post[postR], level, parent};
     int inR = loc[post[postR]];
-    root->p = parent;
-    root->lc = create(postR - (inH - inR) - 1, inL, inR - 1, l + 1, root);
-    root->rc = create(postR - 1, inR + 1, inH, l + 1, root);
-    t[root->v] = root;
-    if ((!root->lc && root->rc) || (root->lc && !root->rc)) {
+    root->left = create(postR - (inH - inR) - 1, inL, inR - 1, level + 1, root);
+    root->right = create(postR - 1, inR + 1, inH, level + 1, root);
+    tree[root->val] = root;
+    if ((!root->left && root->right) || (root->left && !root->right)) {
         fbt = false;
     }
     return root;
@@ -70,22 +67,22 @@ int main(int argc, char const *argv[]) {
         int a, b;
         if (s.find("root") != string::npos) {
             sscanf(s.c_str(), "%d is the root", &a);
-            flag = t[a]->p == nullptr; // root's parent is null
+            flag = tree[a]->parent == nullptr; // root's parent is null
         } else if (s.find("siblings") != string::npos) {
             sscanf(s.c_str(), "%d and %d are siblings", &a, &b);
-            flag = a != b && t[a]->p == t[b]->p;
+            flag = a != b && tree[a]->parent == tree[b]->parent;
         } else if (s.find("parent") != string::npos) {
             sscanf(s.c_str(), "%d is the parent of %d", &a, &b);
-            flag = t[a] == t[b]->p;
+            flag = tree[a] == tree[b]->parent;
         } else if (s.find("left") != string::npos) {
             sscanf(s.c_str(), "%d is the left child of %d", &a, &b);
-            flag = t[a] == t[b]->lc;
+            flag = tree[a] == tree[b]->left;
         } else if (s.find("right") != string::npos) {
             sscanf(s.c_str(), "%d is the right child of %d", &a, &b);
-            flag = t[a] == t[b]->rc;
+            flag = tree[a] == tree[b]->right;
         } else if (s.find("level") != string::npos) {
             sscanf(s.c_str(), "%d and %d are on the same level", &a, &b);
-            flag = t[a]->l == t[b]->l;
+            flag = tree[a]->level == tree[b]->level;
         } else if (s.find("full") != string::npos) {
             flag = fbt;
         }

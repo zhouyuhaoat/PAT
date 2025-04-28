@@ -20,13 +20,12 @@
 
 using namespace std;
 
-vector<vector<int>> dur;
-vector<pair<int, bool>> sus; // bool to mark if visited
+vector<vector<int>> duration;
+vector<pair<int, bool>> suspects; // bool to mark if visited
 
 void dfs(int u, vector<int>& gang) {
-    for (auto& s : sus) {
-        auto& [v, vis] = s;
-        if (!vis && dur[u][v] > 0 && dur[v][u] > 0) {
+    for (auto& [v, vis] : suspects) {
+        if (!vis && duration[u][v] > 0 && duration[v][u] > 0) {
             vis = true;
             gang.emplace_back(v);
             dfs(v, gang);
@@ -38,31 +37,30 @@ int main(int argc, char const *argv[]) {
 
     int k, n, m;
     cin >> k >> n >> m;
-    dur.resize(n + 1, vector<int>(n + 1, 0));
+    duration.resize(n + 1, vector<int>(n + 1, 0));
     for (int i = 0; i < m; i++) {
         int a, b, t;
         cin >> a >> b >> t;
-        dur[a][b] += t;
+        duration[a][b] += t;
     }
     for (int i = 1; i <= n; i++) {
-        int c = 0, cb = 0;
+        int call = 0, callBack = 0;
         for (int j = 1; j <= n; j++) {
-            if (dur[i][j] > 0 && dur[i][j] <= 5) {
-                c++;
-                if (dur[j][i] > 0) {
-                    cb++;
+            if (duration[i][j] > 0 && duration[i][j] <= 5) {
+                call++;
+                if (duration[j][i] > 0) {
+                    callBack++;
                 }
             }
         }
-        if (c > k && cb * 5 <= c) {
-            sus.emplace_back(i, false);
+        if (call > k && callBack * 5 <= call) {
+            suspects.emplace_back(i, false);
         }
     }
-    if (sus.empty()) {
+    if (suspects.empty()) {
         cout << "None\n";
     } else {
-        for (auto& s : sus) {
-            auto& [head, vis] = s;
+        for (auto& [head, vis] : suspects) {
             if (vis) continue;
             vector<int> gang;
             vis = true;

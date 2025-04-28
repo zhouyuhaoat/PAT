@@ -21,71 +21,71 @@
 
 using namespace std;
 
-vector<int> f; // disjoint set union, or union-find
+class DisjointSetUnion {
+private:
+    vector<int> f; // father
 
-int find(int x) {
-    int a = x;
-    while (x != f[x]) {
-        x = f[x];
+public:
+    DisjointSetUnion(int n) {
+        f.resize(n);
+        iota(f.begin(), f.end(), 0);
     }
-    while (a != f[a]) { // path compression
-        int z = a;
-        a = f[a], f[z] = x;
-    }
-    return x;
-}
 
-void joint(int a, int b) {
-    int fa = find(a), fb = find(b);
-    if (fa != fb) {
-        if (fa < fb) { // union by rank
-            swap(fa, fb);
+    int find(int x) {
+        if (f[x] == x) {
+            return x;
         }
-        f[fa] = fb;
+        return f[x] = find(f[x]); // path compression
     }
-}
+
+    void unite(int a, int b) {
+        int rootA = find(a), rootB = find(b);
+        if (rootA < rootB) { // union by rank: use smaller number as root, or head
+            swap(rootA, rootB);
+        }
+        f[rootA] = rootB;
+    }
+};
 
 int main(int argc, char const *argv[]) {
 
     int k, n, m;
     cin >> k >> n >> m;
-    vector<vector<int>> dur(n + 1, vector<int>(n + 1)); // during
+    vector<vector<int>> duration(n + 1, vector<int>(n + 1));
     for (int i = 0; i < m; i++) {
         int a, b, t;
         cin >> a >> b >> t;
-        dur[a][b] += t;
+        duration[a][b] += t;
     }
-    vector<int> sus; // suspect
+    vector<int> suspects;
     for (int i = 1; i <= n; i++) {
-        int c = 0, cb = 0; // calls, call back
+        int call = 0, callBack = 0;
         for (int j = 1; j <= n; j++) {
-            if (dur[i][j] > 0 && dur[i][j] <= 5) {
-                c++;
-                if (dur[j][i] > 0) {
-                    cb++;
+            if (duration[i][j] > 0 && duration[i][j] <= 5) {
+                call++;
+                if (duration[j][i] > 0) {
+                    callBack++;
                 }
             }
         }
-        if (c > k && cb * 5 <= c) {
-            sus.emplace_back(i); // ordered
+        if (call > k && callBack * 5 <= call) {
+            suspects.emplace_back(i); // ordered
         }
     }
-    if (sus.empty()) {
+    if (suspects.empty()) {
         cout << "None\n";
     } else {
-        f.resize(n + 1);
-        iota(f.begin(), f.end(), 0);
-        for (auto i : sus) { // two loops for all pairs
-            for (auto j : sus) {
-                if (dur[i][j] > 0 && dur[j][i] > 0) {
-                    joint(i, j); // union by rank
-                    // use smaller number as root, or head
+        DisjointSetUnion dsu(n + 1);
+        for (int i : suspects) { // two loops for all pairs
+            for (int j : suspects) {
+                if (duration[i][j] > 0 && duration[j][i] > 0) {
+                    dsu.unite(i, j);
                 }
             }
         }
         map<int, vector<int>> gangs;
-        for (auto it : sus) {
-            gangs[find(it)].emplace_back(it);
+        for (int suspect : suspects) {
+            gangs[dsu.find(suspect)].emplace_back(suspect);
         }
         for (auto [_, gang] : gangs) {
             for (int i = 0; i < (int)gang.size(); i++) {

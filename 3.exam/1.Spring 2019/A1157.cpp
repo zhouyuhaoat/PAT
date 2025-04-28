@@ -23,32 +23,32 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    unordered_map<string, bool> alum; // alumni
+    unordered_map<string, bool> alumni;
     for (int i = 0; i < n; i++) {
         string id;
         cin >> id;
-        alum[id] = true;
+        alumni[id] = true;
     }
     int m;
     cin >> m;
-    int cntAlum = 0;
-    // oldest, alumni, guest: {ID, date}
-    pair<string, string> oldAlum = {"", "99999999"}, oldGst = oldAlum;
+    int cnt = 0; // count of alumni
+    pair<string, string> oldAlumni, oldGuest; // id, date
+    oldAlumni.second = "99999999", oldGuest.second = oldAlumni.second;
     for (int i = 0; i < m; i++) {
         string id;
         cin >> id;
-        string day = id.substr(6, 8);
-        if (alum[id]) {
-            cntAlum++;
-            if (day < oldAlum.second) {
-                oldAlum = {id, day};
+        string date = id.substr(6, 8);
+        if (alumni[id]) {
+            cnt++;
+            if (date < oldAlumni.second) {
+                oldAlumni = {id, date};
             }
-        } else if (day < oldGst.second) {
-            oldGst = {id, day};
+        } else if (date < oldGuest.second) {
+            oldGuest = {id, date};
         }
     }
-    cout << cntAlum << "\n";
-    cntAlum == 0 ? cout << oldGst.first << "\n" : cout << oldAlum.first << "\n";
+    cout << cnt << "\n";
+    cnt == 0 ? cout << oldGuest.first << "\n" : cout << oldAlumni.first << "\n";
 
     return 0;
 }

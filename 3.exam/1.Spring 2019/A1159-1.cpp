@@ -21,27 +21,25 @@
 using namespace std;
 
 struct node {
-    int v, i, l; // value, index, level
-    node *lc, *rc;
+    int val, id, level;
+    node *left, *right;
 };
 
 vector<int> post;
 unordered_map<int, int> loc; // location: value -> index
-unordered_map<int, node *> t;
+unordered_map<int, node *> tree;
 bool fbt = true; // full binary tree
 
-node *create(int postR, int inL, int inH, int id, int l) {
+node *create(int postR, int inL, int inH, int id, int level) {
     // create a binary tree from postorder traversal and inorder traversal
-    if (inL > inH) {
-        return nullptr;
-    }
-    node *root = new node{post[postR], id, l, nullptr, nullptr};
+    if (inL > inH) return nullptr;
+    node *root = new node{post[postR], id, level};
     int inR = loc[post[postR]]; // right subtree size: inH - inR
-    root->lc = create(postR - (inH - inR) - 1, inL, inR - 1, 2 * id, l + 1);
-    root->rc = create(postR - 1, inR + 1, inH, 2 * id + 1, l + 1);
-    t[root->v] = root;
+    root->left = create(postR - (inH - inR) - 1, inL, inR - 1, 2 * id, level + 1);
+    root->right = create(postR - 1, inR + 1, inH, 2 * id + 1, level + 1);
+    tree[root->val] = root;
     // check if the tree is a full binary tree by checking the number of children
-    if ((!root->lc && root->rc) || (root->lc && !root->rc)) {
+    if ((!root->left && root->right) || (root->left && !root->right)) {
         fbt = false;
     }
     return root;
@@ -71,22 +69,22 @@ int main(int argc, char const *argv[]) {
         int a, b;
         if (s.find("root") != string::npos) {
             sscanf(s.c_str(), "%d is the root", &a);
-            flag = t[a]->i == 1; // root is the first node
+            flag = tree[a]->id == 1; // root is the first node
         } else if (s.find("siblings") != string::npos) {
             sscanf(s.c_str(), "%d and %d are siblings", &a, &b);
-            flag = (a != b && t[a]->i / 2 == t[b]->i / 2); // siblings have the same parent
+            flag = (a != b && tree[a]->id / 2 == tree[b]->id / 2); // siblings have the same parent
         } else if (s.find("parent") != string::npos) {
             sscanf(s.c_str(), "%d is the parent of %d", &a, &b);
-            flag = t[a]->i == t[b]->i / 2; // parent is half of child
+            flag = tree[a]->id == tree[b]->id / 2; // parent is half of child
         } else if (s.find("left") != string::npos) {
             sscanf(s.c_str(), "%d is the left child of %d", &a, &b);
-            flag = t[a]->i == t[b]->i * 2; // left child is double of parent
+            flag = tree[a]->id == tree[b]->id * 2; // left child is double of parent
         } else if (s.find("right") != string::npos) {
             sscanf(s.c_str(), "%d is the right child of %d", &a, &b);
-            flag = t[a]->i == t[b]->i * 2 + 1; // right child is double of parent + 1
+            flag = tree[a]->id == tree[b]->id * 2 + 1; // right child is double of parent + 1
         } else if (s.find("level") != string::npos) {
             sscanf(s.c_str(), "%d and %d are on the same level", &a, &b);
-            flag = t[a]->l == t[b]->l;
+            flag = tree[a]->level == tree[b]->level;
         } else if (s.find("full") != string::npos) {
             flag = fbt;
         }

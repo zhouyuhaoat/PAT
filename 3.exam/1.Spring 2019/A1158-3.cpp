@@ -17,7 +17,6 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
-#include <vector>
 
 using namespace std;
 
@@ -25,44 +24,42 @@ int main(int argc, char const *argv[]) {
 
     int k, n, m;
     cin >> k >> n >> m;
-    vector<vector<int>> dur(n + 1, vector<int>(n + 1, 0));
+    vector<vector<int>> duration(n + 1, vector<int>(n + 1, 0));
     for (int i = 0; i < m; i++) {
         int a, b, t;
         cin >> a >> b >> t;
-        dur[a][b] += t;
+        duration[a][b] += t;
     }
-    vector<pair<int, bool>> sus;
+    vector<pair<int, bool>> suspects;
     for (int i = 1; i <= n; i++) {
-        int c = 0, cb = 0;
+        int call = 0, callBack = 0;
         for (int j = 1; j <= n; j++) {
-            if (dur[i][j] > 0 && dur[i][j] <= 5) {
-                c++;
-                if (dur[j][i] > 0) {
-                    cb++;
+            if (duration[i][j] > 0 && duration[i][j] <= 5) {
+                call++;
+                if (duration[j][i] > 0) {
+                    callBack++;
                 }
             }
         }
-        if (c > k && cb * 5 <= c) {
-            sus.emplace_back(i, false);
+        if (call > k && callBack * 5 <= call) {
+            suspects.emplace_back(i, false);
         }
     }
-    if (sus.empty()) {
+    if (suspects.empty()) {
         cout << "None\n";
     } else {
-        for (auto& s1 : sus) {
-            auto& [head, visit] = s1;
-            if (visit) continue;
+        for (auto& [head, vis] : suspects) {
+            if (vis) continue;
             vector<int> gang;
             queue<int> q;
             gang.emplace_back(head);
-            visit = true;
+            vis = true;
             q.emplace(head);
             while (!q.empty()) {
                 int u = q.front();
                 q.pop();
-                for (auto& s2 : sus) {
-                    auto& [v, vis] = s2;
-                    if (!vis && dur[u][v] > 0 && dur[v][u] > 0) {
+                for (auto& [v, vis] : suspects) {
+                    if (!vis && duration[u][v] > 0 && duration[v][u] > 0) {
                         vis = true;
                         gang.emplace_back(v);
                         q.emplace(v);
