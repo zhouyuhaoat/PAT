@@ -22,15 +22,15 @@
 
 using namespace std;
 
-vector<int> par(1e4, -1); // parent of each node in the tree
+vector<int> parents(1e4, -1); // parent of each node in the tree
 
-void dfs(int v, vector<int>& ans) {
-    if (v == 0) { // until the root
-        ans.emplace_back(v); // before recursion
+void dfs(int u, vector<int>& res) { // u -> root
+    if (u == 0) { // until the root
+        res.emplace_back(u); // before recursion
         return;
     }
-    dfs(par[v], ans);
-    ans.emplace_back(v); // after recursion: backtrack
+    dfs(parents[u], res);
+    res.emplace_back(u); // after recursion: backtrack
 }
 
 int main(int argc, char const *argv[]) {
@@ -38,42 +38,42 @@ int main(int argc, char const *argv[]) {
     int n;
     cin >> n;
     getchar();
-    stack<int> st;
+    stack<int> stk;
     unordered_map<int, int> level;
     for (int i = 0; i < n; i++) {
         string s;
         getline(cin, s);
-        int l = 0;
-        while (isspace(s[l])) {
-            l++;
+        int space = 0;
+        while (isspace(s[space])) {
+            space++;
         }
-        int id = stoi(s.substr(l));
-        level[id] = l;
+        int id = stoi(s.substr(space));
+        level[id] = space;
         if (id == 0) {
-            st.emplace(0), par[0] = 0;
+            stk.emplace(0), parents[0] = 0;
             continue;
         }
-        int p = st.top();
-        while (l <= level[p]) {
-            st.pop();
-            p = st.top();
+        int parent = stk.top();
+        while (space <= level[parent]) {
+            stk.pop();
+            parent = stk.top();
         }
-        st.emplace(id), par[id] = p;
+        stk.emplace(id), parents[id] = parent;
     }
     int k;
     cin >> k;
     for (int q = 0; q < k; q++) {
         int id;
         cin >> id;
-        if (par[id] == -1) {
+        if (parents[id] == -1) {
             cout << "Error: " << setfill('0') << setw(4) << id << " is not found." << "\n";
             continue;
         }
-        vector<int> ans;
-        dfs(id, ans); // find the path: from bottom to top
-        for (int i = 0; i < (int)ans.size(); i++) {
-            cout << setfill('0') << setw(4) << ans[i];
-            i < (int)ans.size() - 1 ? cout << "->" : cout << "\n";
+        vector<int> res;
+        dfs(id, res); // find the path: from bottom to top
+        for (int i = 0; i < (int)res.size(); i++) {
+            cout << setfill('0') << setw(4) << res[i];
+            i < (int)res.size() - 1 ? cout << "->" : cout << "\n";
         }
     }
     return 0;

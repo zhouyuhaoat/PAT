@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
 
     int n;
     cin >> n;
-    int ans = 0, minAbs = INT_MAX;
+    int res = 0, minAbs = INT_MAX;
     // Fibonacci sequence: f(n) = f(n-1) + f(n-2)
     int f = 1, g = 0; // f(-1) = 1, f(0) = 0 => f(1) = 1
     while (g < 2 * n) {
@@ -31,10 +31,10 @@ int main(int argc, char const *argv[]) {
         f = g - f;
         if (abs(g - n) < minAbs) {
             minAbs = abs(g - n);
-            ans = g;
+            res = g;
         }
     }
-    cout << ans << "\n";
+    cout << res << "\n";
 
     return 0;
 }

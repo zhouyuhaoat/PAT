@@ -22,21 +22,21 @@ using namespace std;
 int main(int argc, char const *argv[]) {
 
     int n;
-    string r;
-    cin >> n >> r;
+    string root;
+    cin >> n >> root;
     getchar();
-    unordered_map<string, string> p; // parent
+    unordered_map<string, string> parent;
     unordered_map<int, string> level; // last node in each level
-    p[r] = "", level[0] = r;
+    parent[root] = "", level[0] = root;
     for (int i = 1; i < n; i++) {
         string s;
         getline(cin, s);
-        int l = 0;
-        while (isspace(s[l])) {
-            l++;
+        int space = 0;
+        while (isspace(s[space])) {
+            space++;
         }
-        s = s.substr(l);
-        p[s] = level[l - 1], level[l] = s;
+        s = s.substr(space);
+        parent[s] = level[space - 1], level[space] = s;
         // the parent of current node is the last node in the previous level
     }
     int k;
@@ -44,15 +44,15 @@ int main(int argc, char const *argv[]) {
     for (int q = 0; q < k; q++) {
         string s;
         cin >> s;
-        if (p.find(s) == p.end()) { // no parent
+        if (parent.find(s) == parent.end()) { // no parent
             cout << "Error: " << s << " is not found.\n";
         } else {
-            string ans;
-            while (s != r) { // before the root: from bottom to top
-                ans = "->" + s + ans;
-                s = p[s];
+            string res;
+            while (s != root) { // before the root: from bottom to top
+                res = "->" + s + res;
+                s = parent[s];
             }
-            cout << r << ans << "\n"; // include the root
+            cout << root << res << "\n"; // include the root
         }
     }
 

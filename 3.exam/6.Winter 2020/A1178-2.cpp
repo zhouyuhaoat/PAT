@@ -23,12 +23,12 @@
 using namespace std;
 
 vector<vector<int>> g(1e4);
-vector<int> temp, ans;
+vector<int> temp, res;
 
 void dfs(int root, int target) {
     temp.emplace_back(root); // before recursion
     if (root == target) {
-        ans = temp;
+        res = temp;
         temp.pop_back(); // backtrack
         return;
     }
@@ -43,28 +43,28 @@ int main(int argc, char const *argv[]) {
     int n;
     cin >> n;
     getchar();
-    stack<int> st;
+    stack<int> stk;
     unordered_map<int, int> level;
     unordered_map<int, bool> exist;
     for (int i = 0; i < n; i++) {
         string s;
         getline(cin, s);
-        int l = 0;
-        while (isspace(s[l])) {
-            l++;
+        int space = 0;
+        while (isspace(s[space])) {
+            space++;
         }
-        int id = stoi(s.substr(l));
-        level[id] = l, exist[id] = true;
+        int id = stoi(s.substr(space));
+        level[id] = space, exist[id] = true;
         if (id == 0) {
-            st.emplace(0);
+            stk.emplace(0);
             continue;
         }
-        int p = st.top();
-        while (l <= level[p]) {
-            st.pop();
-            p = st.top();
+        int parent = stk.top();
+        while (space <= level[parent]) {
+            stk.pop();
+            parent = stk.top();
         }
-        st.emplace(id), g[p].emplace_back(id);
+        stk.emplace(id), g[parent].emplace_back(id);
     }
     int k;
     cin >> k;
@@ -73,9 +73,9 @@ int main(int argc, char const *argv[]) {
         cin >> id;
         if (exist[id]) {
             dfs(0, id);
-            for (int i = 0; i < (int)ans.size(); i++) {
-                cout << setfill('0') << setw(4) << ans[i];
-                i < (int)ans.size() - 1 ? cout << "->" : cout << "\n";
+            for (int i = 0; i < (int)res.size(); i++) {
+                cout << setfill('0') << setw(4) << res[i];
+                i < (int)res.size() - 1 ? cout << "->" : cout << "\n";
             }
         } else {
             cout << "Error: " << setfill('0') << setw(4) << id << " is not found.\n";

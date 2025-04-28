@@ -23,20 +23,20 @@
 using namespace std;
 
 // chemical equation: reactants -> product
-unordered_map<int, int> rea; // reactant -> amount
-vector<int> pro; // product
-unordered_map<int, set<vector<int>>> equ; // equation: product -> reactants
-unordered_map<int, vector<int>> ans; // product -> reactant
+unordered_map<int, int> reactants; // reactant -> amount
+vector<int> products;
+unordered_map<int, set<vector<int>>> equations; // equation: product -> reactants
+unordered_map<int, vector<int>> res; // products -> reactants
 
 bool dfs(int proL, int proH) { // whether all products [proL, proH) can be produced
     if (proL == proH) { // all products are produced
         return true;
     }
-    int proID = pro[proL]; // current product
-    for (auto act : equ[proID]) { // formulae for current product
+    int product = products[proL]; // current product
+    for (auto equation : equations[product]) { // formulae for current product
         bool flag = true; // whether all reactants are available
-        for (auto reaID : act) {
-            if (rea[reaID] == 0) {
+        for (int reactant : equation) {
+            if (reactants[reactant] == 0) {
                 flag = false;
                 break;
             }
@@ -44,15 +44,15 @@ bool dfs(int proL, int proH) { // whether all products [proL, proH) can be produ
         if (!flag) {
             continue; // next formula
         }
-        ans[proID] = act;
-        for (auto reaID : act) {
-            rea[reaID]--; // recursion: consume the reactants
+        res[product] = equation;
+        for (int reactant : equation) {
+            reactants[reactant]--; // recursion: consume the reactants
         }
         if (dfs(proL + 1, proH)) { // next product
             return true;
         }
-        for (auto reaID : act) {
-            rea[reaID]++; // backtrack: restore the reactants
+        for (int reactant : equation) {
+            reactants[reactant]++; // backtrack: restore the reactants
         }
     }
     return false;
@@ -65,15 +65,15 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         int id;
         cin >> id;
-        rea[id]++;
+        reactants[id]++;
     }
     int m;
     cin >> m;
-    pro.resize(m);
+    products.resize(m);
     for (int i = 0; i < m; i++) {
-        cin >> pro[i];
-        if (rea[pro[i]] > 0) { // if product is a reactant
-            equ[pro[i]].insert({pro[i]}); // default product is itself
+        cin >> products[i];
+        if (reactants[products[i]] > 0) { // if product is a reactant
+            equations[products[i]].insert({products[i]}); // default product is itself
         }
     }
     int k;
@@ -89,18 +89,18 @@ int main(int argc, char const *argv[]) {
             if (ch == "+") {
                 temp.emplace_back(id); // reactants
             } else { // "->"
-                equ[id].emplace(temp); // product -> reactants
+                equations[id].emplace(temp); // product -> reactants
                 break;
             }
         }
     }
     dfs(0, m);
-    for (auto proID : pro) {
-        for (int i = 0; i < (int)ans[proID].size(); i++) {
-            cout << setfill('0') << setw(2) << ans[proID][i];
-            i < (int)ans[proID].size() - 1 ? cout << " + " : cout << " -> ";
+    for (int product : products) {
+        for (int i = 0; i < (int)res[product].size(); i++) {
+            cout << setfill('0') << setw(2) << res[product][i];
+            i < (int)res[product].size() - 1 ? cout << " + " : cout << " -> ";
         }
-        cout << setfill('0') << setw(2) << proID << "\n";
+        cout << setfill('0') << setw(2) << product << "\n";
     }
 
     return 0;

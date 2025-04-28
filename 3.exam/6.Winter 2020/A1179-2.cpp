@@ -22,27 +22,27 @@
 
 using namespace std;
 
-unordered_map<int, int> rea;
-vector<int> pro;
-unordered_map<int, set<vector<int>>> equ;
-unordered_map<int, vector<int>> ans;
+unordered_map<int, int> reactants;
+vector<int> products;
+unordered_map<int, set<vector<int>>> equations;
+unordered_map<int, vector<int>> res;
 
 void dfs(int preL, int preH) { // bool -> void
     if (preL == preH) {
-        for (auto proID : pro) {
-            for (int i = 0; i < (int)ans[proID].size(); i++) {
-                cout << setfill('0') << setw(2) << ans[proID][i];
-                i < (int)ans[proID].size() - 1 ? cout << " + " : cout << " -> ";
+        for (int product : products) {
+            for (int i = 0; i < (int)res[product].size(); i++) {
+                cout << setfill('0') << setw(2) << res[product][i];
+                i < (int)res[product].size() - 1 ? cout << " + " : cout << " -> ";
             }
-            cout << setfill('0') << setw(2) << proID << "\n";
+            cout << setfill('0') << setw(2) << product << "\n";
         }
         exit(0); // exit the program
     }
-    int proID = pro[preL];
-    for (auto act : equ[proID]) {
+    int product = products[preL];
+    for (auto equation : equations[product]) {
         bool flag = true;
-        for (auto reaID : act) {
-            if (rea[reaID] == 0) {
+        for (int reactant : equation) {
+            if (reactants[reactant] == 0) {
                 flag = false;
                 break;
             }
@@ -50,13 +50,13 @@ void dfs(int preL, int preH) { // bool -> void
         if (!flag) {
             continue;
         }
-        ans[proID] = act;
-        for (auto reaID : act) {
-            rea[reaID]--;
+        res[product] = equation;
+        for (int reactant : equation) {
+            reactants[reactant]--;
         }
         dfs(preL + 1, preH);
-        for (auto reaID : act) {
-            rea[reaID]++;
+        for (int reactant : equation) {
+            reactants[reactant]++;
         }
     }
 }
@@ -68,15 +68,15 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         int id;
         cin >> id;
-        rea[id]++;
+        reactants[id]++;
     }
     int m;
     cin >> m;
-    pro.resize(m);
+    products.resize(m);
     for (int i = 0; i < m; i++) {
-        cin >> pro[i];
-        if (rea[pro[i]] > 0) {
-            equ[pro[i]].insert({pro[i]});
+        cin >> products[i];
+        if (reactants[products[i]] > 0) {
+            equations[products[i]].insert({products[i]});
         }
     }
     int k;
@@ -92,7 +92,7 @@ int main(int argc, char const *argv[]) {
             if (ch == "+") {
                 temp.emplace_back(id);
             } else {
-                equ[id].emplace(temp);
+                equations[id].emplace(temp);
                 break;
             }
         }
