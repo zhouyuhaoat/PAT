@@ -23,17 +23,17 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n + 2);
+    vector<int> data(n + 2);
     for (int i = 0; i < n; i++) {
         int v;
         cin >> v;
-        d[i + 1] = d[i] + v;
+        data[i + 1] = data[i] + v;
     }
-    d[n + 1] = d[n] + m + 1; // add a virtual node
+    data[n + 1] = data[n] + m + 1; // add a virtual node
     int cnt = 0;
     for (int i = 1; i <= n; i++) {
         for (int j = i; j <= n + 1; j++) {
-            if (d[j] - d[i - 1] > m) { // [i, j)
+            if (data[j] - data[i - 1] > m) { // [i, j)
                 cnt += j - i; // consecutive subarrays with sum <= m & beginning with i
                 // beginning with i: [i, j), [i, j - 1), ..., [i, i + 1)
                 // each i contributes (j - i) subarrays

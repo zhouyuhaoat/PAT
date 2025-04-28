@@ -23,15 +23,15 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n);
+    vector<int> data(n);
     for (int i = 0; i < n; i++) {
-        cin >> d[i];
+        cin >> data[i];
     }
     int res = 0; // maximum or longest consecutive subarrays with sum <= m
     for (int lo = 0, hi = 0, sum = 0; hi < n; hi++) { // sliding window: [lo, hi]
-        sum += d[hi];
+        sum += data[hi];
         while (lo <= hi && sum > m) { // invalid -> valid
-            sum -= d[lo++];
+            sum -= data[lo++];
         }
         res += hi - lo + 1; // consecutive subarrays with sum <= m & ending with hi
         // ending with hi: [lo, hi], [lo + 1, hi], ..., [hi, hi]

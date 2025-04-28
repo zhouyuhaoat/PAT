@@ -21,22 +21,19 @@
 using namespace std;
 
 struct node {
-    int v;
-    node *lc, *rc;
+    int val;
+    node *left, *right;
 };
 
-vector<int> pre, ans;
+vector<int> pre, res;
 unordered_map<int, int> loc;
 
 node *preTra(int preR, int inL, int inH) {
-    if (inL > inH) {
-        return nullptr;
-    }
-    node *root = new node;
-    root->v = pre[preR];
+    if (inL > inH) return nullptr;
+    node *root = new node{pre[preR]};
     int inR = loc[pre[preR]];
-    root->lc = preTra(preR + 1, inL, inR - 1);
-    root->rc = preTra(preR + (inR - inL) + 1, inR + 1, inH);
+    root->left = preTra(preR + 1, inL, inR - 1);
+    root->right = preTra(preR + (inR - inL) + 1, inR + 1, inH);
     return root;
 }
 
@@ -44,12 +41,12 @@ void bfs(node *root) {
     queue<node *> q;
     q.emplace(root);
     while (!q.empty()) {
-        ans.emplace_back(q.front()->v); // leftmost node of each level
+        res.emplace_back(q.front()->val); // leftmost node of each level
         for (int i = (int)q.size() - 1; i >= 0; i--) {
             node *cur = q.front();
             q.pop();
-            if (cur->lc) q.emplace(cur->lc);
-            if (cur->rc) q.emplace(cur->rc);
+            if (cur->left) q.emplace(cur->left);
+            if (cur->right) q.emplace(cur->right);
         }
     }
 }
@@ -69,9 +66,9 @@ int main(int argc, char const *argv[]) {
     }
     node *root = preTra(0, 0, n - 1);
     bfs(root);
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << ans[i];
-        i < (int)ans.size() - 1 ? cout << " " : cout << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << res[i];
+        i < (int)res.size() - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

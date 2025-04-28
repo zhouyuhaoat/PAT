@@ -23,16 +23,16 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n + 1);
+    vector<int> data(n + 1);
     for (int i = 0; i < n; i++) {
         int v;
         cin >> v;
-        d[i + 1] = d[i] + v; // prefix sum
+        data[i + 1] = data[i] + v; // prefix sum
     }
     int cnt = 0;
     for (int i = 1; i <= n; i++) { // two loops for all pairs
         for (int j = i; j <= n; j++) {
-            if (d[j] - d[i - 1] <= m) { // [i, j]
+            if (data[j] - data[i - 1] <= m) { // [i, j]
                 cnt++;
             } else {
                 break;

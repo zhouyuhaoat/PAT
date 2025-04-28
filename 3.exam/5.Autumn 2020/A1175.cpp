@@ -21,20 +21,20 @@
 using namespace std;
 
 struct node {
-    int v, sco, vou; // id, score, vouch
-    node(int v, int sco, int vou) : v(v), sco(sco), vou(vou) { // constructor
+    int val, score, vouch;
+    node(int val, int score, int vouch) : val(val), score(score), vouch(vouch) { // constructor
     }
     friend bool operator<(node a, node b) { // overload < operator for minmax-heap
-        if (a.sco != b.sco) {
-            return a.sco > b.sco;
+        if (a.score != b.score) {
+            return a.score > b.score;
         } else {
-            return a.vou < b.vou;
+            return a.vouch < b.vouch;
         }
     }
 };
 
-vector<int> inDeg, inDegTemp; // in degree
-vector<int> s, d, pre; // score of shortest path, distance of vouch
+vector<int> degree, temp; // all in degree
+vector<int> score, dist, pre; // for shortest path
 vector<bool> vis;
 vector<vector<node>> g;
 
@@ -47,8 +47,8 @@ bool topologicalSort(int n) { // check if the graph is a DAG
         q.pop();
         cnt++;
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
-            if (--inDegTemp[v] == 0) {
+            int v = g[u][i].val;
+            if (--temp[v] == 0) {
                 q.emplace(v);
             }
         }
@@ -59,25 +59,25 @@ bool topologicalSort(int n) { // check if the graph is a DAG
 void dijkstra(int src) {
     priority_queue<node> q;
     q.emplace(src, 0, 0);
-    s[src] = 0, d[src] = 0;
+    score[src] = 0, dist[src] = 0;
     while (!q.empty()) {
-        node t = q.top();
+        node top = q.top();
         q.pop();
-        int u = t.v;
+        int u = top.val;
         if (vis[u]) {
             continue;
         }
         vis[u] = true;
         for (int i = 0; i < (int)g[u].size(); i++) {
-            int v = g[u][i].v;
+            int v = g[u][i].val;
             if (!vis[v]) {
-                if (s[u] + g[u][i].sco < s[v]) { // relaxation
-                    s[v] = s[u] + g[u][i].sco;
-                    d[v] = d[u] + g[u][i].vou;
+                if (score[u] + g[u][i].score < score[v]) {
+                    score[v] = score[u] + g[u][i].score;
+                    dist[v] = dist[u] + g[u][i].vouch;
                     pre[v] = u;
-                    q.emplace(v, s[v], d[v]);
-                } else if (s[u] + g[u][i].sco == s[v] && d[u] + g[u][i].vou > d[v]) {
-                    d[v] = d[u] + g[u][i].vou;
+                    q.emplace(v, score[v], dist[v]);
+                } else if (score[u] + g[u][i].score == score[v] && dist[u] + g[u][i].vouch > dist[v]) {
+                    dist[v] = dist[u] + g[u][i].vouch;
                     pre[v] = u;
                 }
             }
@@ -89,17 +89,17 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    inDeg.resize(n + 1), g.resize(n + 1);
+    degree.resize(n + 1), g.resize(n + 1);
     for (int i = 0; i < m; i++) {
-        int u, v, sco, vou;
-        cin >> u >> v >> sco >> vou;
-        inDeg[v]++;
-        g[u].emplace_back(v, sco, vou);
+        int u, v, score, vouch;
+        cin >> u >> v >> score >> vouch;
+        degree[v]++;
+        g[u].emplace_back(v, score, vouch);
     }
-    inDegTemp = inDeg; // multiple sources: add a virtual node as the super source
+    temp = degree; // multiple sources: add a virtual node as the super source
     for (int i = 0; i < n; i++) {
-        if (inDegTemp[i] == 0) {
-            inDegTemp[i]++;
+        if (temp[i] == 0) {
+            temp[i]++;
             g[n].emplace_back(i, 0, 0);
         }
     }
@@ -108,7 +108,7 @@ int main(int argc, char const *argv[]) {
     bool flag = topologicalSort(n); // DAG: directed acyclic graph
     if (flag) {
         cout << "Okay.\n";
-        s.resize(n + 1, INT_MAX), d.resize(n + 1, INT_MIN);
+        score.resize(n + 1, INT_MAX), dist.resize(n + 1, INT_MIN);
         pre.resize(n + 1), vis.resize(n + 1);
         dijkstra(n);
     } else {
@@ -117,16 +117,16 @@ int main(int argc, char const *argv[]) {
     for (int q = 0; q < k; q++) {
         int dst; // destination
         cin >> dst;
-        if (inDeg[dst] == 0) { // no prerequisite
+        if (degree[dst] == 0) { // no prerequisite
             cout << "You may take test " << dst << " directly.\n";
         } else if (flag) { // consistent plan
-            vector<int> ans;
+            vector<int> res;
             while (dst != n) { // backtrack
-                ans.emplace_back(dst);
+                res.emplace_back(dst);
                 dst = pre[dst];
             }
-            for (int i = ans.size() - 1; i >= 0; i--) {
-                cout << ans[i];
+            for (int i = res.size() - 1; i >= 0; i--) {
+                cout << res[i];
                 i > 0 ? cout << "->" : cout << "\n";
             }
         } else {

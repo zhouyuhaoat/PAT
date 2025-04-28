@@ -20,22 +20,20 @@
 
 using namespace std;
 
-vector<int> pre, ans;
+vector<int> pre, res;
 unordered_map<int, int> loc; // index in inorder
 unordered_map<int, bool> vis;
 
-void preTra(int preR, int inL, int inH, int l) {
+void preTra(int preR, int inL, int inH, int level) {
     // create a binary tree by preorder traversal and inorder traversal
-    if (inL > inH) {
-        return;
-    }
-    if (!vis[l]) { // new level
-        vis[l] = true;
-        ans.emplace_back(pre[preR]); // the first node in the level for left-view of binary tree
+    if (inL > inH) return;
+    if (!vis[level]) { // new level
+        vis[level] = true;
+        res.emplace_back(pre[preR]); // the first node in the level for left-view of binary tree
     }
     int inR = loc[pre[preR]];
-    preTra(preR + 1, inL, inR - 1, l + 1);
-    preTra(preR + (inR - inL) + 1, inR + 1, inH, l + 1); // left subtree size: inR - inL
+    preTra(preR + 1, inL, inR - 1, level + 1);
+    preTra(preR + (inR - inL) + 1, inR + 1, inH, level + 1); // left subtree size: inR - inL
 }
 
 int main(int argc, char const *argv[]) {
@@ -52,9 +50,9 @@ int main(int argc, char const *argv[]) {
         cin >> pre[i];
     }
     preTra(0, 0, n - 1, 0);
-    for (int i = 0; i < (int)ans.size(); i++) {
-        cout << ans[i];
-        i < (int)ans.size() - 1 ? cout << " " : cout << "\n";
+    for (int i = 0; i < (int)res.size(); i++) {
+        cout << res[i];
+        i < (int)res.size() - 1 ? cout << " " : cout << "\n";
     }
 
     return 0;

@@ -24,15 +24,15 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    vector<int> d(n + 1);
+    vector<int> data(n + 1);
     for (int i = 0; i < n; i++) {
         int v;
         cin >> v;
-        d[i + 1] = d[i] + v;
+        data[i + 1] = data[i] + v;
     }
     int cnt = 0;
     for (int i = 1; i <= n; i++) {
-        int j = upper_bound(d.begin() + i, d.end(), d[i - 1] + m) - d.begin();
+        int j = upper_bound(data.begin() + i, data.end(), data[i - 1] + m) - data.begin();
         // no need to add a virtual node, since upper_bound will return n + 1 if not found
         cnt += j - i;
     }
