@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]) {
         }
     });
     for (int lo = 0, hi = n / row + n % row; lo < n; lo = hi, hi += n / row) {
-        // divide n into g groups: each complete group = n / g; last truncated group = n % g
+        // divide n into g complete groups: each complete group = n / g; (possibly) last truncated group = n % g
         // lo: the start index of the current row; hi: the start index of the next row
         vector<string> res(hi - lo);
         int mi = res.size() / 2, dir = -1; // direction: left firstly, then right

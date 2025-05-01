@@ -22,7 +22,7 @@
 using namespace std;
 
 bool valid(string s, double& num) {
-    char formatted[50];
+    char formatted[50]; // buffer
     sscanf(s.c_str(), "%lf", &num);
     sprintf(formatted, "%.2lf", num);
     if (strncmp(s.c_str(), formatted, s.size()) != 0 || num < -1000 || num > 1000) {
