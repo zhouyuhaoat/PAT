@@ -1,9 +1,9 @@
 /*
  *	author:		zhouyuhao
- *	created:	2025-04-15 10:11:09
- *	modified:	2025-04-15 11:22:01
+ *	created:	2023-03-28 10:11:09
+ *	modified:	2023-03-28 11:22:01
  *	item:		Programming Ability Test
- *	site:		914, Harbin
+ *	site:		Yuting
  */
 
 /*
@@ -14,9 +14,11 @@
 */
 
 // @pintia code=start
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -24,49 +26,27 @@ struct node {
     int data, next;
 };
 
-pair<int, int> reverse(int head, int tail, unordered_map<int, node>& nodes) {
-    int pre = -1, cur = head;
-    while (pre != tail) {
-        int next = nodes[cur].next; // backup
-        nodes[cur].next = pre; // reverse
-        pre = cur, cur = next; // move forward
-    }
-    return {tail, head};
-}
-
-int reverseKGroup(int head, int k, unordered_map<int, node>& nodes) {
-    int dummy = head, *cur = &dummy;
-    // cur: a pointer to the head of the current group, or the next of the previous group
-    while (*cur != -1) {
-        int head = *cur, tail = *cur;
-        for (int i = 1; i < k; ++i) {
-            tail = nodes[tail].next;
-            if (tail == -1) return dummy;
-        }
-        int next = nodes[tail].next;
-        // cur = head, ..., tail, next
-        tie(head, tail) = reverse(head, tail, nodes);
-        *cur = head, nodes[tail].next = next; // connect
-        cur = &nodes[tail].next; // move forward
-    }
-    return dummy;
-}
-
 int main(int argc, char const *argv[]) {
 
     int head, n, k;
     cin >> head >> n >> k;
     unordered_map<int, node> nodes;
-    for (int i = 1; i <= n; i++) {
+    for (int i = 0; i < n; i++) {
         int addr, data, next;
         cin >> addr >> data >> next;
         nodes[addr] = {data, next};
     }
-    head = reverseKGroup(head, k, nodes);
+    vector<int> list;
     for (int p = head; p != -1; p = nodes[p].next) {
-        cout << setfill('0') << setw(5) << p << " " << nodes[p].data << " ";
-        if (nodes[p].next != -1) {
-            cout << setfill('0') << setw(5) << nodes[p].next << "\n";
+        list.emplace_back(p);
+    }
+    for (int i = 0; i + k <= (int)list.size(); i += k) {
+        reverse(list.begin() + i, list.begin() + i + k);
+    }
+    for (int i = 0; i < (int)list.size(); i++) {
+        cout << setfill('0') << setw(5) << list[i] << " " << nodes[list[i]].data << " ";
+        if (i < (int)list.size() - 1) {
+            cout << setfill('0') << setw(5) << list[i + 1] << "\n";
         } else {
             cout << "-1\n";
         }
