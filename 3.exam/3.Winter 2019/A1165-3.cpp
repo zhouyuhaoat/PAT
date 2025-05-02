@@ -42,9 +42,7 @@ int main(int argc, char const *argv[]) {
     int size = addr.size(); // size % k: the last truncated block
     for (int lo = size - size % k, hi = size; lo >= 0; hi = lo, lo -= k) {
         // lo: the start index of the block; hi: the start index of the next block
-        for (int i = lo; i < hi; i++) {
-            res.emplace_back(addr[i]);
-        }
+        res.insert(res.end(), addr.begin() + lo, addr.begin() + hi);
     }
     for (int i = 0; i < (int)res.size(); i++) {
         cout << setfill('0') << setw(5) << res[i] << " " << nodes[res[i]].data << " ";
