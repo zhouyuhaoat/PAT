@@ -42,7 +42,7 @@ node *create(int preR, int inL, int inH) {
 
 int dfs(node *root, int u, int v) { // lowest common ancestor
     if (!root) return -1;
-    // lowest common ancestor in binary search tree is the first node whose value is between u and val
+    // lowest common ancestor in binary search tree is the first node whose value is between u and v
     if (root->val >= u && root->val <= v) {
         return root->val;
     }
