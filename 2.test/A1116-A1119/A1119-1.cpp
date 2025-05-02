@@ -23,7 +23,7 @@ using namespace std;
 bool isUnique = true;
 vector<int> pre, in, post;
 
-void intra(int preL, int preH, int postL, int postH) { // preL = preR, postH = postR
+void inTra(int preL, int preH, int postL, int postH) { // preL = preR, postH = postR
     if (preL == preH) { // base case: only one node
         in.emplace_back(pre[preL]);
         return;
@@ -31,12 +31,12 @@ void intra(int preL, int preH, int postL, int postH) { // preL = preR, postH = p
     int rightR = find(pre.begin() + 1, pre.end(), post[postH - 1]) - pre.begin();
     // suppose right subtree is always non-empty, if there is one non-empty subtree and one empty subtree
     if (rightR - preL - 1 > 0) { // the size of left subtree
-        intra(preL + 1, rightR - 1, postL, postL + (rightR - preL - 1) - 1);
+        inTra(preL + 1, rightR - 1, postL, postL + (rightR - preL - 1) - 1);
     } else { // left subtree is empty => not unique
         isUnique = false;
     }
     in.emplace_back(pre[preL]);
-    intra(rightR, preH, postL + (rightR - preL - 1), postH - 1);
+    inTra(rightR, preH, postL + (rightR - preL - 1), postH - 1);
 }
 
 int main(int argc, char const *argv[]) {
@@ -50,7 +50,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < n; i++) {
         cin >> post[i];
     }
-    intra(0, n - 1, 0, n - 1);
+    inTra(0, n - 1, 0, n - 1);
     isUnique ? cout << "Yes\n" : cout << "No\n";
     for (int i = 0; i < n; i++) {
         cout << in[i];
