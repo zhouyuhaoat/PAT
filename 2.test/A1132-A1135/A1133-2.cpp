@@ -69,7 +69,7 @@ int main(int argc, char const *argv[]) {
     }
     for (int p = head; p != -1; p = nodes[p].next) {
         int data = nodes[p].data;
-        pair<int, int> *cur;
+        pair<int, int> *cur; // pointer to the current list
         if (data < 0) {
             cur = &list1;
         } else if (data <= k) {
