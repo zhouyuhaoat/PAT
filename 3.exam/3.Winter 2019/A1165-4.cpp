@@ -42,15 +42,14 @@ void print(int head) {
 int connect() {
     int head = -1, tail = -1;
     for (int i = lists.size() - 1; i >= 0; i--) {
-        auto& lst = lists[i];
-        if (lst.first != -1) { // not empty
+        auto& list = lists[i];
+        if (list.first != -1) { // not empty
             if (head == -1) { // first list
-                head = lst.first;
+                head = list.first;
+            } else { // tail != -1: not first list
+                nodes[tail].next = list.first; // connect
             }
-            if (tail != -1) { // not first list
-                nodes[tail].next = lst.first;
-            }
-            tail = lst.second;
+            tail = list.second;
         }
     }
     if (tail != -1) { // end
