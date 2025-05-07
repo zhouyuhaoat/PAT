@@ -16,19 +16,27 @@
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <vector>
+#include <queue>
 
 using namespace std;
 
+vector<pair<int, bool>> suspects;
 vector<vector<int>> duration;
-vector<pair<int, bool>> suspects; // bool to mark if visited
 
-void dfs(int u, vector<int>& gang) {
-    for (auto& [v, vis] : suspects) {
-        if (!vis && duration[u][v] > 0 && duration[v][u] > 0) {
-            vis = true;
-            gang.emplace_back(v);
-            dfs(v, gang);
+void bfs(int head, auto& vis, vector<int>& gang) {
+    queue<int> q;
+    gang.emplace_back(head);
+    vis = true;
+    q.emplace(head);
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for (auto& [v, vis] : suspects) {
+            if (!vis && duration[u][v] > 0 && duration[v][u] > 0) {
+                vis = true;
+                gang.emplace_back(v);
+                q.emplace(v);
+            }
         }
     }
 }
@@ -37,7 +45,7 @@ int main(int argc, char const *argv[]) {
 
     int k, n, m;
     cin >> k >> n >> m;
-    duration.resize(n + 1, vector<int>(n + 1, 0));
+    duration.resize(n + 1, vector<int>(n + 1));
     for (int i = 0; i < m; i++) {
         int a, b, t;
         cin >> a >> b >> t;
@@ -63,9 +71,7 @@ int main(int argc, char const *argv[]) {
         for (auto& [head, vis] : suspects) {
             if (vis) continue;
             vector<int> gang;
-            vis = true;
-            gang.emplace_back(head);
-            dfs(head, gang);
+            bfs(head, vis, gang);
             sort(gang.begin(), gang.end());
             for (int i = 0; i < (int)gang.size(); i++) {
                 cout << gang[i];
