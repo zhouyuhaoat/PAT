@@ -33,9 +33,8 @@ int connect(unordered_map<int, node>& nodes) {
         if (list.first != -1) { // not empty
             if (head == -1) { // first list
                 head = list.first;
-            }
-            if (tail != -1) { // not first list
-                nodes[tail].next = list.first;
+            } else { // tail != -1: not first list
+                nodes[tail].next = list.first; // connect
             }
             tail = list.second;
         }
@@ -63,16 +62,14 @@ int main(int argc, char const *argv[]) {
     cin >> head >> n >> k;
     unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
-        int addr, data, next;
-        cin >> addr >> data >> next;
-        nodes[addr] = {data, next};
+        int addr;
+        cin >> addr >> nodes[addr].data >> nodes[addr].next;
     }
     for (int p = head; p != -1; p = nodes[p].next) {
-        int data = nodes[p].data;
         pair<int, int> *cur; // pointer to the current list
-        if (data < 0) {
+        if (nodes[p].data < 0) {
             cur = &list1;
-        } else if (data <= k) {
+        } else if (nodes[p].data <= k) {
             cur = &list2;
         } else {
             cur = &list3;
