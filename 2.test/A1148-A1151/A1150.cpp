@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
         int N, src;
         cin >> N >> src;
         int lastID = src, dst, distance = 0;
-        bool reachable = true; // reachable
+        bool reachable = true;
         unordered_set<int> path;
         for (int i = 1; i < N; i++) {
             cin >> dst;

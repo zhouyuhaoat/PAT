@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
 
     int n, m;
     cin >> n >> m;
-    unordered_map<int, unordered_set<int>> dangerous;
+    unordered_map<int, unordered_set<int>> dangerous; // vector -> unordered_set
     for (int i = 0; i < n; i++) {
         int a, b;
         cin >> a >> b;
@@ -42,9 +42,9 @@ int main(int argc, char const *argv[]) {
         }
         bool safe = true;
         for (int good : goods) {
-            if (dangerous.find(good) != dangerous.end()) {
-                for (int dangerousGood : dangerous[good]) {
-                    if (goods.find(dangerousGood) != goods.end()) {
+            if (dangerous.find(good) != dangerous.end()) { // dangerous
+                for (int dangerousGood : dangerous[good]) { // adjacency list
+                    if (goods.find(dangerousGood) != goods.end()) { // in goods
                         safe = false;
                         break;
                     }
