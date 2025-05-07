@@ -26,22 +26,15 @@ struct node {
 };
 
 vector<node> tree;
-string res;
 
-void dfs(int root) {
-    bool nonLeaf = tree[root].left != -1 || tree[root].right != -1; // non-leaf node
-    if (nonLeaf) {
-        res += "(";
-    }
-    if (tree[root].left != -1) {
-        dfs(tree[root].left);
-    }
-    res += tree[root].val;
-    if (tree[root].right != -1) {
-        dfs(tree[root].right);
-    }
-    if (nonLeaf) {
-        res += ")";
+string dfs(int root) {
+    if (tree[root].left == -1 && tree[root].right == -1) { // operand
+        return tree[root].val;
+    } else if (tree[root].left == -1 && tree[root].right != -1) { // unary operator
+        return "(" + tree[root].val + dfs(tree[root].right) + ")";
+        // no t[root].lc != -1 && t[root].rc == -1: for the case of only one child, the child must be on the right
+    } else { // binary operator
+        return "(" + dfs(tree[root].left) + tree[root].val + dfs(tree[root].right) + ")";
     }
 }
 
@@ -61,7 +54,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     int root = find(isRoot.begin() + 1, isRoot.end(), true) - isRoot.begin();
-    dfs(root); // inorder traversal for infix expression
+    string res = dfs(root); // inorder traversal for infix expression
     // same as non-leaf node, the parentheses of root are not needed
     if (res[0] == '(') { // parentheses of root: at the beginning and end
         cout << res.substr(1, res.size() - 2) << "\n"; // remove the outer parentheses

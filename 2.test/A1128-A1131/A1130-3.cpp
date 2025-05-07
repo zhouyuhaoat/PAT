@@ -27,15 +27,15 @@ struct node {
 
 vector<node> tree;
 
-string dfs(int root) { // unary operator, binary operator
-    if (tree[root].left == -1 && tree[root].right == -1) {
+string dfs(int root) {
+    if (root == -1) { // invalid node
+        return "";
+    }
+    if (tree[root].left == -1 && tree[root].right == -1) { // leaf node: operand
         return tree[root].val;
+    } else { // non-leaf node: operator
+        return "(" + dfs(tree[root].left) + tree[root].val + dfs(tree[root].right) + ")";
     }
-    if (tree[root].left == -1 && tree[root].right != -1) {
-        return "(" + tree[root].val + dfs(tree[root].right) + ")";
-    }
-    // no t[root].lc != -1 && t[root].rc == -1: for the case of only one child, the child must be on the right
-    return "(" + dfs(tree[root].left) + tree[root].val + dfs(tree[root].right) + ")";
 }
 
 int main(int argc, char const *argv[]) {

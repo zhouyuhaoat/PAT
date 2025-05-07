@@ -26,15 +26,23 @@ struct node {
 };
 
 vector<node> tree;
+string res;
 
-string dfs(int root) {
-    if (root == -1) { // invalid node
-        return "";
+void dfs(int root) {
+    bool nonLeaf = tree[root].left != -1 || tree[root].right != -1; // non-leaf node
+    if (nonLeaf) {
+        res += "(";
     }
-    if (tree[root].left == -1 && tree[root].right == -1) { // leaf node: operand
-        return tree[root].val;
+    if (tree[root].left != -1) {
+        dfs(tree[root].left);
     }
-    return "(" + dfs(tree[root].left) + tree[root].val + dfs(tree[root].right) + ")"; // non-leaf node: operator
+    res += tree[root].val;
+    if (tree[root].right != -1) {
+        dfs(tree[root].right);
+    }
+    if (nonLeaf) {
+        res += ")";
+    }
 }
 
 int main(int argc, char const *argv[]) {
@@ -53,7 +61,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     int root = find(isRoot.begin() + 1, isRoot.end(), true) - isRoot.begin();
-    string res = dfs(root);
+    dfs(root);
     if (n == 1) { // root is the only one operand
         cout << res << "\n";
     } else { // root is an operator

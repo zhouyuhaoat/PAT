@@ -47,7 +47,7 @@ int main(int argc, char const *argv[]) {
             }
             cout << "\n";
         }
-        auto it = s.find(make_pair(id, freq[id]));
+        auto it = s.find({id, freq[id]});
         if (it != s.end()) {
             s.erase(it);
         }
