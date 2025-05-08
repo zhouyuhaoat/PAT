@@ -37,11 +37,11 @@ int main(int argc, char const *argv[]) {
     int n;
     cin >> n;
     player p1, p2;
-    unordered_map<char, int> m = {{'B', 0}, {'C', 1}, {'J', 2}};
+    unordered_map<char, int> pos2hand = {{'B', 0}, {'C', 1}, {'J', 2}};
     for (int i = 0; i < n; i++) {
         char pos1, pos2;
         cin >> pos1 >> pos2;
-        int h1 = m[pos1], h2 = m[pos2]; // hand
+        int h1 = pos2hand[pos1], h2 = pos2hand[pos2];
         if ((h1 + 1) % 3 == h2) { // circular order
             p1.win++, p2.lose++;
             updatePos(p1, pos1);
