@@ -16,36 +16,27 @@
 // @pintia code=start
 #include <algorithm>
 #include <iostream>
-#include <queue>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
-const int OFFSET = 1000; // for hobby
-unordered_map<int, vector<int>> g; // use unordered_map to represent the graph
+const int OFFSET = 1000;
+unordered_map<int, vector<int>> g;
 unordered_map<int, bool> vis;
 
-int bfs(int id) { // Flood Fill for connected components using BFS
-    queue<int> q;
-    q.emplace(id);
+void dfs(int id, int& cnt) { // Flood Fill for connected components using DFS
     vis[id] = true;
-    int cnt = 0;
-    while (!q.empty()) {
-        int cur = q.front();
-        q.pop();
-        if (cur < OFFSET) { // person
-            cnt++;
-        }
-        if (g.count(cur) != 0) {
-            for (int v : g[cur]) {
-                if (!vis[v]) {
-                    q.emplace(v);
-                    vis[v] = true;
-                }
+    if (id < OFFSET) {
+        cnt++;
+    }
+    if (g.count(id) != 0) {
+        for (int v : g[id]) {
+            if (!vis[v]) {
+                dfs(v, cnt);
             }
         }
     }
-    return cnt;
 }
 
 int main(int argc, char const *argv[]) {
@@ -59,14 +50,15 @@ int main(int argc, char const *argv[]) {
         for (int j = 0; j < k; j++) {
             int id;
             cin >> id;
-            g[i].emplace_back(id + OFFSET); // person -> hobby
-            g[id + OFFSET].emplace_back(i); // hobby -> person
+            g[i].emplace_back(id + OFFSET);
+            g[id + OFFSET].emplace_back(i);
         }
     }
     vector<int> clu;
     for (int i = 0; i < n; i++) {
         if (g.count(i) != 0 && !vis[i]) {
-            int size = bfs(i);
+            int size = 0;
+            dfs(i, size);
             if (size > 0) {
                 clu.emplace_back(size);
             }
