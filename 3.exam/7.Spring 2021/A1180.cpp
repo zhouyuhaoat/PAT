@@ -45,18 +45,18 @@ int main(int argc, char const *argv[]) {
     int maxDiff = -1, lastP = -1; // diff: difference; last prime
     for (int diff = maxP / (n - 1); diff >= 1; diff--) {
         bool ok = false; // flag to check if a valid sequence is found
-        for (int e = maxP; e > maxP - diff; e--) { // end of the sequence
-            if (!isPrime[e]) continue;
+        for (int end = maxP; end > maxP - diff; end--) { // end of the sequence
+            if (!isPrime[end]) continue;
             bool flag = true; // flag to check if all elements are prime
             for (int i = 0; i < n; i++) {
-                if (!isPrime[e - i * diff]) {
+                if (!isPrime[end - i * diff]) {
                     flag = false;
                     break;
                 }
             }
             if (flag) {
                 ok = true;
-                maxDiff = diff, lastP = e;
+                maxDiff = diff, lastP = end;
                 break;
             }
         }
