@@ -42,6 +42,17 @@ int main(int argc, char const *argv[]) {
         } else { // down
             space = 2 * row - 1 - i, star = 2 * (i - row) + 1;
         }
+        /*
+        space by left-upper position (i = 1, space = 0) and left-down position (i = 2 * row - 1, space = 0)
+            1. i <= row -> left-upper position -> i = 1, space = 0 -> space = i - 1
+            2. i >= row -> left-down position -> i = 2 * row - 1, space = 0 -> space = 2 * row - 1 - i
+        star by middle position (i = row, star = 1)
+            1. i <= row -> middle position -> i = row, star = 1 -> star = 2 * (row - i) + 1
+            2. i >= row -> middle position -> i = row, star = 1 -> star = 2 * (i - row) + 1
+        gradient or coefficient of change of space and star
+            1. upper + middle: space = +1, star = -2
+            2. middle + down: space = -1, star = +2
+        */
         print(space, ' '), print(star, ch), cout << "\n";
     }
     cout << n - (2 * row * row - 1) << "\n";

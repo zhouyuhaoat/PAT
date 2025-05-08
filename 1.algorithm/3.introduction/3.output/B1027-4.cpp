@@ -34,6 +34,14 @@ int main(int argc, char const *argv[]) {
     for (int i = 1; i <= 2 * row - 1; i++) { // 1-based index
         int dist = abs(row - i); // distance from the middle row
         int space = row - 1 - dist, star = 2 * dist + 1;
+        /*
+        row: 1 -> row -> 2 * row - 1
+            - symmetry by middle position
+            1. dist: row - 1 -> 0 -> row - 1
+            2. space: 0 -> row - 1 -> 0
+            3. star: 2 * row - 1 -> 1 -> 2 * row - 1
+        space and star by middle position (i = row, dist = 0, space = row - 1, star = 1)
+        */
         print(space, ' '), print(star, ch), cout << "\n";
     }
     cout << n - (2 * row * row - 1) << "\n";
