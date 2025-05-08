@@ -42,9 +42,8 @@ int main(int argc, char const *argv[]) {
     cin >> head >> n;
     unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
-        int addr, data, next;
-        cin >> addr >> data >> next;
-        nodes[addr] = {data, next};
+        int addr;
+        cin >> addr >> nodes[addr].data >> nodes[addr].next;
     }
     unordered_set<int> vis;
     pair<int, int> unq = {-1, -1}, dup = {-1, -1}; // unique, duplicate: {head, tail}

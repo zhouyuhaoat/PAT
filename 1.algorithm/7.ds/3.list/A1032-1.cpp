@@ -42,9 +42,8 @@ int main(int argc, char const *argv[]) {
     unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
         char data;
-        int addr, next;
-        cin >> addr >> data >> next;
-        nodes[addr] = {next, false};
+        int addr;
+        cin >> addr >> data >> nodes[addr].next;
     }
     int share = getIntersectionNode(head1, head2, nodes);
     if (share != -1) {

@@ -32,9 +32,8 @@ int main(int argc, char const *argv[]) {
     cin >> head >> n >> k;
     unordered_map<int, node> nodes;
     for (int i = 0; i < n; i++) {
-        int addr, data, next;
-        cin >> addr >> data >> next;
-        nodes[addr] = {data, next};
+        int addr;
+        cin >> addr >> nodes[addr].data >> nodes[addr].next;
     }
     vector<int> list;
     for (int p = head; p != -1; p = nodes[p].next) {
