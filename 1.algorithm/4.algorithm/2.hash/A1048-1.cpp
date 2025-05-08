@@ -34,6 +34,7 @@ int main(int argc, char const *argv[]) {
     set<int> res;
     for (int i = 0; i < n; i++) {
         if (cnt[m - coin[i]] > 0 && !(coin[i] == m / 2 && cnt[coin[i]] == 1)) {
+            // ensure that the coin is not used twice
             res.emplace(coin[i]);
         }
     }

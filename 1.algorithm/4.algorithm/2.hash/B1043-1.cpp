@@ -28,14 +28,14 @@ int main(int argc, char const *argv[]) {
         cnt[s[i]]++;
     }
     string symbol = "PATest", res;
-    bool done = true; // whether output all symbols
-    for (int i = 0; done; i++) {
-        done = false;
-        for (int j = 0; j < 6; j++) {
-            if (cnt[symbol[j]] != 0) {
-                res += symbol[j];
-                cnt[symbol[j]]--;
-                done = true;
+    bool done = false; // whether output all symbols
+    while (!done) {
+        done = true;
+        for (int i = 0; i < 6; i++) {
+            if (cnt[symbol[i]] != 0) {
+                res += symbol[i];
+                cnt[symbol[i]]--;
+                done = false;
             }
         }
     }
