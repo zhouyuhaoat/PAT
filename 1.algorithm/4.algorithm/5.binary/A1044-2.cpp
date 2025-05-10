@@ -29,11 +29,11 @@ int main(int argc, char const *argv[]) {
         cin >> value[i];
         value[i] += value[i - 1];
     }
-    int target = value[n] + 1; // the exact match at last
+    int target = value[n] + 1; // the exact match at least
     vector<pair<int, int>> res; // index pair
     for (int i = 0; i < n; i++) {
-        int j = lower_bound(value.begin() + i, value.end(), value[i] + m) - value.begin();
-        if (j > n) break; // done
+        int j = lower_bound(value.begin() + i + 1, value.end(), value[i] + m) - value.begin();
+        if (j > n) break; // out of bound, done
         int temp = value[j] - value[i];
         if (temp <= target) {
             if (temp < target) { // a better match

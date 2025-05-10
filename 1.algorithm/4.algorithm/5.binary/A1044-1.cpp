@@ -32,7 +32,7 @@ int main(int argc, char const *argv[]) {
     bool found = false;
     while (!found) {
         for (int i = 0; i < n; i++) { // prefix(j) - prefix(i) = i -> j - 1
-            int j = lower_bound(value.begin() + i, value.end(), value[i] + m) - value.begin();
+            int j = lower_bound(value.begin() + i + 1, value.end(), value[i] + m) - value.begin();
             if (j <= n && value[j] - value[i] == m) { // first >= value[i] + m
                 cout << i + 1 << "-" << j << "\n"; // 0-based index to 1-based index
                 found = true;
